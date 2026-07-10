@@ -5,7 +5,7 @@ import PageHeader from '../../components/PageHeader.astro';
 
 <BaseLayout
   title="Regex Tester"
-  description="Test JavaScript regular expressions against sample text with live highlighting, flags, and capture groups. Runs entirely in your browser — nothing is sent anywhere."
+  description="Test JavaScript regular expressions against sample text with live highlighting, flags, and capture groups. Runs entirely in your browser; nothing is sent anywhere."
 >
   <PageHeader
     kicker="~/tools/regex"
@@ -73,7 +73,7 @@ import PageHeader from '../../components/PageHeader.astro';
     <p class="mt-10 max-w-2xl text-sm text-muted">
       <span class="font-mono text-faint">note:</span> this uses the browser's native
       <code class="font-mono text-xs text-ink">RegExp</code> engine (ECMAScript), so behavior matches
-      JavaScript exactly — including its flavor of lookbehind, named groups, and Unicode handling.
+      JavaScript exactly - including its flavor of lookbehind, named groups, and Unicode handling.
     </p>
 
     <p class="mt-10">
@@ -155,7 +155,7 @@ import PageHeader from '../../components/PageHeader.astro';
     summaryEl.hidden = false;
     summaryEl.textContent = `${String(hits.length)} match${hits.length === 1 ? '' : 'es'} · /${pattern}/${flags}`;
 
-    // Build highlighted output as DOM nodes (no innerHTML — avoids injection + CSP concerns).
+    // Build highlighted output as DOM nodes (no innerHTML - avoids injection + CSP concerns).
     highlightEl.replaceChildren();
     if (text.length > 0) {
       let cursor = 0;

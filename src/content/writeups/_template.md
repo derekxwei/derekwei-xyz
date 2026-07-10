@@ -1,45 +1,62 @@
 ---
-# TEMPLATE — copy this file to a new name WITHOUT the leading underscore
+# TEMPLATE: copy this file to a new name WITHOUT the leading underscore
 # (e.g. `2026-eventname-challenge-name.md`). Files starting with "_" are
 # excluded from the build by the content collection glob pattern.
 title: 'TODO: Challenge title'
 description: 'TODO: one-sentence summary shown on cards and in search results (aim for 140-160 characters).'
 event: 'TODO: event name (see COMPETITIONS in src/consts.ts)'
-# category — pick exactly one of: web | crypto | forensics | pwn | rev | osint | network | misc
+# category: pick exactly one of: web | crypto | forensics | pwn | rev | osint | network | misc
 category: misc
-# difficulty (optional) — one of: easy | medium | hard | insane.
-# Delete the line entirely if the event didn't state one.
+# difficulty (optional): one of easy | medium | hard | insane.
+# Delete the line entirely if the event did not state one.
 difficulty: medium
 # Solve/publish date, YYYY-MM-DD.
-date: 2026-07-09
+date: 2026-07-10
 # Freeform lowercase tags, e.g. [sqli, burp, wireshark]
 tags: []
 # Flip to false to publish. Drafts render in `npm run dev` only.
 draft: true
 ---
 
-<!-- TODO(derek): before publishing, check the event's rules on flag disclosure and redact if required. -->
+<!-- Before publishing: check the event's rules on flag disclosure and redact if required. -->
+<!-- Authorized practice only. No live flags, no unauthorized targets, no real-world attack guidance. -->
 
-## TL;DR
+## Goal
 
-<!-- TODO(derek): two or three sentences — what the challenge was and the one insight that cracked it. -->
+<!-- One or two sentences: what the challenge asked for and the single insight that cracked it. -->
 
 ## Challenge
 
-<!-- TODO(derek): the prompt as given — points, provided files or services, and any constraints that mattered. -->
+<!-- The prompt as given: points, provided files or services, and any constraints that mattered. -->
 
-## Recon
+## Initial observations
 
-<!-- TODO(derek): what you looked at first and why — enumeration, file inspection, traffic capture. Keep the dead ends; they're the useful part. -->
+<!-- First impressions before digging in: what stood out, what it looked like, initial hypotheses. -->
 
-## Solution
+## Enumeration
 
-<!-- TODO(derek): the working path, step by step, with commands and snippets. Explain the reasoning, not just the keystrokes. -->
+<!-- What you looked at and why: enumeration, file inspection, traffic capture, source review. -->
 
-## Flag
+## Failed attempts
 
-<!-- TODO(derek): redact if event rules require it — e.g. `flag{REDACTED}` — and say why it's redacted. -->
+<!-- The dead ends, and why they failed. This is the useful part; keep it honest. -->
 
-## Takeaways
+## Breakthrough
 
-<!-- TODO(derek): what transfers to the next challenge, or to real blue-team work. -->
+<!-- The realization that moved things forward, and what led to it. -->
+
+## Solution summary
+
+<!-- The working path, step by step, with commands and snippets. Explain the reasoning, not just keystrokes. -->
+
+## Defensive takeaway
+
+<!-- What a defender should learn from this: the misconfiguration or bug class, and how it is prevented. -->
+
+## Tools used
+
+<!-- The tooling that mattered: e.g. Burp Suite, Wireshark, Ghidra, hashcat. -->
+
+## Lessons learned
+
+<!-- What transfers to the next challenge, and to real-world offensive or defensive work. -->

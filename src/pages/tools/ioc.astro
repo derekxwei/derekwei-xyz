@@ -5,12 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 
 <BaseLayout
   title="IOC Parser & Defanger"
-  description="Extract indicators of compromise — IPs, domains, URLs, emails, and hashes — from pasted text, and defang or refang them. Client-side, offline, nothing transmitted."
+  description="Extract indicators of compromise (IPs, domains, URLs, emails, and hashes) from pasted text, and defang or refang them. Client-side, offline, nothing transmitted."
 >
   <PageHeader
     kicker="~/tools/ioc"
     title="IOC parser & defanger"
-    lede="Pull indicators of compromise out of pasted text — IPs, domains, URLs, emails, hashes — and defang them for safe sharing. Runs entirely in your browser."
+    lede="Pull indicators of compromise out of pasted text - IPs, domains, URLs, emails, hashes - and defang them for safe sharing. Runs entirely in your browser."
   />
 
   <section class="py-10">
@@ -44,7 +44,7 @@ import PageHeader from '../../components/PageHeader.astro';
     <div class="mt-10 max-w-2xl space-y-3 text-sm leading-relaxed text-muted">
       <p>
         <span class="font-mono text-faint">defanging</span> rewrites indicators so they aren't
-        clickable or auto-linked &mdash; <code class="font-mono text-xs text-ink">http</code> becomes
+        clickable or auto-linked: <code class="font-mono text-xs text-ink">http</code> becomes
         <code class="font-mono text-xs text-ink">hxxp</code> and dots become
         <code class="font-mono text-xs text-ink">[.]</code>. It's the convention for sharing malicious
         indicators in tickets, chat, and reports without anyone accidentally visiting them.

@@ -1,5 +1,5 @@
 ---
-# TEMPLATE — copy this file to a new name WITHOUT the leading underscore
+# TEMPLATE - copy this file to a new name WITHOUT the leading underscore
 # (e.g. `2026-07-proxmox-first-boot.md`). Files starting with "_" are
 # excluded from the build by the content collection glob pattern.
 title: 'TODO: Note title'
@@ -16,7 +16,7 @@ draft: true
 
 ## Context
 
-<!-- TODO(derek): why this session happened — what you were trying to get working and how it fits the lab. -->
+<!-- TODO(derek): why this session happened - what you were trying to get working and how it fits the lab. -->
 
 ## Setup
 
@@ -24,7 +24,7 @@ draft: true
 
 ## What I did
 
-<!-- TODO(derek): the actual steps, with commands and config snippets. Rough is fine — this is a lab note, not a tutorial. -->
+<!-- TODO(derek): the actual steps, with commands and config snippets. Rough is fine - this is a lab note, not a tutorial. -->
 
 ## What broke
 

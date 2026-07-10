@@ -5,8 +5,8 @@ How to write and publish the three kinds of content on derekwei.xyz: **projects*
 ## The workflow, in brief
 
 1. Copy the collection's `_template.md` (e.g. `src/content/writeups/_template.md`).
-2. Rename it — **the filename becomes the URL slug**. Use lowercase and hyphens: `byuctf-2026-lost-in-translation.md` → `/writeups/byuctf-2026-lost-in-translation/`.
-3. Fill in the frontmatter (fields below). The build **fails** on invalid frontmatter, which is the point — it catches mistakes before they ship.
+2. Rename it - **the filename becomes the URL slug**. Use lowercase and hyphens: `byuctf-2026-lost-in-translation.md` → `/ctf/byuctf-2026-lost-in-translation/`. (The `writeups` collection is served under the `/ctf/` route.)
+3. Fill in the frontmatter (fields below). The build **fails** on invalid frontmatter, which is the point - it catches mistakes before they ship.
 4. Write the body in Markdown (or MDX if you need components).
 5. Keep `draft: true` while working; set `draft: false` (or remove the line) to publish.
 6. `npm run build` and preview before pushing.
@@ -14,7 +14,7 @@ How to write and publish the three kinds of content on derekwei.xyz: **projects*
 ### Draft and template rules
 
 - `draft: true` → visible in `npm run dev`, **excluded from production**. Your safe staging state.
-- Files starting with `_` (like `_template.md`) are **never built**, in any mode — they're excluded by the collection glob, independent of the draft flag.
+- Files starting with `_` (like `_template.md`) are **never built**, in any mode - they're excluded by the collection glob, independent of the draft flag.
 
 ## Writing style
 
@@ -24,9 +24,9 @@ Match the tone of the rest of the site: **professional, technical, direct**. A f
 - **Mark unfinished work `in-progress`.** Don't describe a planned project in the past tense.
 - **Respect competition rules.** Some CTFs prohibit publishing solutions or flags for active/reused challenges. When in doubt, redact the flag (`flag{REDACTED}`) and focus on methodology.
 - **No secrets.** Never paste real tokens, keys, internal hostnames, or personal data into a writeup, even as an "example."
-- **Teach the method.** The most valuable writeups explain *how you thought about it* — recon, the dead ends, the insight — not just the final command.
+- **Teach the method.** The most valuable writeups explain *how you thought about it* - recon, the dead ends, the insight - not just the final command.
 
-## Projects — `src/content/projects/`
+## Projects - `src/content/projects/`
 
 | Field | Type / values | Required | Notes |
 | --- | --- | --- | --- |
@@ -43,7 +43,7 @@ Match the tone of the rest of the site: **professional, technical, direct**. A f
 
 Suggested body structure: **Overview → Design/approach → Status → Next steps**. The `_template.md` has this skeleton.
 
-## CTF writeups — `src/content/writeups/`
+## CTF writeups - `src/content/writeups/` (served at `/ctf/`)
 
 | Field | Type / values | Required | Notes |
 | --- | --- | --- | --- |
@@ -56,11 +56,11 @@ Suggested body structure: **Overview → Design/approach → Status → Next ste
 | `tags` | string array | no | Defaults to `[]`. |
 | `draft` | boolean | no | Defaults to `false`. |
 
-Suggested body structure: **TL;DR → Challenge → Recon → Solution → Flag (redact if required) → Takeaways**. Fenced code blocks render with the site's monospace styling; keep commands copy-pasteable.
+Suggested body structure: **Goal → Challenge → Initial observations → Enumeration → Failed attempts → Breakthrough → Solution summary → Defensive takeaway → Tools used → Lessons learned** (see `_template.md`). Redact the flag where event rules require it. Fenced code blocks render with the site's monospace styling; keep commands copy-pasteable.
 
-## Lab notes — `src/content/lab-notes/`
+## Lab notes - `src/content/lab-notes/`
 
-Shorter, rougher than writeups — notes from the homelab and hands-on practice. Lower bar for polish; higher value in frequency.
+Shorter, rougher than writeups - notes from the homelab and hands-on practice. Lower bar for polish; higher value in frequency.
 
 | Field | Type / values | Required | Notes |
 | --- | --- | --- | --- |
@@ -75,9 +75,9 @@ Suggested body structure: **Context → Setup → What I did → What broke → 
 
 ## Markdown tips
 
-- **Headings** inside a body start at `##` — the page's single `<h1>` is the title from frontmatter (rendered by `PageHeader`). Don't add another `#`.
+- **Headings** inside a body start at `##` - the page's single `<h1>` is the title from frontmatter (rendered by `PageHeader`). Don't add another `#`.
 - **Links** are standard Markdown; external links render fine, but there's no need to add `rel` attributes in content (the site doesn't load third-party content).
-- **Images**: place them in `src/content/<collection>/` alongside the entry (or under `src/assets/`) and reference them relatively so Astro optimizes and fingerprints them. Avoid hotlinking remote images — the CSP's `img-src 'self' data:` blocks them anyway.
+- **Images**: place them in `src/content/<collection>/` alongside the entry (or under `src/assets/`) and reference them relatively so Astro optimizes and fingerprints them. Avoid hotlinking remote images - the CSP's `img-src 'self' data:` blocks them anyway.
 - **MDX**: rename the file to `.mdx` if you need to import and use a component. Plain `.md` is enough for everything else.
 
 ## Publishing checklist
@@ -86,5 +86,5 @@ Suggested body structure: **Context → Setup → What I did → What broke → 
 - [ ] `draft: false`.
 - [ ] Filename is a clean, lowercase, hyphenated slug.
 - [ ] No secrets, no invented results, competition rules respected.
-- [ ] Previewed locally (`npm run preview`) — renders correctly, links work.
+- [ ] Previewed locally (`npm run preview`) - renders correctly, links work.
 - [ ] Committed and pushed (the sitemap updates automatically).

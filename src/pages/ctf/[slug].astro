@@ -26,11 +26,11 @@ const fmt = (d: Date) =>
 
 <BaseLayout title={entry.data.title} description={entry.data.description} ogType="article">
   <nav class="pt-8" aria-label="Breadcrumb">
-    <a href="/writeups/" class="link font-mono text-sm">← All writeups</a>
+    <a href="/ctf/" class="link font-mono text-sm">← All CTF writeups</a>
   </nav>
 
   <PageHeader
-    kicker={`~/writeups/${entry.id}`}
+    kicker={`~/ctf/${entry.id}`}
     title={entry.data.title}
     lede={entry.data.description}
   >

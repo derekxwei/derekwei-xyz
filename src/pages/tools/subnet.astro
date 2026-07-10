@@ -134,7 +134,7 @@ const examples = ['192.168.1.0/24', '10.0.0.0/8', '172.16.5.130/26', '203.0.113.
 
     const [ipPart, prefixPart, ...rest] = raw.split('/');
     if (rest.length > 0 || prefixPart === undefined) {
-      setError('Expected exactly one "/" — format is address/prefix, e.g. 10.0.0.0/8.');
+      setError('Expected exactly one "/" - format is address/prefix, e.g. 10.0.0.0/8.');
       return;
     }
     if (!/^\d{1,2}$/.test(prefixPart)) {
@@ -148,7 +148,7 @@ const examples = ['192.168.1.0/24', '10.0.0.0/8', '172.16.5.130/26', '203.0.113.
     }
     const ip = parseOctets(ipPart);
     if (ip === null) {
-      setError('That is not a valid IPv4 address — four octets, each 0 to 255.');
+      setError('That is not a valid IPv4 address - four octets, each 0 to 255.');
       return;
     }
 
@@ -167,13 +167,13 @@ const examples = ['192.168.1.0/24', '10.0.0.0/8', '172.16.5.130/26', '203.0.113.
       firstHost = toDotted(network);
       lastHost = toDotted(network);
       usableCount = '1 (single host)';
-      note = '/32 — a single host route. Network and broadcast are the same address.';
+      note = '/32 - a single host route. Network and broadcast are the same address.';
     } else if (prefix === 31) {
       // RFC 3021: both addresses are usable, typically for point-to-point links.
       firstHost = toDotted(network);
       lastHost = toDotted(broadcast);
       usableCount = '2 (RFC 3021 point-to-point)';
-      note = '/31 — RFC 3021 point-to-point link. Both addresses are usable; there is no separate network or broadcast address.';
+      note = '/31 - RFC 3021 point-to-point link. Both addresses are usable; there is no separate network or broadcast address.';
     } else {
       firstHost = toDotted((network + 1) >>> 0);
       lastHost = toDotted((broadcast - 1) >>> 0);

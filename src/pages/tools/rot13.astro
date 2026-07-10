@@ -7,12 +7,12 @@ const shifts = Array.from({ length: 25 }, (_, i) => i + 1);
 
 <BaseLayout
   title="ROT13 / Caesar Converter"
-  description="Apply ROT13 or any Caesar shift to text, live in your browser. A CTF staple for spotting rotated flags — obfuscation, not encryption."
+  description="Apply ROT13 or any Caesar shift to text, live in your browser. A CTF staple for spotting rotated flags. Obfuscation, not encryption."
 >
   <PageHeader
     kicker="~/tools/rot13"
     title="ROT13 / Caesar converter"
-    lede="Rotate letters by a fixed shift — ROT13 by default. Converts live as you type, entirely in your browser."
+    lede="Rotate letters by a fixed shift - ROT13 by default. Converts live as you type, entirely in your browser."
   />
 
   <section class="py-10">
@@ -60,7 +60,7 @@ const shifts = Array.from({ length: 25 }, (_, i) => i + 1);
 
     <div class="mt-8 grid max-w-2xl gap-2 text-sm text-muted">
       <p>
-        <span class="font-mono text-faint">note:</span> ROT13 is its own inverse — applying it twice
+        <span class="font-mono text-faint">note:</span> ROT13 is its own inverse - applying it twice
         returns the original text. For any other shift <em>n</em>, decoding means shifting by
         26&nbsp;&minus;&nbsp;<em>n</em> (the Reverse button does the math for you).
       </p>

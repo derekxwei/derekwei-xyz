@@ -8,7 +8,7 @@ interface SecurityHeader {
   why: string;
 }
 
-/** Mirrors public/_headers exactly — update both together. */
+/** Mirrors public/_headers exactly - update both together. */
 const securityHeaders: SecurityHeader[] = [
   {
     name: 'Strict-Transport-Security',
@@ -34,7 +34,7 @@ const securityHeaders: SecurityHeader[] = [
   {
     name: 'Referrer-Policy',
     value: 'strict-origin-when-cross-origin',
-    why: 'Cross-origin requests receive the origin only — full URLs never leak to other sites.',
+    why: 'Cross-origin requests receive the origin only - full URLs never leak to other sites.',
   },
   {
     name: 'Permissions-Policy',
@@ -84,7 +84,7 @@ const deliveryDiagramLabel =
   <PageHeader
     kicker="~/architecture"
     title="How this site works"
-    lede="A security-focused site should be able to explain itself. This page documents the stack, the delivery pipeline, and every security header this site serves — all of it verifiable against the source."
+    lede="A security-focused site should be able to explain itself. This page documents the stack, the delivery pipeline, and every security header this site serves - all of it verifiable against the source."
   />
 
   <section class="py-10" aria-labelledby="stack-heading">
@@ -99,7 +99,7 @@ const deliveryDiagramLabel =
         <h3 class="font-mono text-sm text-ink">Astro 5, static output</h3>
         <p class="mt-2 text-sm leading-relaxed text-muted">
           Every page is prerendered to plain HTML at build time. There is no
-          server, no runtime, no rendering on request — the deploy artifact is
+          server, no runtime, no rendering on request - the deploy artifact is
           a folder of files.
         </p>
       </li>
@@ -122,7 +122,7 @@ const deliveryDiagramLabel =
         <h3 class="font-mono text-sm text-ink">Content collections</h3>
         <p class="mt-2 text-sm leading-relaxed text-muted">
           Projects, writeups, and lab notes are Markdown/MDX files in typed
-          content collections — frontmatter is validated by schema at build
+          content collections - frontmatter is validated by schema at build
           time, so a malformed entry fails the build instead of shipping.
         </p>
       </li>
@@ -155,7 +155,10 @@ const deliveryDiagramLabel =
     <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
       The pipeline is deliberately short: a push to GitHub triggers a
       Cloudflare Pages build, and the static output is replicated to
-      Cloudflare's edge. There is no origin server to keep patched.
+      Cloudflare's edge. There is no origin server to keep patched. Version 1
+      intentionally ships with no backend or database: a static site has far
+      less to attack and far less to maintain, which makes it the safer and
+      simpler first version.
     </p>
     <pre
       class="mt-6 overflow-x-auto rounded-lg border border-line bg-panel-2 p-5 font-mono text-xs leading-relaxed text-muted"
@@ -236,7 +239,7 @@ const deliveryDiagramLabel =
         The CSP is built on an allowlist model:
         <code class="text-ink">default-src 'none'</code> denies every resource
         type outright, then individual directives grant back only what the
-        site actually uses — same-origin scripts, styles, images, fonts, and
+        site actually uses - same-origin scripts, styles, images, fonts, and
         connections, nothing else. A blocklist has to anticipate attacks; an
         allowlist only has to describe the site.
       </p>
@@ -244,7 +247,7 @@ const deliveryDiagramLabel =
         That model holds because nothing here needs inline code. Astro is
         configured with <code class="text-ink">inlineStylesheets: 'never'</code>
         so all CSS ships as external files, and the few scripts are bundled
-        into external files as well — which means
+        into external files as well - which means
         <code class="text-ink">script-src 'self'</code> and
         <code class="text-ink">style-src 'self'</code> work without
         <code class="text-ink">'unsafe-inline'</code>. Even if an injection
@@ -260,7 +263,7 @@ const deliveryDiagramLabel =
       <p>
         One honest caveat: these headers are applied by Cloudflare Pages at
         the edge. Running <code class="text-ink">npm run preview</code> locally
-        serves the same HTML without them — the policy only exists on the
+        serves the same HTML without them - the policy only exists on the
         deployed site.
       </p>
     </div>
@@ -285,7 +288,7 @@ const deliveryDiagramLabel =
         <code class="text-ink">/_astro/</code> carry a content hash in their
         filename, so they are served with
         <code class="text-ink">Cache-Control: public, max-age=31536000,
-        immutable</code> — cached for a year and never revalidated. When a file
+        immutable</code> - cached for a year and never revalidated. When a file
         changes, its hash changes, and the browser fetches the new URL.
       </p>
     </div>

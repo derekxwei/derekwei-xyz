@@ -32,7 +32,7 @@ Fix the frontmatter to match the schema. See [CONTENT_GUIDE.md](CONTENT_GUIDE.md
 
 ## `astro check` (npm run check) reports type errors
 
-Run it locally — it prints the same diagnostics with file and line:
+Run it locally - it prints the same diagnostics with file and line:
 
 ```sh
 npm run check
@@ -42,18 +42,18 @@ Things that have bitten this project before:
 
 - **`astro.config.mjs` typed against Vite's `PluginOption`.** The Tailwind Vite plugin can trip a structural type mismatch. The config intentionally omits the `// @ts-check` pragma at the top of that file so the JS config isn't type-checked against a stricter Vite type than it needs.
 - **`crypto.subtle.digest` argument typing.** Pass the data as `BufferSource` (an `ArrayBuffer` or a typed array), not a union that includes `SharedArrayBuffer`.
-- **DOM lookups are nullable.** `document.getElementById(...)` returns `T | null` under strict mode — null-check before use, or the build fails.
+- **DOM lookups are nullable.** `document.getElementById(...)` returns `T | null` under strict mode - null-check before use, or the build fails.
 
 ## Build succeeds locally but the tool pages do nothing
 
-Type-checking does **not** catch runtime logic errors. The tools are client-side scripts — verify them in a real browser (`npm run preview`, then click through each tool with real input). If a tool is silent:
+Type-checking does **not** catch runtime logic errors. The tools are client-side scripts - verify them in a real browser (`npm run preview`, then click through each tool with real input). If a tool is silent:
 
-- Open the browser devtools **Console** — a thrown error or (in production) a **CSP violation** is the usual cause.
+- Open the browser devtools **Console** - a thrown error or (in production) a **CSP violation** is the usual cause.
 - In production specifically, a violation means the page used an inline style/handler or an external resource. See the next section.
 
 ## "Works in dev/preview, broken in production"
 
-Almost always the **Content-Security-Policy**, which only exists on the Cloudflare edge — not under `npm run dev` or `npm run preview`. The browser silently refuses the offending thing and logs a violation in the devtools console on the production URL.
+Almost always the **Content-Security-Policy**, which only exists on the Cloudflare edge - not under `npm run dev` or `npm run preview`. The browser silently refuses the offending thing and logs a violation in the devtools console on the production URL.
 
 Culprits and fixes (full rules in [MAINTENANCE.md → Keeping the CSP intact](MAINTENANCE.md#keeping-the-csp-intact)):
 
@@ -63,8 +63,8 @@ Culprits and fixes (full rules in [MAINTENANCE.md → Keeping the CSP intact](MA
 
 ## New content doesn't appear in production
 
-- It's probably `draft: true` — drafts render in dev but are excluded from the production build and sitemap. Set `draft: false`.
-- Or the filename starts with `_` — those files (like `_template.md`) are never built. Rename it.
+- It's probably `draft: true` - drafts render in dev but are excluded from the production build and sitemap. Set `draft: false`.
+- Or the filename starts with `_` - those files (like `_template.md`) are never built. Rename it.
 
 ## Cloudflare Pages build fails (but it builds locally)
 
@@ -88,4 +88,4 @@ Roll back instantly from **Cloudflare Pages → Deployments → (last good) → 
 
 ## Security headers show as missing
 
-They're a Cloudflare Pages feature served from `public/_headers` **at the edge** — they never appear under `npm run preview`. Check them on the deployed URL with [securityheaders.com](https://securityheaders.com/?q=derekwei.xyz). If they're missing in production, confirm `public/_headers` exists in the build output (`dist/_headers` after `npm run build`) and that the file has no syntax errors (each rule block starts with a path pattern, indented header lines beneath).
+They're a Cloudflare Pages feature served from `public/_headers` **at the edge** - they never appear under `npm run preview`. Check them on the deployed URL with [securityheaders.com](https://securityheaders.com/?q=derekwei.xyz). If they're missing in production, confirm `public/_headers` exists in the build output (`dist/_headers` after `npm run build`) and that the file has no syntax errors (each rule block starts with a path pattern, indented header lines beneath).

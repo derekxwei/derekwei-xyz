@@ -5,12 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 
 <BaseLayout
   title="Hash Identifier"
-  description="Guess the likely algorithm behind a hash from its length and character set — MD5, SHA family, bcrypt, NTLM, CRC32, and more. Heuristic, client-side, offline."
+  description="Guess the likely algorithm behind a hash from its length and character set: MD5, SHA family, bcrypt, NTLM, CRC32, and more. Heuristic, client-side, offline."
 >
   <PageHeader
     kicker="~/tools/hash-id"
     title="Hash identifier"
-    lede="Paste a hash and get the likely algorithms, inferred from its length and character set. A triage helper for CTFs — heuristic, not authoritative."
+    lede="Paste a hash and get the likely algorithms, inferred from its length and character set. A triage helper for CTFs - heuristic, not authoritative."
   />
 
   <section class="py-10">
@@ -50,7 +50,7 @@ import PageHeader from '../../components/PageHeader.astro';
 
     <div class="mt-10 max-w-2xl rounded-lg border border-warn/30 bg-warn/10 p-4 text-sm leading-relaxed text-muted">
       <p>
-        <span class="font-mono text-xs uppercase tracking-wider text-warn">heuristic only</span> &mdash;
+        <span class="font-mono text-xs uppercase tracking-wider text-warn">heuristic only</span>:
         many algorithms share a digest length (MD5, NTLM, and MD4 are all 32 hex chars), so identical
         lengths are indistinguishable from the hash alone. Treat this as a ranked starting point, not
         a definitive answer.
@@ -86,15 +86,15 @@ import PageHeader from '../../components/PageHeader.astro';
     },
     {
       test: (h) => /^\$6\$/.test(h),
-      candidates: [{ name: 'sha512crypt', note: 'Unix crypt ($6$) — /etc/shadow' }],
+      candidates: [{ name: 'sha512crypt', note: 'Unix crypt ($6$) - /etc/shadow' }],
     },
     {
       test: (h) => /^\$5\$/.test(h),
-      candidates: [{ name: 'sha256crypt', note: 'Unix crypt ($5$) — /etc/shadow' }],
+      candidates: [{ name: 'sha256crypt', note: 'Unix crypt ($5$) - /etc/shadow' }],
     },
     {
       test: (h) => /^\$1\$/.test(h),
-      candidates: [{ name: 'md5crypt', note: 'Unix crypt ($1$) — legacy /etc/shadow' }],
+      candidates: [{ name: 'md5crypt', note: 'Unix crypt ($1$) - legacy /etc/shadow' }],
     },
     {
       test: (h) => /^[0-9a-fA-F]{32}:[0-9a-fA-F]{32}$/.test(h) || /^[^:]+:[0-9a-fA-F]{32}$/.test(h),

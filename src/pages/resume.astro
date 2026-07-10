@@ -1,17 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { SITE, EDUCATION, CERTIFICATIONS, COMPETITIONS } from '../consts';
+import {
+  SITE,
+  EDUCATION,
+  CERTIFICATIONS,
+  CERTIFICATION_NOTE,
+  CERTIFICATIONS_IN_PROGRESS,
+  COMPETITIONS,
+  NCL_CATEGORIES,
+  EXPERIENCE,
+  SKILL_GROUPS,
+  LEADERSHIP,
+} from '../consts';
 
 const description =
-  'Resume of Derek Wei — CompTIA Security+, CySA+, and PenTest+ certified, incoming UTSA B.S. Cybersecurity Honors student based in San Antonio, Texas.';
+  'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
+
+const ncl = COMPETITIONS[0];
+const otherResults = COMPETITIONS.slice(1).filter((c) => c.result);
+const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
 ---
 
 <BaseLayout title="Resume" description={description}>
   <PageHeader
     kicker="~/resume"
     title="Resume"
-    lede="A concise overview of my education, certifications, and competition experience — formatted to print cleanly."
+    lede="Education, certifications, competition results, and experience. Formatted to print cleanly."
   />
 
   <div
@@ -21,7 +36,7 @@ const description =
       Print / save as PDF
     </button>
     <p class="font-mono text-xs text-faint">
-      // print-friendly — site chrome is stripped and output renders dark-on-white
+      // print-friendly: site chrome is stripped and output renders dark-on-white
     </p>
   </div>
 
@@ -34,10 +49,20 @@ const description =
         <li>
           <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
         </li>
+        <li>
+          <a class="link" href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a>
+        </li>
+        <li>
+          <a class="link" href={SITE.github} rel="noopener noreferrer">GitHub</a>
+        </li>
         <li class="text-muted">{SITE.location}</li>
         <li class="w-full text-muted sm:w-auto">{SITE.clearance}</li>
-        <li class="text-xs text-faint">updated 2026-07-09</li>
       </ul>
+      <p class="mt-4 border-t border-line pt-4 font-mono text-xs leading-relaxed text-muted">
+        5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
+        &middot; 1st of 1,692 teams, National Cyber League High School division
+        &middot; CTF competitor
+      </p>
     </div>
   </section>
 
@@ -49,14 +74,124 @@ const description =
       <span class="text-accent" aria-hidden="true">##</span> Summary
     </h2>
     <p class="mt-6 max-w-2xl leading-relaxed text-muted">
-      Early-career cybersecurity candidate entering the B.S. Cybersecurity
-      program in the Honors College at the University of Texas at San Antonio
-      in Fall 2026. CompTIA-certified across IT fundamentals, networking,
-      security operations, and penetration testing, with hands-on experience
-      from the NEISD iCSI Cybersecurity Program and national CTF and cyber
-      defense competitions. Focused on blue-team analysis and practical
-      security tooling; currently pursuing cybersecurity internships.
+      Incoming B.S. Cybersecurity student at the University of Texas at San
+      Antonio (Honors College), focused on red-team fundamentals, penetration
+      testing labs, and Capture the Flag (CTF) competition. Five CompTIA
+      certifications earned in high school and nearly four years of hands-on IT
+      support and cybersecurity lab experience. Blue-team literacy from CySA+
+      supports the offensive work by connecting findings back to defense.
+      Preparing for the Hack The Box Certified Penetration Testing Specialist
+      (CPTS) and seeking cybersecurity internships.
     </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="certifications-heading">
+    <h2
+      id="certifications-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Certifications
+    </h2>
+    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        CERTIFICATIONS.map((cert) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{cert.name}</p>
+            <p class="mt-1 font-mono text-xs text-faint">
+              {cert.issuer}
+              {cert.year && ` · ${cert.year}`}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-4 max-w-2xl space-y-2 text-sm leading-relaxed text-muted">
+      <p>{CERTIFICATION_NOTE}</p>
+      <p>
+        <span class="font-mono text-xs uppercase tracking-wider text-faint">In progress:</span>
+        {CERTIFICATIONS_IN_PROGRESS.join(' · ')}
+      </p>
+    </div>
+  </section>
+
+  <section class="py-10" aria-labelledby="competitions-heading">
+    <h2
+      id="competitions-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Competition results
+    </h2>
+
+    {
+      ncl && (
+        <div class="panel mt-6 p-5">
+          <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            <h3 class="font-medium text-ink">{ncl.name}</h3>
+            <p class="shrink-0 font-mono text-xs text-faint">Spring 2026</p>
+          </div>
+          <ul
+            role="list"
+            class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+          >
+            <li>
+              Placed 1st of 1,692 teams in the High School division and 5th of
+              3,638 in the Standard Team division (Team Difference)
+            </li>
+            <li>Competed across {NCL_CATEGORIES}</li>
+          </ul>
+        </div>
+      )
+    }
+
+    <ul role="list" class="mt-4 grid gap-3 sm:grid-cols-2">
+      {
+        otherResults.map((comp) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{comp.name}</p>
+            <p class="mt-1 font-mono text-xs leading-relaxed text-faint">{comp.result}</p>
+          </li>
+        ))
+      }
+    </ul>
+    {
+      noResult.length > 0 && (
+        <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+          Also competed in {noResult.map((c) => c.name).join(' and ')}.
+        </p>
+      )
+    }
+  </section>
+
+  <section class="py-10" aria-labelledby="experience-heading">
+    <h2
+      id="experience-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Experience
+    </h2>
+    <ul role="list" class="mt-6 divide-y divide-line">
+      {
+        EXPERIENCE.map((job) => (
+          <li class="py-6 first:pt-0 last:pb-0">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <div>
+                <h3 class="font-medium text-ink">{job.role}</h3>
+                <p class="text-sm text-muted">{job.org}</p>
+              </div>
+              <p class="shrink-0 font-mono text-xs text-faint">{job.period}</p>
+            </div>
+            <ul
+              role="list"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+            >
+              {job.bullets.map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <section class="py-10" aria-labelledby="education-heading">
@@ -69,61 +204,19 @@ const description =
     <ul role="list" class="mt-6 divide-y divide-line">
       {
         EDUCATION.map((entry) => (
-          <li class="flex flex-col gap-1 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-            <div>
-              <p class="font-medium text-ink">{entry.school}</p>
-              <p class="text-sm text-muted">{entry.program}</p>
+          <li class="py-4 first:pt-0 last:pb-0">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <div>
+                <p class="font-medium text-ink">{entry.school}</p>
+                <p class="text-sm text-muted">{entry.program}</p>
+              </div>
+              <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
             </div>
-            <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
+            {entry.note && <p class="mt-2 text-sm text-muted">{entry.note}</p>}
           </li>
         ))
       }
     </ul>
-  </section>
-
-  <section class="py-10" aria-labelledby="certifications-heading">
-    <h2
-      id="certifications-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Certifications
-    </h2>
-    <!-- TODO(derek): add earned dates for each certification -->
-    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        CERTIFICATIONS.map((cert) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium text-ink">{cert.name}</p>
-            <p class="mt-1 font-mono text-xs text-faint">{cert.issuer}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="py-10" aria-labelledby="competitions-heading">
-    <h2
-      id="competitions-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Competitions &amp;
-      CTF experience
-    </h2>
-    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2">
-      {
-        COMPETITIONS.map((comp) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium text-ink">{comp.name}</p>
-            <p class="mt-1 font-mono text-xs text-faint">{comp.kind}</p>
-          </li>
-        ))
-      }
-    </ul>
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
-      Event formats range from jeopardy-style CTF challenges — spanning web
-      exploitation, cryptography, forensics, and OSINT categories — to
-      defensive competitions centered on hardening and securing live systems.
-    </p>
   </section>
 
   <section class="py-10" aria-labelledby="skills-heading">
@@ -131,30 +224,41 @@ const description =
       id="skills-heading"
       class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
     >
-      <span class="text-accent" aria-hidden="true">##</span> Core skills
+      <span class="text-accent" aria-hidden="true">##</span> Technical skills
     </h2>
-    <p class="mt-6 max-w-2xl text-sm leading-relaxed text-faint">
-      Stated conservatively — aligned to certification domains and hands-on
-      practice rather than professional experience.
-    </p>
-    <ul
-      role="list"
-      class="mt-4 max-w-2xl list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+    <dl class="mt-6 grid gap-4">
+      {
+        SKILL_GROUPS.map((group) => (
+          <div class="flex flex-col gap-1 sm:flex-row sm:gap-4">
+            <dt class="shrink-0 font-mono text-xs uppercase tracking-wider text-faint sm:w-52 sm:pt-0.5">
+              {group.label}
+            </dt>
+            <dd class="text-sm leading-relaxed text-muted">{group.items}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="py-10" aria-labelledby="leadership-heading">
+    <h2
+      id="leadership-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
     >
-      <li>
-        Networking fundamentals — protocols, addressing, and troubleshooting
-        (aligned to Network+)
-      </li>
-      <li>Security operations and log analysis (aligned to CySA+)</li>
-      <li>
-        Vulnerability assessment and threat identification (aligned to
-        Security+ and CySA+)
-      </li>
-      <li>
-        Penetration testing methodology and reporting (aligned to PenTest+)
-      </li>
-      <li>Windows and Linux basics, practiced through homelab builds</li>
-      <li>Clear technical documentation and competition writeups</li>
+      <span class="text-accent" aria-hidden="true">##</span> Leadership &amp; activities
+    </h2>
+    <ul role="list" class="mt-6 grid gap-4">
+      {
+        LEADERSHIP.map((item) => (
+          <li class="flex flex-col gap-1">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <p class="text-sm font-medium text-ink">{item.role}</p>
+              <p class="shrink-0 font-mono text-xs text-faint">{item.period}</p>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">{item.detail}</p>
+          </li>
+        ))
+      }
     </ul>
   </section>
 </BaseLayout>
@@ -167,10 +271,7 @@ const description =
 </script>
 
 <!--
-  TODO(derek): personalize this resume —
-  - Add earned dates for each certification (see Certifications section TODO).
-  - Add competition seasons/years and any team roles you want listed (keep placements/scores off unless verifiable).
-  - Add sections for activities, clubs, or volunteer work if applicable.
-  - Add the GitHub repo URL for this site once the repository is public.
-  - Add LinkedIn/GitHub profile links to the contact strip when those profiles are ready.
+  This is the public web resume: no phone number, no home address, no date of
+  birth, no student IDs. The full contact-detail version lives in the maintained
+  .docx, off the repo. Keep placements and dates in sync with src/consts.ts.
 -->

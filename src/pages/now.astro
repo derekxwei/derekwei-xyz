@@ -4,51 +4,57 @@ import PageHeader from '../components/PageHeader.astro';
 
 const items = [
   {
+    title: 'Interning with the CyberTexas Foundation',
+    body: "Working as a cybersecurity summer camp intern through July: helping deliver hands-on security training to area students at St. Mary's University, building VM lab exercises, and supporting live classroom sessions.",
+    href: '/resume/',
+    linkLabel: 'Resume',
+  },
+  {
     title: 'Getting ready for UTSA',
-    body: 'Preparing to start the B.S. Cybersecurity program in the Honors College at The University of Texas at San Antonio this fall.',
+    body: 'Starting the B.S. Cybersecurity program in the Honors College at The University of Texas at San Antonio this fall, with a planned minor in AI/Data Science.',
+    href: undefined,
+    linkLabel: undefined,
+  },
+  {
+    title: 'Studying for the HTB CPTS',
+    body: 'Working through the Hack The Box Certified Penetration Testing Specialist path, with the AWS Certified AI Practitioner also in progress.',
     href: undefined,
     linkLabel: undefined,
   },
   {
     title: 'Looking for internship opportunities',
-    body: 'Actively seeking cybersecurity internships — especially anything blue-team, SOC, or security-operations adjacent.',
+    body: 'Seeking cybersecurity internships for the school year and beyond, especially penetration testing, red-team, or security analyst roles.',
     href: '/contact/',
     linkLabel: 'Get in touch',
   },
   {
-    title: 'Building out the home security lab',
-    body: 'Standing up a homelab for hands-on defensive practice: virtualization, a segmented lab network, and log collection experiments.',
-    href: '/projects/home-security-lab/',
-    linkLabel: 'Project page',
+    title: 'Building out the offensive security lab',
+    body: 'Expanding an authorized home lab for penetration testing practice and CTF challenges: local virtualization, disposable target VMs, and GPU-assisted password cracking.',
+    href: '/lab/',
+    linkLabel: 'Lab',
   },
   {
-    title: 'Staying competition-sharp',
-    body: 'Keeping CTF skills current between events and turning past challenges into publishable writeups.',
-    href: '/writeups/',
-    linkLabel: 'Writeups',
-  },
-  {
-    title: 'Shipping browser security tools',
-    body: 'Expanding the collection of small, client-side security utilities on this site — no backend, nothing leaves the browser.',
-    href: '/tools/',
-    linkLabel: 'Tools',
+    title: 'Turning CTF results into writeups',
+    body: 'Writing up challenges from this season (National Cyber League, BYU CTF, THEM?!CTF, and others) while the details are fresh.',
+    href: '/ctf/',
+    linkLabel: 'CTF writeups',
   },
 ];
 ---
 
 <BaseLayout
   title="Now"
-  description="What Derek Wei is focused on right now: starting UTSA's B.S. Cybersecurity program, internship search, homelab build-out, and CTF preparation."
+  description="What Derek Wei is focused on right now: starting UTSA's B.S. Cybersecurity program, CPTS preparation, penetration testing lab build-out, and CTF competition."
 >
   <PageHeader
     kicker="~/now"
     title="Now"
-    lede="What I'm focused on at the moment — the short list, kept current."
+    lede="What I'm focused on at the moment: the short list, kept current."
   >
     <p class="mt-4 font-mono text-xs text-faint">Last updated: July 9, 2026</p>
   </PageHeader>
 
-  <!-- TODO(derek): update this page every month or two — stale /now pages are worse than none. -->
+  <!-- Update this page every month or two; a stale /now page is worse than none. -->
 
   <section class="py-10">
     <h2 class="sr-only">Current focus</h2>
@@ -70,8 +76,8 @@ const items = [
       }
     </ul>
     <p class="mt-8 max-w-2xl text-xs leading-relaxed text-faint">
-      This is a <a href="https://nownownow.com/about" class="link" rel="noopener noreferrer">now page</a>
-      — a snapshot of current focus rather than a feed. If it's been more than a couple of
+      This is a <a href="https://nownownow.com/about" class="link" rel="noopener noreferrer">now page</a>:
+      a snapshot of current focus rather than a feed. If it's been more than a couple of
       months since the date above, ask me what changed.
     </p>
   </section>

@@ -10,26 +10,26 @@ title: 'Project name'
 description: 'One-sentence summary of what this project is and why it exists.'
 
 # One of: shipped | in-progress | planned
-# Unfinished work is ALWAYS in-progress — never mark something shipped early.
+# Unfinished work is ALWAYS in-progress - never mark something shipped early.
 status: planned
 
 # First published (YYYY-MM-DD). Drives sort order on the project list.
 date: 2026-01-01
 
-# Optional — set when the entry changes meaningfully.
+# Optional - set when the entry changes meaningfully.
 # updated: 2026-01-02
 
 # Short lowercase tags, rendered as badges. Keep to 3-5.
 tags: [tag-one, tag-two]
 
-# Optional full URLs — each renders a button on the project page.
+# Optional full URLs - each renders a button on the project page.
 # repo: https://github.com/USER/REPO   # "Source" button
 # link: https://example.com            # "Visit" button
 
 # Featured entries can be surfaced on the home page.
 featured: false
 
-# Keep true until the entry is ready — drafts are hidden in production
+# Keep true until the entry is ready - drafts are hidden in production
 # builds but visible in `npm run dev`.
 draft: true
 ---
@@ -38,7 +38,7 @@ draft: true
 
 ## Overview
 
-What the project is, why it exists, and who it's for. One or two short paragraphs —
+What the project is, why it exists, and who it's for. One or two short paragraphs - 
 lead with the problem it solves, not the technology.
 
 ## Design
@@ -48,7 +48,7 @@ Mention what you'd do differently if it matters.
 
 ## Status
 
-Where it actually stands today. Be honest — "in progress" means in progress, and it's
+Where it actually stands today. Be honest - "in progress" means in progress, and it's
 fine to say what doesn't exist yet.
 
 ## Next steps

@@ -7,17 +7,17 @@
   --font-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
 
-  /* dark, high-contrast "blueprint" palette */
-  --color-bg: #0b1016;
-  --color-panel: #10161f;
-  --color-panel-2: #0d131b;
+  /* dark navy, high-contrast "blueprint" palette with blue/cyan accents */
+  --color-bg: #0a0f1a;
+  --color-panel: #101827;
+  --color-panel-2: #0c1320;
   --color-line: #1e293b;
-  --color-line-2: #33465f;
-  --color-ink: #e6edf3;
-  --color-muted: #9aa9bb;
-  --color-faint: #6b7c92;
-  --color-accent: #34d399;
-  --color-accent-2: #6ee7b7;
+  --color-line-2: #334862;
+  --color-ink: #e8eef6;
+  --color-muted: #9db0c6;
+  --color-faint: #6b7f9c;
+  --color-accent: #38bdf8;
+  --color-accent-2: #7dd3fc;
   --color-warn: #fbbf24;
   --color-danger: #f87171;
 }
@@ -112,7 +112,7 @@
     background-size: 36px 36px;
   }
 
-  /* markdown body — used by Prose.astro together with `prose prose-invert` */
+  /* markdown body - used by Prose.astro together with `prose prose-invert` */
   .prose-custom {
     --tw-prose-invert-body: #c3cedb;
     --tw-prose-invert-headings: var(--color-ink);

@@ -17,7 +17,7 @@ const algorithms = [
   <PageHeader
     kicker="~/tools/hash"
     title="Hash Generator"
-    lede="Compute SHA-1, SHA-256, SHA-384, and SHA-512 digests of text or a file. Everything runs locally in your browser via the Web Crypto API — nothing is uploaded anywhere."
+    lede="Compute SHA-1, SHA-256, SHA-384, and SHA-512 digests of text or a file. Everything runs locally in your browser via the Web Crypto API - nothing is uploaded anywhere."
   />
 
   <section class="py-10">
@@ -99,7 +99,7 @@ const algorithms = [
       </p>
       <p>
         <span class="font-mono text-faint">note:</span> SHA-1 is included only for comparing checksums
-        from legacy tooling — it is cryptographically broken, so prefer SHA-256 or stronger for
+        from legacy tooling - it is cryptographically broken, so prefer SHA-256 or stronger for
         anything security-relevant.
       </p>
     </div>
@@ -153,14 +153,14 @@ const algorithms = [
     setError('');
 
     if (typeof crypto === 'undefined' || !crypto.subtle) {
-      setError('The Web Crypto API is unavailable here — this tool needs a secure (https) context.');
+      setError('The Web Crypto API is unavailable here - this tool needs a secure (https) context.');
       return;
     }
 
     const file = fileInput?.files?.[0] ?? null;
     const text = textInput?.value ?? '';
     if (!file && text.length === 0) {
-      setError('Nothing to hash — type some text or choose a file first.');
+      setError('Nothing to hash - type some text or choose a file first.');
       if (resultsPanel) resultsPanel.hidden = true;
       return;
     }
@@ -186,7 +186,7 @@ const algorithms = [
       }
       if (resultsPanel) resultsPanel.hidden = false;
     } catch {
-      setError('Hashing failed — the file could not be read or the digest could not be computed.');
+      setError('Hashing failed - the file could not be read or the digest could not be computed.');
       if (resultsPanel) resultsPanel.hidden = true;
     } finally {
       computeBtn.disabled = false;

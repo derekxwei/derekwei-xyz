@@ -10,7 +10,7 @@ import PageHeader from '../../components/PageHeader.astro';
   <PageHeader
     kicker="~/tools/hex"
     title="Hex / text converter"
-    lede="Convert text to hexadecimal bytes and back. UTF-8 safe, runs entirely in your browser — nothing is sent anywhere."
+    lede="Convert text to hexadecimal bytes and back. UTF-8 safe, runs entirely in your browser - nothing is sent anywhere."
   />
 
   <section class="py-10">
@@ -104,10 +104,10 @@ import PageHeader from '../../components/PageHeader.astro';
     const clean = raw.replace(/0x/gi, '').replace(/[\s:,\-]+/g, '');
     if (clean.length === 0) return '';
     if (!/^[0-9a-fA-F]+$/.test(clean)) {
-      throw new Error('Input contains non-hex characters — expected only 0-9 and a-f.');
+      throw new Error('Input contains non-hex characters - expected only 0-9 and a-f.');
     }
     if (clean.length % 2 !== 0) {
-      throw new Error('Hex input has an odd number of digits — bytes come in pairs.');
+      throw new Error('Hex input has an odd number of digits - bytes come in pairs.');
     }
     const bytes = new Uint8Array(clean.length / 2);
     for (let i = 0; i < bytes.length; i++) {

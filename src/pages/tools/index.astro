@@ -64,7 +64,7 @@ const tools: Tool[] = [
     href: '/tools/ioc/',
     title: 'IOC parser & defanger',
     description:
-      'Extract indicators of compromise from pasted text — IPs, domains, URLs, emails, hashes — and defang them.',
+      'Extract indicators of compromise from pasted text - IPs, domains, URLs, emails, hashes - and defang them.',
     group: 'Analysis',
   },
   {
@@ -108,7 +108,7 @@ const grouped = order
   <PageHeader
     kicker="~/tools"
     title="Tools"
-    lede="Small security utilities that run entirely in the browser — no backend, no data leaves the machine (CSP: connect-src 'self')."
+    lede="Browser-only security utilities for CTF practice, quick analysis, and learning the fundamentals. Everything runs client-side: no backend, no data leaves the machine (CSP: connect-src 'self')."
   />
 
   <section class="py-10">
@@ -132,10 +132,12 @@ const grouped = order
       ))
     }
     <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
-      These tools are static pages — all processing happens in your browser’s
+      These tools are static pages: all processing happens in your browser’s
       JavaScript. There is no backend, and the site’s Content Security Policy
       (<code class="font-mono text-xs text-ink">connect-src 'self'</code>)
-      prevents the page from sending data anywhere else.
+      prevents the page from sending data anywhere else. They support red-team
+      learning and security fundamentals, and are handy for quick analysis, but
+      they are not a replacement for professional security tooling.
     </p>
   </section>
 </BaseLayout>

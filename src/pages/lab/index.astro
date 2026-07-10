@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+const sections = [
+  {
+    id: 'workstation',
+    title: 'Windows security workstation',
+    body: [
+      'The main workstation is a Windows 11 desktop built for local virtualization: an AMD Ryzen 7 9800X3D, 32 GB of RAM, an NVIDIA GeForce RTX 5070 (12 GB), and roughly 1.82 TB of SSD storage.',
+      'It runs the virtual machines used for Capture the Flag challenges and authorized penetration testing practice, and the GPU handles Hashcat password-cracking exercises against lab-generated hashes. Everything stays inside disposable VMs so the host stays clean.',
+    ],
+  },
+  {
+    id: 'cpts-notes',
+    title: 'CPTS study notes pipeline',
+    body: [
+      'A Claude Code and Claude Haiku workflow turns pasted study material for the Certified Penetration Testing Specialist (CPTS) into structured, Obsidian-ready notes: checklists, review artifacts, and organized references.',
+      'Everything is reviewed by hand for accuracy before it goes into the vault, and sensitive or copyrighted course material is kept out of any public or unsafe context. It is a study aid, not a substitute for the source material or hands-on practice.',
+    ],
+  },
+  {
+    id: 'travel-network',
+    title: 'Secure travel network',
+    body: [
+      'A GL.iNet GL-SFT1200 (Opal) travel router is configured as a VPN gateway so multiple devices get a more consistent, safer default route on public Wi-Fi. Instead of trusting a coffee-shop network directly, devices connect to the travel router, which carries traffic over the tunnel.',
+      'This is a practical defensive-networking exercise covering DNS, VPN gateways, basic network segmentation, and router hardening. It reduces exposure on untrusted networks; it does not make public Wi-Fi perfectly safe, and it is not treated as if it does.',
+    ],
+  },
+  {
+    id: 'tailscale',
+    title: 'Tailscale Linux lab connectivity',
+    body: [
+      'Tailscale links the Linux lab machines so they can be reached from the workstation and portable device without exposing services to the public internet. It keeps lab access private and avoids port-forwarding on any home router.',
+    ],
+  },
+  {
+    id: 'parsec',
+    title: 'Parsec remote desktop',
+    body: [
+      'Parsec provides low-latency remote access to the Windows workstation from the portable Surface Pro 9, which is used mostly for notes, writing, and remote sessions rather than heavy local compute.',
+      'Parsec is intentionally kept off the VPN tunnel: routing its low-latency stream through the travel VPN would add latency and instability without a matching security benefit for this use case.',
+    ],
+  },
+  {
+    id: 'documentation',
+    title: 'Documentation workflow',
+    body: [
+      'Lab work, CTF notes, and study material are captured in a structured Obsidian vault. Writing things down is part of the practice: it turns one-off solves into repeatable methodology and makes the CTF writeups on this site possible.',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Lab"
+  description="Derek Wei's authorized home lab: a Windows virtualization workstation, CTF and penetration testing practice environments, a secure travel network, and documentation."
+>
+  <PageHeader
+    kicker="~/lab"
+    title="Lab"
+    lede="The environment behind the CTF and penetration testing practice: an authorized home lab for offensive-security learning, plus the tooling that keeps it safe and documented."
+  />
+
+  <section class="py-10" aria-labelledby="overview">
+    <h2 id="overview" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Lab overview
+    </h2>
+    <div class="mt-4 max-w-2xl space-y-3 text-sm leading-relaxed text-muted">
+      <p>
+        This is a personal, authorized lab for offensive-security learning: Capture the
+        Flag practice, penetration testing in environments I own or have explicit
+        permission to test, GPU-assisted password-cracking exercises, and the note-taking
+        that ties it together. Nothing here targets systems I do not control.
+      </p>
+      <p>
+        The write-up below is deliberately general. It describes the roles of each piece,
+        not the specifics an attacker would want: no credentials, endpoints, private
+        addresses, keys, or exact topology appear on this page or anywhere in the repo.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-10" aria-labelledby="components">
+    <h2 id="components" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Components
+    </h2>
+    <div class="mt-5 grid gap-4">
+      {
+        sections.map((section) => (
+          <article id={section.id} class="panel p-5">
+            <h3 class="font-mono text-sm text-accent">{section.title}</h3>
+            <div class="mt-2 max-w-2xl space-y-2 text-sm leading-relaxed text-muted">
+              {section.body.map((para) => (
+                <p>{para}</p>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="py-10" aria-labelledby="safety">
+    <h2 id="safety" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Safety and privacy notes
+    </h2>
+    <ul
+      class="mt-4 max-w-2xl list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+    >
+      <li>
+        All offensive practice happens against CTF infrastructure, intentionally vulnerable
+        practice targets, or systems I own. Never against anything without authorization.
+      </li>
+      <li>
+        No secrets on the public site: credentials, keys, tokens, private IP addresses, and
+        exact network topology are kept out of this page and the repository.
+      </li>
+      <li>
+        The travel router reduces exposure on untrusted Wi-Fi; it is a mitigation, not a
+        guarantee of safety.
+      </li>
+      <li>
+        Offensive findings are paired with defensive takeaways wherever they apply, which is
+        where the CySA+ blue-team background helps.
+      </li>
+    </ul>
+    <p class="mt-6 text-sm leading-relaxed text-muted">
+      Related: the individual builds are documented as
+      <a href="/projects/" class="link">projects</a>, running notes land in
+      <a href="/lab-notes/" class="link">lab notes</a>, and competition writeups are under
+      <a href="/ctf/" class="link">CTF writeups</a>.
+    </p>
+  </section>
+</BaseLayout>

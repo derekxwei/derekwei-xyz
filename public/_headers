@@ -1,4 +1,4 @@
-# Cloudflare Pages security headers — applied at the edge on every response.
+# Cloudflare Pages security headers - applied at the edge on every response.
 # Verify after deploy: https://securityheaders.com/?q=derekwei.xyz
 
 /*
@@ -12,6 +12,6 @@
   Cross-Origin-Resource-Policy: same-origin
   X-XSS-Protection: 0
 
-# Fingerprinted build assets are immutable — cache aggressively.
+# Fingerprinted build assets are immutable - cache aggressively.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

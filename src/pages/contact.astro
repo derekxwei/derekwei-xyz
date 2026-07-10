@@ -11,7 +11,7 @@ import { SITE } from '../consts';
   <PageHeader
     kicker="~/contact"
     title="Contact"
-    lede="Email is the one channel I check. No forms, no socials required — just write."
+    lede="Email is the fastest way to reach me. LinkedIn and GitHub work too."
   />
 
   <section class="py-10">
@@ -45,13 +45,16 @@ import { SITE } from '../consts';
             questions about anything on this site
           </li>
         </ul>
-        <!--
-          TODO(derek): add real profile URLs, then uncomment.
-          <ul class="mt-4 grid gap-1.5 font-mono text-sm" role="list">
-            <li><a class="link" href="https://www.linkedin.com/in/YOUR-HANDLE" rel="noopener noreferrer">LinkedIn</a></li>
-            <li><a class="link" href="https://github.com/YOUR-HANDLE" rel="noopener noreferrer">GitHub</a></li>
-          </ul>
-        -->
+        <ul class="mt-5 grid gap-1.5 border-t border-line pt-4 font-mono text-sm" role="list">
+          <li>
+            <a class="link" href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a>
+            <span class="text-faint"> /in/derekxwei</span>
+          </li>
+          <li>
+            <a class="link" href={SITE.github} rel="noopener noreferrer">GitHub</a>
+            <span class="text-faint"> B1ueBurD</span>
+          </li>
+        </ul>
       </div>
 
       <div class="panel p-6">
@@ -79,8 +82,8 @@ import { SITE } from '../consts';
     </div>
 
     <p class="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
-      There is no contact form here on purpose: this site is fully static with no backend to
-      receive one — a deliberate part of its
+      There is no contact form here on purpose: this site is fully static, with no backend to
+      receive one. That is a deliberate part of its
       <a href="/architecture/" class="link">security architecture</a>. Email works better anyway.
     </p>
   </section>

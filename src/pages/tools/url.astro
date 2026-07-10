@@ -5,12 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 
 <BaseLayout
   title="URL encoder/decoder"
-  description="Percent-encode and decode text as a URI component or full URI, entirely in your browser. Clear errors for malformed sequences — nothing leaves your machine."
+  description="Percent-encode and decode text as a URI component or full URI, entirely in your browser. Clear errors for malformed sequences; nothing leaves your machine."
 >
   <PageHeader
     kicker="~/tools/url"
     title="URL encoder/decoder"
-    lede="Percent-encoding for URI components or full URIs. Runs entirely in your browser — no backend, nothing you enter leaves this page."
+    lede="Percent-encoding for URI components or full URIs. Runs entirely in your browser - no backend, nothing you enter leaves this page."
   />
 
   <section class="py-10">
@@ -103,14 +103,14 @@ import PageHeader from '../../components/PageHeader.astro';
         <code class="font-mono text-xs text-ink">?</code>,
         <code class="font-mono text-xs text-ink">&amp;</code>,
         <code class="font-mono text-xs text-ink">=</code>, and
-        <code class="font-mono text-xs text-ink">/</code> — use it for
+        <code class="font-mono text-xs text-ink">/</code> - use it for
         query-string values and path segments. Full URI mode
         (<code class="font-mono text-xs text-ink">encodeURI</code>) leaves
-        those separators intact — use it to encode a complete URL without
+        those separators intact - use it to encode a complete URL without
         breaking its structure.
       </p>
       <p class="mt-2">
-        Everything happens in this page’s JavaScript — no backend, nothing you
+        Everything happens in this page’s JavaScript - no backend, nothing you
         enter leaves your browser.
       </p>
     </div>
@@ -155,7 +155,7 @@ import PageHeader from '../../components/PageHeader.astro';
         // encodeURI/encodeURIComponent throw URIError on unpaired surrogates
         output.value = '';
         setStatus(
-          'Cannot encode — the input contains an unpaired surrogate character that has no valid UTF-8 form.',
+          'Cannot encode - the input contains an unpaired surrogate character that has no valid UTF-8 form.',
           true
         );
       }
@@ -176,7 +176,7 @@ import PageHeader from '../../components/PageHeader.astro';
       } catch {
         output.value = '';
         setStatus(
-          'Malformed percent-encoding — every "%" must be followed by two hex digits (e.g. %20). Check for stray "%" characters or a truncated sequence.',
+          'Malformed percent-encoding - every "%" must be followed by two hex digits (e.g. %20). Check for stray "%" characters or a truncated sequence.',
           true
         );
       }
@@ -196,7 +196,7 @@ import PageHeader from '../../components/PageHeader.astro';
         }, 1500);
       } catch {
         setStatus(
-          'Clipboard unavailable — select the output text and copy manually.',
+          'Clipboard unavailable - select the output text and copy manually.',
           true
         );
       }

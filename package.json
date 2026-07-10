@@ -1,7 +1,7 @@
 {
   "name": "derekwei-xyz",
   "version": "1.0.0",
-  "description": "Personal cybersecurity portfolio of Derek Wei — derekwei.xyz",
+  "description": "Personal cybersecurity portfolio of Derek Wei - derekwei.xyz",
   "type": "module",
   "private": true,
   "scripts": {

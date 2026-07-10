@@ -4,15 +4,15 @@ Reusable prompts for extending derekwei.xyz with an AI coding assistant (Claude 
 
 ## The constraints every prompt should carry
 
-Whatever you ask for, the assistant needs to respect these — they're baked into the prompts below, but keep them in mind when writing your own:
+Whatever you ask for, the assistant needs to respect these - they're baked into the prompts below, but keep them in mind when writing your own:
 
 - **Stack:** Astro 5, TypeScript (strict), Tailwind CSS 4 (Vite plugin), MDX content collections. Static output, deployed on Cloudflare Pages.
 - **Facts are fixed.** No invented metrics, placements, scores, dates, or credentials. Use only what's in `src/consts.ts`. Security-clearance wording is exactly: *"U.S. citizen eligible to obtain a Secret security clearance."*
-- **No PII** beyond email and city — no phone, home address, or date of birth.
+- **No PII** beyond email and city - no phone, home address, or date of birth.
 - **Mark unfinished work `in-progress`.**
 - **Strict CSP:** no `style="..."` attributes, no inline event handlers (`onclick=`), no external scripts/fonts/images. Scripts go in end-of-file `<script>` blocks using `addEventListener`; null-check DOM lookups.
 - **Reuse the components:** `BaseLayout`, `PageHeader`, `Card`, `Badge`, `Prose`, and the classes in `src/styles/global.css` (`panel`, `btn`, `input`, `label`, `kicker`, `link`).
-- **Verify:** run `npm run check` and `npm run build`, and for anything interactive, exercise it in a real browser — type-checking doesn't catch runtime bugs.
+- **Verify:** run `npm run check` and `npm run build`, and for anything interactive, exercise it in a real browser - type-checking doesn't catch runtime bugs.
 
 ## Prompt: add a CTF writeup
 
@@ -26,11 +26,13 @@ Difficulty: <easy|medium|hard|insane, optional>
 Date: <YYYY-MM-DD>
 
 Here are my rough notes / the solution steps:
-<paste your notes — recon, the key insight, commands, final approach>
+<paste your notes - recon, the key insight, commands, final approach>
 
 Create src/content/writeups/<slug>.md following src/content/writeups/_template.md
 and the schema in src/content.config.ts. Structure the body as
-TL;DR / Challenge / Recon / Solution / Flag / Takeaways. Redact the flag if the
+Goal / Challenge / Initial observations / Enumeration / Failed attempts /
+Breakthrough / Solution summary / Defensive takeaway / Tools used / Lessons learned.
+Serve it under the /ctf route. Redact the flag if the
 event's rules require it. Keep the tone technical and direct; teach the method,
 don't just dump commands. Set draft: true so I can review it first. Do not invent
 any detail I didn't give you. Then run npm run build to confirm it validates.
@@ -45,7 +47,7 @@ Title: <title>
 Status: <shipped|in-progress|planned>   # be honest; unfinished = in-progress
 Date: <YYYY-MM-DD>
 Tags: <comma-separated>
-Repo/Link: <URLs if any, else omit — never link to a dead/private repo>
+Repo/Link: <URLs if any, else omit - never link to a dead/private repo>
 
 What it is (facts only, no embellishment):
 <describe what actually exists today vs. what's planned>
@@ -126,7 +128,7 @@ Report anything off; don't push.
 
 ## Tips for writing your own prompts
 
-- **Give facts, not vibes.** The assistant will faithfully render whatever you provide — and will (correctly) refuse to invent what you don't. Paste real notes.
+- **Give facts, not vibes.** The assistant will faithfully render whatever you provide - and will (correctly) refuse to invent what you don't. Paste real notes.
 - **Name the files and components.** "Follow `_template.md`" and "reuse `Card`" produce consistent output; "make a card" produces drift.
 - **Always ask it to build and verify.** "Run `npm run build`" and "test it in a browser" catch the errors a type-checker won't.
 - **One change per prompt.** Smaller asks are easier to review and less likely to touch things you didn't intend.

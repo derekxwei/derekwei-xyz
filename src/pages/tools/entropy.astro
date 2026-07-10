@@ -5,12 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 
 <BaseLayout
   title="Password Entropy Estimator"
-  description="Estimate password strength from character-set size and length, with a rough offline-crack time. Runs entirely in your browser — nothing is transmitted or stored."
+  description="Estimate password strength from character-set size and length, with a rough offline-crack time. Runs entirely in your browser; nothing is transmitted or stored."
 >
   <PageHeader
     kicker="~/tools/entropy"
     title="Password entropy estimator"
-    lede="Estimate a password's strength from its character set and length. Everything runs locally — the password is never sent or stored."
+    lede="Estimate a password's strength from its character set and length. Everything runs locally - the password is never sent or stored."
   />
 
   <section class="py-10">
@@ -76,7 +76,7 @@ import PageHeader from '../../components/PageHeader.astro';
       </p>
       <p>
         This is a first-order model. It does <strong class="text-ink">not</strong> catch dictionary words,
-        keyboard walks, l33t substitutions, or reuse — a tool like zxcvbn does that far better. A long,
+        keyboard walks, l33t substitutions, or reuse - a tool like zxcvbn does that far better. A long,
         random, unique passphrase from a password manager beats anything you can type from memory.
       </p>
     </div>

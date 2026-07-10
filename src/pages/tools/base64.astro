@@ -5,12 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 
 <BaseLayout
   title="Base64 encoder/decoder"
-  description="Encode and decode Base64 in the browser with standard or URL-safe alphabets. UTF-8 safe, copy and swap included — no backend, nothing leaves your machine."
+  description="Encode and decode Base64 in the browser with standard or URL-safe alphabets. UTF-8 safe, with copy and swap. No backend, nothing leaves your machine."
 >
   <PageHeader
     kicker="~/tools/base64"
     title="Base64 encoder/decoder"
-    lede="UTF-8-safe Base64 encoding and decoding, standard or URL-safe. Runs entirely in your browser — no backend, nothing you enter leaves this page."
+    lede="UTF-8-safe Base64 encoding and decoding, standard or URL-safe. Runs entirely in your browser - no backend, nothing you enter leaves this page."
   />
 
   <section class="py-10">
@@ -89,7 +89,7 @@ import PageHeader from '../../components/PageHeader.astro';
         restored automatically when decoding.
       </p>
       <p class="mt-2">
-        Everything happens in this page’s JavaScript — no backend, nothing you
+        Everything happens in this page’s JavaScript - no backend, nothing you
         enter leaves your browser.
       </p>
     </div>
@@ -165,7 +165,7 @@ import PageHeader from '../../components/PageHeader.astro';
         output.value = decoded;
         if (decoded.includes('�')) {
           setStatus(
-            'Decoded, but the bytes are not valid UTF-8 — replacement characters (�) were substituted.'
+            'Decoded, but the bytes are not valid UTF-8 - replacement characters (�) were substituted.'
           );
         } else {
           setStatus('Decoded.');
@@ -174,10 +174,10 @@ import PageHeader from '../../components/PageHeader.astro';
         output.value = '';
         const hint =
           !urlSafe.checked && /[-_]/.test(text)
-            ? ' The input contains "-" or "_" — try enabling the URL-safe alphabet.'
+            ? ' The input contains "-" or "_" - try enabling the URL-safe alphabet.'
             : '';
         setStatus(
-          `Invalid Base64 — the input contains characters outside the expected alphabet, or has an invalid length.${hint}`,
+          `Invalid Base64 - the input contains characters outside the expected alphabet, or has an invalid length.${hint}`,
           true
         );
       }
@@ -207,7 +207,7 @@ import PageHeader from '../../components/PageHeader.astro';
         }, 1500);
       } catch {
         setStatus(
-          'Clipboard unavailable — select the output text and copy manually.',
+          'Clipboard unavailable - select the output text and copy manually.',
           true
         );
       }

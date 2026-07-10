@@ -1,35 +1,43 @@
 ---
-title: 'Home security lab'
-description: 'A small home lab for hands-on defensive practice — early stage and in progress, with the build-out planned rather than finished.'
+title: 'Offensive security home lab'
+description: 'An authorized home lab for penetration testing practice, CTF challenges, and GPU-assisted password cracking, built on a local virtualization workstation.'
 status: in-progress
-date: 2026-07-09
-tags: [homelab, blue-team, detection]
-featured: true
+date: 2026-07-05
+tags: [homelab, pentest, ctf, virtualization]
+featured: false
 ---
 
-I'm building a small home lab to get hands-on defensive practice before I start the
-B.S. Cybersecurity program at UTSA this fall. Certifications and CTFs taught me the
-concepts; the lab is where I want to actually run the tooling — collect logs, write
-detections, and break things in an environment where breaking things is the point.
+An authorized home lab for offensive-security practice: penetration testing against
+targets I own or have explicit permission to test, Capture the Flag challenges, and
+GPU-assisted password cracking. The workstation exists and is in use; the surrounding lab
+is still being built out.
+
+The full environment, including the travel network and remote-access tooling, is
+documented on the [lab page](/lab/). This entry is the project view of it.
+
+## What runs today
+
+- A Windows 11 virtualization workstation (Ryzen 7 9800X3D, 32 GB RAM, RTX 5070) hosting
+  disposable VMs for CTF and penetration testing practice.
+- Hashcat password-cracking exercises against hashes generated inside the lab, using the
+  GPU rather than any external service.
+- An Obsidian vault capturing methodology, so solves become repeatable rather than
+  one-off.
 
 ## Planned build-out
 
 This is the roadmap, not a list of things that exist yet:
 
-1. **Virtualization host** — a machine dedicated to running lab VMs, kept separate from
-   anything I depend on day to day.
-2. **Segmented lab network** — the lab isolated from the rest of the home network, so
-   experiments can't touch real devices.
-3. **Windows and Linux targets** — a handful of endpoint VMs to generate realistic
-   activity, monitor, and attack.
-4. **Centralized log collection** — endpoint and network logs forwarded to one place
-   instead of scattered across machines.
-5. **SIEM / detection experimentation** — writing and testing detection rules against
-   my own activity in the lab.
+1. **Segmented lab network** so practice targets stay isolated from anything I depend on
+   day to day.
+2. **A rotating set of intentionally vulnerable targets** (self-hosted practice VMs) to
+   exercise enumeration, exploitation, and post-exploitation.
+3. **Defensive visibility** on the same lab, so offensive activity can be matched against
+   what a defender would actually see. This is where the CySA+ background is useful.
 
-## Current status
+## Ground rules
 
-Early stage and in progress. I'm still working out hardware and software choices, so
-there's nothing concrete to document yet — this page will grow as pieces actually land.
+Everything stays inside VMs and authorized targets. No credentials, keys, private
+addresses, or exact topology appear here or anywhere in the repository.
 
-<!-- TODO(derek): document actual hardware/software as it lands -->
+<!-- Keep this in sync with the /lab page as the build-out progresses. -->
