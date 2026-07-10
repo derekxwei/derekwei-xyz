@@ -142,13 +142,25 @@ Response headers are defined in [`public/_headers`](public/_headers) and applied
 
 These headers are a Cloudflare Pages feature — they **do not apply** under `npm run preview` (or `npm run dev`), so header-dependent behavior can only be fully verified on a deployed URL. After deploying, verify at [securityheaders.com](https://securityheaders.com/?q=derekwei.xyz).
 
-See [MAINTENANCE.md](MAINTENANCE.md#keeping-the-csp-intact) for the coding rules that keep the site CSP-clean.
+See [docs/MAINTENANCE.md](docs/MAINTENANCE.md#keeping-the-csp-intact) for the coding rules that keep the site CSP-clean, and [docs/SECURITY_CHECKLIST.md](docs/SECURITY_CHECKLIST.md) for the full hardening checklist.
 
 ## robots.txt and sitemap
 
 - [`public/robots.txt`](public/robots.txt) allows all crawlers and points at `https://derekwei.xyz/sitemap-index.xml`.
 - The sitemap is generated at build time by `@astrojs/sitemap` (configured in `astro.config.mjs` with `site: 'https://derekwei.xyz'`). No manual upkeep needed — new pages and published content entries are included automatically on the next build.
 
-## Maintenance
+## Documentation
 
-Routine upkeep, dependency updates, the pre-deploy checklist, and troubleshooting live in [MAINTENANCE.md](MAINTENANCE.md).
+Detailed guides live in [`docs/`](docs/):
+
+| Doc | What it covers |
+| --- | --- |
+| [DEPLOYMENT.md](docs/DEPLOYMENT.md) | Cloudflare Pages setup, DNS, custom domain, and rollback. |
+| [MAINTENANCE.md](docs/MAINTENANCE.md) | Routine upkeep, dependency updates, pre-deploy checklist. |
+| [CONTENT_GUIDE.md](docs/CONTENT_GUIDE.md) | How to write projects, writeups, and lab notes. |
+| [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common build/deploy/runtime failures and fixes. |
+| [SECURITY_CHECKLIST.md](docs/SECURITY_CHECKLIST.md) | Headers, CSP, and per-release security review. |
+| [SEO_CHECKLIST.md](docs/SEO_CHECKLIST.md) | Metadata, sitemap, and search-visibility checks. |
+| [ACCESSIBILITY_CHECKLIST.md](docs/ACCESSIBILITY_CHECKLIST.md) | WCAG-aligned review steps. |
+| [ROADMAP_90_DAYS.md](docs/ROADMAP_90_DAYS.md) | A suggested 90-day plan for building the site's content. |
+| [CLAUDE_PROMPTS_ARCHIVE.md](docs/CLAUDE_PROMPTS_ARCHIVE.md) | Reusable prompts for extending the site with an AI assistant. |
