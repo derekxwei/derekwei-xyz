@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/Card.astro';
-import { SITE, CERTIFICATIONS, COMPETITIONS } from '../consts';
+import { SITE, CERTIFICATIONS, COMPETITIONS, COMPETITION_SKILLS } from '../consts';
 
 const featuredProjects = (
   await getCollection(
@@ -28,7 +28,7 @@ const personSchema = {
   url: SITE.url,
   email: `mailto:${SITE.email}`,
   jobTitle: 'Cybersecurity Student',
-  sameAs: [SITE.github, SITE.linkedin],
+  sameAs: [SITE.linkedin],
   alumniOf: {
     '@type': 'HighSchool',
     name: 'MacArthur High School',
@@ -57,9 +57,8 @@ const personSchema = {
         Specialist (CPTS).
       </p>
       <p class="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-faint">
-        5x CompTIA certified (Security+, CySA+, PenTest+, Network+, ITF+)
-        &middot; 1st of 1,692 teams, National Cyber League High School division
-        &middot; based in {SITE.location}
+        5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
+        &middot; graduate of the NEISD iCSI Cybersecurity Program, Class of 2026
       </p>
       <p
         class="mt-5 inline-flex items-center gap-2 rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted"
@@ -176,29 +175,42 @@ const personSchema = {
     }
   </section>
 
-  <!-- Competitions -->
+  <!-- Competition experience -->
   <section class="py-10" aria-labelledby="competitions-heading">
-    <h2
-      id="competitions-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Competitions
-    </h2>
+    <div class="flex flex-wrap items-baseline justify-between gap-4">
+      <h2
+        id="competitions-heading"
+        class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+      >
+        <span class="text-accent" aria-hidden="true">##</span> Competition experience
+      </h2>
+      <a href="/achievements/" class="link font-mono text-sm">Achievements →</a>
+    </div>
     <div class="panel mt-5 p-5 sm:p-6">
-      <ul class="grid gap-x-8 gap-y-4 sm:grid-cols-2" role="list">
+      <p class="text-sm leading-relaxed text-muted">
+        Competition experience spans
+        {
+          COMPETITION_SKILLS.map((skill, i) => (
+            <>
+              {i > 0 && ', '}
+              {i === COMPETITION_SKILLS.length - 1 && 'and '}
+              <span class="text-ink">{skill}</span>
+            </>
+          ))
+        }, developed through:
+      </p>
+      <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2" role="list">
         {
           COMPETITIONS.map((comp) => (
-            <li class="flex flex-col gap-0.5">
-              <span class="font-mono text-sm text-ink">{comp.name}</span>
-              <span class="font-mono text-xs leading-relaxed text-faint">
-                {comp.result ?? comp.kind}
-              </span>
+            <li class="font-mono text-sm text-muted">
+              <span class="text-accent" aria-hidden="true">-</span> {comp.name}
             </li>
           ))
         }
       </ul>
       <p class="mt-5 border-t border-line pt-4 text-sm leading-relaxed text-muted">
-        Sanitized writeups from these events are collected under
+        Full placements are on the <a href="/achievements/" class="link">achievements</a>
+        page, and sanitized writeups are under
         <a href="/ctf/" class="link">CTF writeups</a> as they're completed.
       </p>
     </div>

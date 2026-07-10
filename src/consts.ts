@@ -13,9 +13,7 @@ export const SITE = {
     'Cybersecurity portfolio of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student, 5x CompTIA certified, 1st of 1,692 teams in the NCL High School division.',
   email: 'derekxwei@gmail.com',
   location: 'San Antonio, Texas',
-  github: 'https://github.com/B1ueBurD',
   linkedin: 'https://www.linkedin.com/in/derekxwei',
-  repo: 'https://github.com/B1ueBurD/derekwei-xyz',
   /** Exact wording, do not paraphrase. */
   clearance: 'U.S. citizen eligible to obtain a Secret security clearance.',
 } as const;
@@ -23,6 +21,7 @@ export const SITE = {
 export const NAV = [
   { label: 'Home', href: '/' },
   { label: 'Resume', href: '/resume/' },
+  { label: 'Achievements', href: '/achievements/' },
   { label: 'Projects', href: '/projects/' },
   { label: 'CTF', href: '/ctf/' },
   { label: 'Lab', href: '/lab/' },
@@ -56,10 +55,15 @@ export const CERTIFICATIONS: readonly Certification[] = [
 export const CERTIFICATION_NOTE =
   'Security+ and CySA+ satisfy the DoD 8570 Information Assurance (IA) baseline.';
 
-export const CERTIFICATIONS_IN_PROGRESS = [
-  'Hack The Box Certified Penetration Testing Specialist (CPTS)',
-  'AWS Certified AI Practitioner',
-] as const;
+/**
+ * Certification roadmap. These are goals in various stages, not earned
+ * credentials. Never present them as held certifications.
+ */
+export const CERT_ROADMAP = {
+  inProgress: ['Hack The Box Certified Penetration Testing Specialist (CPTS)'],
+  next: ['AWS Certified AI Practitioner'],
+  planned: ['AWS Certified Solutions Architect - Associate'],
+} as const;
 
 export interface Competition {
   name: string;
@@ -108,6 +112,18 @@ export const COMPETITIONS: readonly Competition[] = [
 export const NCL_CATEGORIES =
   'cryptography, password cracking, digital forensics, log analysis, network traffic analysis, OSINT, enumeration, and web application exploitation';
 
+/** Concise skill areas across CTF competitions, for the homepage summary. */
+export const COMPETITION_SKILLS = [
+  'web exploitation',
+  'cryptography',
+  'reverse engineering',
+  'digital forensics',
+  'OSINT',
+  'password cracking',
+  'network analysis',
+  'scripting',
+] as const;
+
 export interface EducationEntry {
   school: string;
   program: string;
@@ -140,7 +156,7 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
   {
     role: 'Cybersecurity Summer Camp Intern',
     org: 'CyberTexas Foundation',
-    period: 'Jun 2026 to Jul 2026',
+    period: 'Jun 2026 to Present',
     bullets: [
       "Support delivery of hands-on cybersecurity training to area students at St. Mary's University, assisting instructors with labs, exercises, and classroom activities",
       'Build and configure hands-on lab exercises in virtual machine (VM) environments so students can safely practice core security tasks, reducing instructor setup time and standardizing each station',
@@ -158,12 +174,12 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
     ],
   },
   {
-    role: 'Founder',
-    org: 'LearnLabs (learnlabs.us)',
+    role: 'Founder, LearnLabs Educational Initiative',
+    org: 'LearnLabs Educational Initiative',
     period: 'Jul 2023 to Present',
     bullets: [
-      'Founded and operate an education initiative delivering tutoring and skill-building: developing curriculum, leading outreach, and coordinating instructors',
-      'Design and refine instructional materials by researching topics, gathering learner feedback, and iterating on content; communicate with students and parents in English and Mandarin Chinese',
+      'Provide tutoring and mentoring support to students, developing lesson materials and educational resources across a range of topics',
+      'Research topics and refine instructional materials based on learner feedback; communicate with students and parents in English and Mandarin Chinese',
     ],
   },
 ];
@@ -203,7 +219,7 @@ export const LEADERSHIP = [
       'Mentor incoming students and teach introductory cybersecurity topics in a hands-on classroom setting',
   },
   {
-    role: 'Class President, Reagan High School Class of 2026',
+    role: 'Class President, Reagan High School',
     period: '2022 to 2024',
     detail:
       'Led the officer team in planning class events, fundraisers, and student initiatives',

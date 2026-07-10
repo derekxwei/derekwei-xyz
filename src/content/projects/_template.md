@@ -22,8 +22,9 @@ date: 2026-01-01
 # Short lowercase tags, rendered as badges. Keep to 3-5.
 tags: [tag-one, tag-two]
 
-# Optional full URLs - each renders a button on the project page.
-# repo: https://github.com/USER/REPO   # "Source" button
+# Optional public URL - renders a "Visit" button on the project page.
+# Only link to public destinations. Source-code links are intentionally omitted
+# while the repository is private.
 # link: https://example.com            # "Visit" button
 
 # Featured entries can be surfaced on the home page.

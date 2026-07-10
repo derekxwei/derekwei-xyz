@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import {
+  CERTIFICATIONS,
+  CERTIFICATION_NOTE,
+  CERT_ROADMAP,
+  COMPETITIONS,
+  NCL_CATEGORIES,
+  EDUCATION,
+  EXPERIENCE,
+  LEADERSHIP,
+} from '../consts';
+
+const description =
+  'Achievements of Derek Wei: CompTIA certifications, verified CTF competition placements, leadership, internship experience, and education.';
+
+const ncl = COMPETITIONS[0];
+const otherResults = COMPETITIONS.slice(1).filter((c) => c.result);
+const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
+
+// Podium finishes worth surfacing as headline awards, drawn from real results.
+const awards = [
+  '1st of 1,692 teams, National Cyber League High School division (Spring 2026)',
+  '1st place, THEM?!CTF (Team idktheflag, 2026)',
+];
+
+const internships = EXPERIENCE.filter((job) => /intern/i.test(job.role));
+
+const roadmap = [
+  { label: 'In progress', items: CERT_ROADMAP.inProgress },
+  { label: 'Next', items: CERT_ROADMAP.next },
+  { label: 'Planned', items: CERT_ROADMAP.planned },
+];
+---
+
+<BaseLayout title="Achievements" description={description}>
+  <PageHeader
+    kicker="~/achievements"
+    title="Achievements"
+    lede="Certifications, competition results, leadership, and experience in one place. Placements are verifiable and stated only where they are."
+  />
+
+  <section class="py-10" aria-labelledby="certifications">
+    <h2 id="certifications" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Certifications
+    </h2>
+    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        CERTIFICATIONS.map((cert) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{cert.name}</p>
+            <p class="mt-1 font-mono text-xs text-faint">
+              {cert.issuer}
+              {cert.year && ` · ${cert.year}`}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">{CERTIFICATION_NOTE}</p>
+
+    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
+      Current certification roadmap
+    </h3>
+    <dl class="mt-3 grid gap-3 sm:grid-cols-3">
+      {
+        roadmap.map((tier) => (
+          <div class="panel p-4">
+            <dt class="font-mono text-xs uppercase tracking-wider text-accent">{tier.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-muted">{tier.items.join(', ')}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="mt-3 font-mono text-xs text-faint">
+      Roadmap items are goals in progress, not earned credentials.
+    </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="awards">
+    <h2 id="awards" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Awards &amp; recognition
+    </h2>
+    <ul
+      role="list"
+      class="mt-6 max-w-2xl list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+    >
+      {awards.map((award) => <li>{award}</li>)}
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="competition-results">
+    <h2 id="competition-results" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Competition results
+    </h2>
+
+    {
+      ncl && (
+        <div class="panel mt-6 p-5">
+          <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            <h3 class="font-medium text-ink">{ncl.name}</h3>
+            <p class="shrink-0 font-mono text-xs text-faint">Spring 2026</p>
+          </div>
+          <ul
+            role="list"
+            class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+          >
+            <li>
+              Placed 1st of 1,692 teams in the High School division and 5th of 3,638 in the
+              Standard Team division (Team Difference)
+            </li>
+            <li>Competed across {NCL_CATEGORIES}</li>
+          </ul>
+        </div>
+      )
+    }
+
+    <ul role="list" class="mt-4 grid gap-3 sm:grid-cols-2">
+      {
+        otherResults.map((comp) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{comp.name}</p>
+            <p class="mt-1 font-mono text-xs leading-relaxed text-faint">{comp.result}</p>
+          </li>
+        ))
+      }
+    </ul>
+    {
+      noResult.length > 0 && (
+        <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+          Also competed in {noResult.map((c) => c.name).join(' and ')}.
+        </p>
+      )
+    }
+  </section>
+
+  <section class="py-10" aria-labelledby="internships">
+    <h2 id="internships" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Internship experience
+    </h2>
+    <ul role="list" class="mt-6 divide-y divide-line">
+      {
+        internships.map((job) => (
+          <li class="py-6 first:pt-0 last:pb-0">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <div>
+                <h3 class="font-medium text-ink">{job.role}</h3>
+                <p class="text-sm text-muted">{job.org}</p>
+              </div>
+              <p class="shrink-0 font-mono text-xs text-faint">{job.period}</p>
+            </div>
+            <ul
+              role="list"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+            >
+              {job.bullets.map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-4 text-sm leading-relaxed text-muted">
+      Full work history is on the <a href="/resume/" class="link">resume</a>.
+    </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="leadership">
+    <h2 id="leadership" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Leadership
+    </h2>
+    <ul role="list" class="mt-6 grid gap-4">
+      {
+        LEADERSHIP.map((item) => (
+          <li class="flex flex-col gap-1">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <p class="text-sm font-medium text-ink">{item.role}</p>
+              <p class="shrink-0 font-mono text-xs text-faint">{item.period}</p>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">{item.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="education">
+    <h2 id="education" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Education
+    </h2>
+    <ul role="list" class="mt-6 divide-y divide-line">
+      {
+        EDUCATION.map((entry) => (
+          <li class="py-4 first:pt-0 last:pb-0">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <div>
+                <p class="font-medium text-ink">{entry.school}</p>
+                <p class="text-sm text-muted">{entry.program}</p>
+              </div>
+              <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
+            </div>
+            {entry.note && <p class="mt-2 text-sm text-muted">{entry.note}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

@@ -6,13 +6,19 @@ import {
   EDUCATION,
   CERTIFICATIONS,
   CERTIFICATION_NOTE,
-  CERTIFICATIONS_IN_PROGRESS,
+  CERT_ROADMAP,
   COMPETITIONS,
   NCL_CATEGORIES,
   EXPERIENCE,
   SKILL_GROUPS,
   LEADERSHIP,
 } from '../consts';
+
+const roadmap = [
+  { label: 'In progress', items: CERT_ROADMAP.inProgress },
+  { label: 'Next', items: CERT_ROADMAP.next },
+  { label: 'Planned', items: CERT_ROADMAP.planned },
+];
 
 const description =
   'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
@@ -52,9 +58,6 @@ const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
         <li>
           <a class="link" href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a>
         </li>
-        <li>
-          <a class="link" href={SITE.github} rel="noopener noreferrer">GitHub</a>
-        </li>
         <li class="text-muted">{SITE.location}</li>
         <li class="w-full text-muted sm:w-auto">{SITE.clearance}</li>
       </ul>
@@ -74,14 +77,14 @@ const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
       <span class="text-accent" aria-hidden="true">##</span> Summary
     </h2>
     <p class="mt-6 max-w-2xl leading-relaxed text-muted">
-      Incoming B.S. Cybersecurity student at the University of Texas at San
-      Antonio (Honors College), focused on red-team fundamentals, penetration
-      testing labs, and Capture the Flag (CTF) competition. Five CompTIA
-      certifications earned in high school and nearly four years of hands-on IT
-      support and cybersecurity lab experience. Blue-team literacy from CySA+
-      supports the offensive work by connecting findings back to defense.
-      Preparing for the Hack The Box Certified Penetration Testing Specialist
-      (CPTS) and seeking cybersecurity internships.
+      Incoming B.S. Cybersecurity Honors student focused on red-team
+      fundamentals, penetration testing labs, and Capture the Flag competition,
+      backed by five CompTIA certifications and hands-on security tooling. Nearly
+      four years supporting cybersecurity labs and troubleshooting Windows and
+      Linux systems, now preparing for the Hack The Box Certified Penetration
+      Testing Specialist (CPTS). Blue-team literacy from CySA+ supports the
+      offensive work by connecting findings back to defense. Seeking
+      cybersecurity internships.
     </p>
   </section>
 
@@ -105,13 +108,26 @@ const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
         ))
       }
     </ul>
-    <div class="mt-4 max-w-2xl space-y-2 text-sm leading-relaxed text-muted">
-      <p>{CERTIFICATION_NOTE}</p>
-      <p>
-        <span class="font-mono text-xs uppercase tracking-wider text-faint">In progress:</span>
-        {CERTIFICATIONS_IN_PROGRESS.join(' · ')}
-      </p>
-    </div>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">{CERTIFICATION_NOTE}</p>
+
+    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
+      Current certification roadmap
+    </h3>
+    <dl class="mt-3 grid gap-3 sm:grid-cols-3">
+      {
+        roadmap.map((tier) => (
+          <div class="panel p-4">
+            <dt class="font-mono text-xs uppercase tracking-wider text-accent">{tier.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-muted">
+              {tier.items.join(', ')}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="mt-3 font-mono text-xs text-faint">
+      Roadmap items are goals in progress, not earned credentials.
+    </p>
   </section>
 
   <section class="py-10" aria-labelledby="competitions-heading">
