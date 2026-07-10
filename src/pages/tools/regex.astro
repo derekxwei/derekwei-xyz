@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="Regex Tester"
+  description="Test JavaScript regular expressions against sample text with live highlighting, flags, and capture groups. Runs entirely in your browser — nothing is sent anywhere."
+>
+  <PageHeader
+    kicker="~/tools/regex"
+    title="Regex tester"
+    lede="Test JavaScript regular expressions against sample text with live match highlighting and capture-group breakdown. All in-browser."
+  />
+
+  <section class="py-10">
+    <div class="grid gap-5">
+      <div>
+        <label for="rx-pattern" class="label">Pattern</label>
+        <div class="flex items-stretch gap-0 font-mono">
+          <span class="flex items-center rounded-l-md border border-r-0 border-line bg-panel-2 px-2 text-faint" aria-hidden="true">/</span>
+          <input
+            id="rx-pattern"
+            type="text"
+            class="input rounded-none font-mono"
+            placeholder="\\bflag\\{[^}]+\\}"
+            spellcheck="false"
+            autocomplete="off"
+          />
+          <span class="flex items-center rounded-r-md border border-l-0 border-line bg-panel-2 px-2 text-faint" aria-hidden="true">/</span>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend class="label">Flags</legend>
+        <div class="flex flex-wrap gap-x-5 gap-y-2">
+          <label class="flex items-center gap-2 text-sm text-muted"><input type="checkbox" class="accent-accent" data-flag="g" checked /> g <span class="text-xs text-faint">global</span></label>
+          <label class="flex items-center gap-2 text-sm text-muted"><input type="checkbox" class="accent-accent" data-flag="i" /> i <span class="text-xs text-faint">ignore case</span></label>
+          <label class="flex items-center gap-2 text-sm text-muted"><input type="checkbox" class="accent-accent" data-flag="m" /> m <span class="text-xs text-faint">multiline</span></label>
+          <label class="flex items-center gap-2 text-sm text-muted"><input type="checkbox" class="accent-accent" data-flag="s" /> s <span class="text-xs text-faint">dotall</span></label>
+          <label class="flex items-center gap-2 text-sm text-muted"><input type="checkbox" class="accent-accent" data-flag="u" /> u <span class="text-xs text-faint">unicode</span></label>
+        </div>
+      </fieldset>
+
+      <div>
+        <label for="rx-test" class="label">Test string</label>
+        <textarea
+          id="rx-test"
+          class="input min-h-40 font-mono"
+          rows="8"
+          placeholder="Paste the text to match against&hellip;"
+          spellcheck="false"
+          autocomplete="off"></textarea>
+      </div>
+    </div>
+
+    <div aria-live="polite">
+      <p id="rx-error" class="mt-4 text-sm text-danger" role="status" hidden></p>
+
+      <div id="rx-summary" class="mt-6 font-mono text-xs text-faint" hidden></div>
+
+      <div id="rx-highlight-wrap" class="mt-4" hidden>
+        <h2 class="label">Matches highlighted</h2>
+        <pre id="rx-highlight" class="overflow-x-auto whitespace-pre-wrap break-words rounded-lg border border-line bg-panel-2 p-4 font-mono text-sm text-muted"></pre>
+      </div>
+
+      <div id="rx-groups-wrap" class="mt-6" hidden>
+        <h2 class="label">Match details</h2>
+        <div id="rx-groups" class="grid gap-2"></div>
+      </div>
+    </div>
+
+    <p class="mt-10 max-w-2xl text-sm text-muted">
+      <span class="font-mono text-faint">note:</span> this uses the browser's native
+      <code class="font-mono text-xs text-ink">RegExp</code> engine (ECMAScript), so behavior matches
+      JavaScript exactly — including its flavor of lookbehind, named groups, and Unicode handling.
+    </p>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  const patternEl = document.getElementById('rx-pattern') as HTMLInputElement | null;
+  const testEl = document.getElementById('rx-test') as HTMLTextAreaElement | null;
+  const errorEl = document.getElementById('rx-error') as HTMLParagraphElement | null;
+  const summaryEl = document.getElementById('rx-summary');
+  const highlightWrap = document.getElementById('rx-highlight-wrap');
+  const highlightEl = document.getElementById('rx-highlight');
+  const groupsWrap = document.getElementById('rx-groups-wrap');
+  const groupsEl = document.getElementById('rx-groups');
+  const flagBoxes = Array.from(
+    document.querySelectorAll<HTMLInputElement>('input[data-flag]')
+  );
+
+  function currentFlags(): string {
+    return flagBoxes
+      .filter((b) => b.checked)
+      .map((b) => b.dataset.flag ?? '')
+      .join('');
+  }
+
+  function run(): void {
+    if (!patternEl || !testEl || !errorEl || !summaryEl || !highlightWrap || !highlightEl || !groupsWrap || !groupsEl) {
+      return;
+    }
+    const pattern = patternEl.value;
+    const text = testEl.value;
+
+    errorEl.hidden = true;
+    if (pattern === '') {
+      summaryEl.hidden = true;
+      highlightWrap.hidden = true;
+      groupsWrap.hidden = true;
+      return;
+    }
+
+    const flags = currentFlags();
+    // Highlighting needs global iteration; add g internally without forcing the checkbox.
+    const iterFlags = flags.includes('g') ? flags : flags + 'g';
+
+    let regex: RegExp;
+    try {
+      regex = new RegExp(pattern, iterFlags);
+    } catch (err) {
+      errorEl.textContent = err instanceof Error ? `Invalid pattern: ${err.message}` : 'Invalid pattern.';
+      errorEl.hidden = false;
+      summaryEl.hidden = true;
+      highlightWrap.hidden = true;
+      groupsWrap.hidden = true;
+      return;
+    }
+
+    interface Hit {
+      index: number;
+      match: string;
+      groups: string[];
+      named: Record<string, string | undefined>;
+    }
+    const hits: Hit[] = [];
+    let guard = 0;
+    for (const m of text.matchAll(regex)) {
+      hits.push({
+        index: m.index ?? 0,
+        match: m[0],
+        groups: m.slice(1).map((g) => g ?? ''),
+        named: m.groups ?? {},
+      });
+      // Guard against pathological zero-length-match loops on huge inputs.
+      if (++guard > 10000) break;
+    }
+
+    summaryEl.hidden = false;
+    summaryEl.textContent = `${String(hits.length)} match${hits.length === 1 ? '' : 'es'} · /${pattern}/${flags}`;
+
+    // Build highlighted output as DOM nodes (no innerHTML — avoids injection + CSP concerns).
+    highlightEl.replaceChildren();
+    if (text.length > 0) {
+      let cursor = 0;
+      for (const hit of hits) {
+        if (hit.index < cursor) continue; // skip overlaps from zero-length quirks
+        if (hit.index > cursor) {
+          highlightEl.appendChild(document.createTextNode(text.slice(cursor, hit.index)));
+        }
+        const mark = document.createElement('mark');
+        mark.className = 'rounded bg-accent/25 text-accent';
+        mark.textContent = hit.match === '' ? '​' : hit.match;
+        highlightEl.appendChild(mark);
+        cursor = hit.index + hit.match.length;
+      }
+      if (cursor < text.length) {
+        highlightEl.appendChild(document.createTextNode(text.slice(cursor)));
+      }
+      highlightWrap.hidden = false;
+    } else {
+      highlightWrap.hidden = true;
+    }
+
+    groupsEl.replaceChildren();
+    const withGroups = hits.filter((h) => h.groups.length > 0 || Object.keys(h.named).length > 0);
+    if (withGroups.length > 0) {
+      for (const [i, hit] of withGroups.entries()) {
+        const panel = document.createElement('div');
+        panel.className = 'panel p-3';
+        const head = document.createElement('p');
+        head.className = 'font-mono text-xs text-faint';
+        head.textContent = `match ${String(i + 1)} @ index ${String(hit.index)}: "${hit.match}"`;
+        panel.appendChild(head);
+        const list = document.createElement('dl');
+        list.className = 'mt-2 grid gap-1';
+        hit.groups.forEach((g, gi) => {
+          const row = document.createElement('div');
+          row.className = 'flex gap-3';
+          const dt = document.createElement('dt');
+          dt.className = 'shrink-0 font-mono text-xs text-faint';
+          const namedKey = Object.keys(hit.named).find((k) => hit.named[k] === g && g !== '');
+          dt.textContent = namedKey ? `$${String(gi + 1)} (${namedKey})` : `$${String(gi + 1)}`;
+          const dd = document.createElement('dd');
+          dd.className = 'break-all font-mono text-xs text-muted';
+          dd.textContent = g === '' ? '(empty)' : g;
+          row.append(dt, dd);
+          list.appendChild(row);
+        });
+        panel.appendChild(list);
+        groupsEl.appendChild(panel);
+      }
+      groupsWrap.hidden = false;
+    } else {
+      groupsWrap.hidden = true;
+    }
+  }
+
+  patternEl?.addEventListener('input', run);
+  testEl?.addEventListener('input', run);
+  for (const box of flagBoxes) box.addEventListener('change', run);
+</script>

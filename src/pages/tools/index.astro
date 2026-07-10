@@ -3,31 +3,107 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import Card from '../../components/Card.astro';
 
-const tools = [
+interface Tool {
+  href: string;
+  title: string;
+  description: string;
+  group: 'Encoding & conversion' | 'Crypto & hashing' | 'Analysis' | 'Networking';
+}
+
+const tools: Tool[] = [
   {
     href: '/tools/base64/',
     title: 'Base64 encoder/decoder',
     description:
       'Encode and decode Base64 with the standard or URL-safe alphabet. UTF-8 safe in both directions, with copy and swap.',
+    group: 'Encoding & conversion',
   },
   {
     href: '/tools/url/',
     title: 'URL encoder/decoder',
     description:
       'Percent-encode or decode text as a URI component or a full URI, with clear errors on malformed sequences.',
+    group: 'Encoding & conversion',
+  },
+  {
+    href: '/tools/hex/',
+    title: 'Hex / text converter',
+    description:
+      'Convert between text and hexadecimal bytes. UTF-8 safe, accepts spaced or 0x-prefixed input.',
+    group: 'Encoding & conversion',
+  },
+  {
+    href: '/tools/rot13/',
+    title: 'ROT13 / Caesar converter',
+    description:
+      'Apply ROT13 or any Caesar shift to text, live as you type. A frequent CTF sighting.',
+    group: 'Encoding & conversion',
   },
   {
     href: '/tools/hash/',
     title: 'Hash generator',
     description:
-      'Generate cryptographic hash digests of text using the browser’s built-in Web Crypto API.',
+      'Generate SHA-1, SHA-256, SHA-384, and SHA-512 digests of text or a file via the Web Crypto API.',
+    group: 'Crypto & hashing',
   },
-] as const;
+  {
+    href: '/tools/hash-id/',
+    title: 'Hash identifier',
+    description:
+      'Guess the likely algorithm behind a hash from its length and character set. Heuristic triage helper.',
+    group: 'Crypto & hashing',
+  },
+  {
+    href: '/tools/entropy/',
+    title: 'Password entropy estimator',
+    description:
+      'Estimate password strength from character set and length, with a rough offline crack-time figure.',
+    group: 'Crypto & hashing',
+  },
+  {
+    href: '/tools/ioc/',
+    title: 'IOC parser & defanger',
+    description:
+      'Extract indicators of compromise from pasted text — IPs, domains, URLs, emails, hashes — and defang them.',
+    group: 'Analysis',
+  },
+  {
+    href: '/tools/regex/',
+    title: 'Regex tester',
+    description:
+      'Test JavaScript regular expressions against sample text with live highlighting and capture groups.',
+    group: 'Analysis',
+  },
+  {
+    href: '/tools/headers/',
+    title: 'Security headers checklist',
+    description:
+      'A reference checklist of HTTP security headers with recommended values and the reasoning for each.',
+    group: 'Analysis',
+  },
+  {
+    href: '/tools/subnet/',
+    title: 'IPv4 subnet calculator',
+    description:
+      'Compute network, broadcast, mask, and usable host range from CIDR notation. Handles /31 and /32.',
+    group: 'Networking',
+  },
+];
+
+const order: Tool['group'][] = [
+  'Encoding & conversion',
+  'Crypto & hashing',
+  'Analysis',
+  'Networking',
+];
+const grouped = order
+  .map((group) => ({ group, items: tools.filter((t) => t.group === group) }))
+  .filter((g) => g.items.length > 0);
 ---
 
 <BaseLayout
   title="Tools"
-  description="Client-side security utilities by Derek Wei: Base64, URL encoding, JWT decoding, hashing, and IPv4 subnetting. No backend — nothing leaves your browser."
+  description="Browser-only security utilities by Derek Wei: Base64, URL, hex, ROT13, hashing, hash ID, password entropy, IOC parser, regex, security headers, subnet calculator. No backend."
 >
   <PageHeader
     kicker="~/tools"
@@ -36,22 +112,26 @@ const tools = [
   />
 
   <section class="py-10">
-    <h2 class="mb-4 font-mono text-sm uppercase tracking-[0.15em] text-faint">
-      <span class="text-accent" aria-hidden="true">##</span> utilities
-    </h2>
-    <ul class="grid gap-4 sm:grid-cols-2" role="list">
-      {
-        tools.map((tool) => (
-          <Card
-            href={tool.href}
-            title={tool.title}
-            description={tool.description}
-            tags={['client-side']}
-          />
-        ))
-      }
-    </ul>
-    <p class="mt-6 max-w-2xl text-sm leading-relaxed text-muted">
+    {
+      grouped.map((section) => (
+        <div class="mb-10 last:mb-0">
+          <h2 class="mb-4 font-mono text-sm uppercase tracking-[0.15em] text-faint">
+            <span class="text-accent" aria-hidden="true">##</span> {section.group}
+          </h2>
+          <ul class="grid gap-4 sm:grid-cols-2" role="list">
+            {section.items.map((tool) => (
+              <Card
+                href={tool.href}
+                title={tool.title}
+                description={tool.description}
+                tags={['client-side']}
+              />
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
       These tools are static pages — all processing happens in your browser’s
       JavaScript. There is no backend, and the site’s Content Security Policy
       (<code class="font-mono text-xs text-ink">connect-src 'self'</code>)

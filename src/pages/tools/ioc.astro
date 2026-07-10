@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="IOC Parser & Defanger"
+  description="Extract indicators of compromise — IPs, domains, URLs, emails, and hashes — from pasted text, and defang or refang them. Client-side, offline, nothing transmitted."
+>
+  <PageHeader
+    kicker="~/tools/ioc"
+    title="IOC parser & defanger"
+    lede="Pull indicators of compromise out of pasted text — IPs, domains, URLs, emails, hashes — and defang them for safe sharing. Runs entirely in your browser."
+  />
+
+  <section class="py-10">
+    <div>
+      <label for="ioc-input" class="label">Paste text (log line, email, report&hellip;)</label>
+      <textarea
+        id="ioc-input"
+        class="input min-h-40"
+        rows="8"
+        placeholder="Paste anything containing indicators&hellip;"
+        spellcheck="false"
+        autocomplete="off"></textarea>
+    </div>
+
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+      <button id="ioc-parse" type="button" class="btn btn-primary">Extract indicators</button>
+      <label class="flex items-center gap-2 text-sm text-muted">
+        <input id="ioc-defang" type="checkbox" class="accent-accent" checked />
+        defang output (safe to paste in tickets)
+      </label>
+      <button id="ioc-clear" type="button" class="btn btn-ghost">Clear</button>
+    </div>
+
+    <div aria-live="polite">
+      <div id="ioc-results" class="mt-8 grid gap-4" hidden></div>
+      <p id="ioc-empty" class="mt-8 text-sm text-muted" hidden>
+        No indicators found in that text.
+      </p>
+    </div>
+
+    <div class="mt-10 max-w-2xl space-y-3 text-sm leading-relaxed text-muted">
+      <p>
+        <span class="font-mono text-faint">defanging</span> rewrites indicators so they aren't
+        clickable or auto-linked &mdash; <code class="font-mono text-xs text-ink">http</code> becomes
+        <code class="font-mono text-xs text-ink">hxxp</code> and dots become
+        <code class="font-mono text-xs text-ink">[.]</code>. It's the convention for sharing malicious
+        indicators in tickets, chat, and reports without anyone accidentally visiting them.
+      </p>
+      <p>
+        Extraction is regex-based and deliberately conservative. Verify anything before you act on it,
+        and never navigate to an extracted URL outside a controlled environment.
+      </p>
+    </div>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  interface Group {
+    key: string;
+    label: string;
+    regex: RegExp;
+  }
+
+  // URLs first, then narrower types; matches are de-duplicated per group.
+  const groups: Group[] = [
+    { key: 'url', label: 'URLs', regex: /\b(?:https?|ftp):\/\/[^\s<>"')]+/gi },
+    { key: 'email', label: 'Emails', regex: /\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g },
+    { key: 'ipv4', label: 'IPv4 addresses', regex: /\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)\b/g },
+    { key: 'ipv6', label: 'IPv6 addresses', regex: /\b(?:[A-F0-9]{1,4}:){2,7}[A-F0-9]{1,4}\b/gi },
+    { key: 'domain', label: 'Domains', regex: /\b(?:[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}\b/gi },
+    { key: 'sha256', label: 'SHA-256 hashes', regex: /\b[a-f0-9]{64}\b/gi },
+    { key: 'sha1', label: 'SHA-1 hashes', regex: /\b[a-f0-9]{40}\b/gi },
+    { key: 'md5', label: 'MD5 hashes', regex: /\b[a-f0-9]{32}\b/gi },
+    { key: 'cve', label: 'CVE IDs', regex: /\bCVE-\d{4}-\d{4,7}\b/gi },
+  ];
+
+  // Common file extensions the domain regex would otherwise mistake for a TLD.
+  const fileExtensions = new Set([
+    'exe', 'dll', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt',
+    'zip', 'rar', 'gz', 'tar', 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg',
+    'js', 'ts', 'py', 'sh', 'ps1', 'bat', 'dat', 'bin', 'iso', 'img', 'log',
+    'json', 'xml', 'html', 'css', 'php', 'jar', 'apk', 'dmg', 'msi', 'tmp',
+  ]);
+
+  function looksLikeFile(domain: string): boolean {
+    const tld = domain.split('.').pop()?.toLowerCase() ?? '';
+    return fileExtensions.has(tld);
+  }
+
+  function defang(value: string, key: string): string {
+    let out = value;
+    if (key === 'url' || key === 'domain' || key === 'email' || key === 'ipv4') {
+      out = out.replace(/\./g, '[.]');
+    }
+    if (key === 'url') {
+      out = out.replace(/^http/i, 'hxxp').replace(/:\/\//, '[://]');
+    }
+    if (key === 'email') {
+      out = out.replace('@', '[@]');
+    }
+    return out;
+  }
+
+  const input = document.getElementById('ioc-input') as HTMLTextAreaElement | null;
+  const defangBox = document.getElementById('ioc-defang') as HTMLInputElement | null;
+  const results = document.getElementById('ioc-results');
+  const empty = document.getElementById('ioc-empty');
+  const parseBtn = document.getElementById('ioc-parse');
+  const clearBtn = document.getElementById('ioc-clear');
+
+  function makeCopyButton(getText: () => string, label: string): HTMLButtonElement {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-ghost px-2.5 py-1 text-xs';
+    btn.textContent = 'Copy all';
+    btn.setAttribute('aria-label', label);
+    btn.addEventListener('click', () => {
+      const text = getText();
+      if (!text || !navigator.clipboard) return;
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          btn.textContent = 'Copied';
+          window.setTimeout(() => (btn.textContent = 'Copy all'), 1400);
+        })
+        .catch(() => {
+          btn.textContent = 'Failed';
+          window.setTimeout(() => (btn.textContent = 'Copy all'), 1400);
+        });
+    });
+    return btn;
+  }
+
+  function parse(): void {
+    if (!input || !results || !empty) return;
+    const text = input.value;
+    results.replaceChildren();
+
+    // Track hashes already claimed by a longer type so they aren't double-listed.
+    const claimed = new Set<string>();
+    let anyFound = false;
+
+    for (const group of groups) {
+      const matches = text.match(group.regex) ?? [];
+      const unique: string[] = [];
+      const seen = new Set<string>();
+      for (const raw of matches) {
+        const m = raw.toLowerCase();
+        if (seen.has(m)) continue;
+        if ((group.key === 'md5' || group.key === 'sha1') && claimed.has(m)) continue;
+        if (group.key === 'domain' && looksLikeFile(raw)) continue;
+        seen.add(m);
+        unique.push(raw);
+      }
+      if (group.key === 'sha256' || group.key === 'sha1') {
+        for (const m of seen) claimed.add(m);
+      }
+      if (unique.length === 0) continue;
+      anyFound = true;
+
+      const rendered = unique.map((v) => (defangBox?.checked ? defang(v, group.key) : v));
+
+      const panel = document.createElement('div');
+      panel.className = 'panel p-4';
+
+      const head = document.createElement('div');
+      head.className = 'flex items-center justify-between gap-4';
+      const title = document.createElement('h3');
+      title.className = 'font-mono text-sm text-accent';
+      title.textContent = `${group.label} (${String(unique.length)})`;
+      head.appendChild(title);
+      head.appendChild(makeCopyButton(() => rendered.join('\n'), `Copy all ${group.label}`));
+      panel.appendChild(head);
+
+      const ul = document.createElement('ul');
+      ul.className = 'mt-3 grid gap-1';
+      ul.setAttribute('role', 'list');
+      for (const v of rendered) {
+        const li = document.createElement('li');
+        li.className = 'break-all font-mono text-xs text-muted';
+        li.textContent = v;
+        ul.appendChild(li);
+      }
+      panel.appendChild(ul);
+      results.appendChild(panel);
+    }
+
+    results.hidden = !anyFound;
+    empty.hidden = anyFound;
+  }
+
+  parseBtn?.addEventListener('click', parse);
+  defangBox?.addEventListener('change', () => {
+    if (results && !results.hidden) parse();
+  });
+  clearBtn?.addEventListener('click', () => {
+    if (input) input.value = '';
+    if (results) {
+      results.replaceChildren();
+      results.hidden = true;
+    }
+    if (empty) empty.hidden = true;
+    input?.focus();
+  });
+</script>

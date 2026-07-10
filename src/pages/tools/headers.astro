@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+interface HeaderRow {
+  name: string;
+  recommended: string;
+  why: string;
+  priority: 'essential' | 'recommended' | 'situational';
+}
+
+const headers: HeaderRow[] = [
+  {
+    name: 'Content-Security-Policy',
+    recommended: "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'",
+    why: "The single most effective control against XSS and data injection. Start from default-src 'none' and allowlist only what the site actually loads.",
+    priority: 'essential',
+  },
+  {
+    name: 'Strict-Transport-Security',
+    recommended: 'max-age=31536000; includeSubDomains; preload',
+    why: 'Forces HTTPS for future visits, defeating SSL-strip downgrade attacks. Add preload only once you are committed to HTTPS on every subdomain.',
+    priority: 'essential',
+  },
+  {
+    name: 'X-Content-Type-Options',
+    recommended: 'nosniff',
+    why: 'Stops the browser from MIME-sniffing a response into a different, executable content type.',
+    priority: 'essential',
+  },
+  {
+    name: 'X-Frame-Options',
+    recommended: 'DENY',
+    why: 'Clickjacking defense for older browsers. Modern browsers honor CSP frame-ancestors, but this remains a cheap fallback.',
+    priority: 'recommended',
+  },
+  {
+    name: 'Referrer-Policy',
+    recommended: 'strict-origin-when-cross-origin',
+    why: 'Limits how much of the URL is leaked in the Referer header on cross-origin navigation.',
+    priority: 'recommended',
+  },
+  {
+    name: 'Permissions-Policy',
+    recommended: 'camera=(), microphone=(), geolocation=(), payment=()',
+    why: 'Explicitly disables powerful browser features the site does not use, shrinking the attack surface.',
+    priority: 'recommended',
+  },
+  {
+    name: 'Cross-Origin-Opener-Policy',
+    recommended: 'same-origin',
+    why: 'Isolates the browsing context from cross-origin windows, a prerequisite for cross-origin isolation and a defense against some side-channel attacks.',
+    priority: 'situational',
+  },
+  {
+    name: 'Cross-Origin-Resource-Policy',
+    recommended: 'same-origin',
+    why: 'Prevents other origins from embedding your resources, mitigating cross-origin leaks like Spectre-style reads.',
+    priority: 'situational',
+  },
+];
+
+const toneFor = (p: HeaderRow['priority']) =>
+  p === 'essential' ? 'accent' : p === 'recommended' ? 'muted' : 'warn';
+---
+
+<BaseLayout
+  title="Security Headers Checklist"
+  description="A reference checklist of HTTP security headers with recommended values and the rationale for each — CSP, HSTS, and more. Check them off as you harden a site."
+>
+  <PageHeader
+    kicker="~/tools/headers"
+    title="Security headers checklist"
+    lede="A working reference for hardening a web response: the headers that matter, sensible starting values, and why each one earns its place."
+  />
+
+  <section class="py-10">
+    <div class="flex flex-wrap items-center gap-3">
+      <p id="hdr-progress" class="font-mono text-sm text-accent" aria-live="polite">0 / {headers.length} checked</p>
+      <button id="hdr-reset" type="button" class="btn btn-ghost px-2.5 py-1 text-xs">Reset</button>
+    </div>
+
+    <ul class="mt-6 grid gap-4" role="list">
+      {
+        headers.map((h, i) => (
+          <li class="panel p-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <label class="flex cursor-pointer items-start gap-3">
+                <input
+                  type="checkbox"
+                  class="hdr-check mt-1 accent-accent"
+                  data-index={i}
+                  aria-label={`Mark ${h.name} as done`}
+                />
+                <span class="font-mono text-sm text-ink">{h.name}</span>
+              </label>
+              <span
+                class:list={[
+                  'inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[11px] leading-4',
+                  toneFor(h.priority) === 'accent' && 'border-accent/30 bg-accent/10 text-accent',
+                  toneFor(h.priority) === 'muted' && 'border-line bg-panel-2 text-muted',
+                  toneFor(h.priority) === 'warn' && 'border-warn/30 bg-warn/10 text-warn',
+                ]}
+              >
+                {h.priority}
+              </span>
+            </div>
+            <div class="mt-3 flex items-start gap-3">
+              <code class="min-w-0 flex-1 overflow-x-auto whitespace-pre rounded border border-line bg-panel-2 px-3 py-2 font-mono text-xs text-muted">
+                {h.recommended}
+              </code>
+              <button
+                type="button"
+                class="btn btn-ghost shrink-0 px-2.5 py-1 text-xs"
+                data-copy={h.recommended}
+                aria-label={`Copy recommended ${h.name} value`}
+              >
+                Copy
+              </button>
+            </div>
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{h.why}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-10 max-w-2xl space-y-3 text-sm leading-relaxed text-muted">
+      <p>
+        This checklist covers response headers. It is not a substitute for testing against a live
+        origin — after deploying, verify with an external scanner such as
+        <a href="https://securityheaders.com" class="link" rel="noopener noreferrer">securityheaders.com</a>
+        or Mozilla Observatory.
+      </p>
+      <p>
+        Priorities are a rough guide: <span class="text-accent">essential</span> headers belong on
+        nearly every site, <span class="text-ink">recommended</span> ones on most, and
+        <span class="text-warn">situational</span> ones depend on whether you embed or are embedded by
+        other origins. This site's own headers are documented on the
+        <a href="/architecture/" class="link">architecture</a> page.
+      </p>
+    </div>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  const checks = Array.from(document.querySelectorAll<HTMLInputElement>('.hdr-check'));
+  const progress = document.getElementById('hdr-progress');
+  const resetBtn = document.getElementById('hdr-reset');
+  const total = checks.length;
+
+  function updateProgress(): void {
+    const done = checks.filter((c) => c.checked).length;
+    if (progress) progress.textContent = `${String(done)} / ${String(total)} checked`;
+  }
+
+  for (const check of checks) {
+    check.addEventListener('change', () => {
+      const li = check.closest('li');
+      if (li) li.classList.toggle('opacity-60', check.checked);
+      updateProgress();
+    });
+  }
+
+  resetBtn?.addEventListener('click', () => {
+    for (const check of checks) {
+      check.checked = false;
+      check.closest('li')?.classList.remove('opacity-60');
+    }
+    updateProgress();
+  });
+
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('button[data-copy]')) {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.copy ?? '';
+      if (!value || !navigator.clipboard) return;
+      navigator.clipboard
+        .writeText(value)
+        .then(() => {
+          btn.textContent = 'Copied';
+          window.setTimeout(() => (btn.textContent = 'Copy'), 1400);
+        })
+        .catch(() => {
+          btn.textContent = 'Failed';
+          window.setTimeout(() => (btn.textContent = 'Copy'), 1400);
+        });
+    });
+  }
+</script>

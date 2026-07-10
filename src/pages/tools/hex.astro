@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="Hex / Text Converter"
+  description="Convert between text and hexadecimal byte values entirely in your browser. UTF-8 safe, accepts spaced or 0x-prefixed hex. Nothing leaves your machine."
+>
+  <PageHeader
+    kicker="~/tools/hex"
+    title="Hex / text converter"
+    lede="Convert text to hexadecimal bytes and back. UTF-8 safe, runs entirely in your browser — nothing is sent anywhere."
+  />
+
+  <section class="py-10">
+    <div class="grid gap-6">
+      <div>
+        <label for="hex-input" class="label">Input</label>
+        <textarea
+          id="hex-input"
+          class="input min-h-36"
+          rows="6"
+          placeholder="Type text, or paste hex like 44 57 or 0x4457&hellip;"
+          spellcheck="false"
+          autocomplete="off"></textarea>
+      </div>
+
+      <fieldset>
+        <legend class="label">Hex output options</legend>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <label class="flex items-center gap-2 text-sm text-muted">
+            <input id="hex-space" type="checkbox" class="accent-accent" checked />
+            space-separated bytes
+          </label>
+          <label class="flex items-center gap-2 text-sm text-muted">
+            <input id="hex-upper" type="checkbox" class="accent-accent" />
+            uppercase
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button id="hex-encode" type="button" class="btn btn-primary">Text &rarr; hex</button>
+        <button id="hex-decode" type="button" class="btn btn-primary">Hex &rarr; text</button>
+        <button id="hex-swap" type="button" class="btn btn-ghost">Use output as input</button>
+        <p id="hex-error" class="text-sm text-danger" role="status" aria-live="polite" hidden></p>
+      </div>
+
+      <div>
+        <div class="mb-1.5 flex items-center justify-between">
+          <label for="hex-output" class="label mb-0">Output</label>
+          <button id="hex-copy" type="button" class="btn btn-ghost px-2.5 py-1 text-xs">Copy</button>
+        </div>
+        <textarea
+          id="hex-output"
+          class="input min-h-36"
+          rows="6"
+          readonly
+          spellcheck="false"
+          aria-live="polite"></textarea>
+      </div>
+    </div>
+
+    <p class="mt-8 max-w-2xl text-sm text-muted">
+      <span class="font-mono text-faint">note:</span> decoding accepts whitespace, colons, commas,
+      dashes, and <code class="font-mono text-xs text-ink">0x</code> prefixes between bytes. Text is
+      interpreted as UTF-8 in both directions.
+    </p>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('hex-input') as HTMLTextAreaElement | null;
+  const output = document.getElementById('hex-output') as HTMLTextAreaElement | null;
+  const spaceBox = document.getElementById('hex-space') as HTMLInputElement | null;
+  const upperBox = document.getElementById('hex-upper') as HTMLInputElement | null;
+  const encodeBtn = document.getElementById('hex-encode');
+  const decodeBtn = document.getElementById('hex-decode');
+  const swapBtn = document.getElementById('hex-swap');
+  const copyBtn = document.getElementById('hex-copy') as HTMLButtonElement | null;
+  const errorEl = document.getElementById('hex-error') as HTMLParagraphElement | null;
+
+  function setError(message: string): void {
+    if (!errorEl) return;
+    errorEl.textContent = message;
+    errorEl.hidden = message === '';
+  }
+
+  function textToHex(text: string): string {
+    const bytes = new TextEncoder().encode(text);
+    const sep = spaceBox?.checked ? ' ' : '';
+    const hex = Array.from(bytes)
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join(sep);
+    return upperBox?.checked ? hex.toUpperCase() : hex;
+  }
+
+  function hexToText(raw: string): string {
+    const clean = raw.replace(/0x/gi, '').replace(/[\s:,\-]+/g, '');
+    if (clean.length === 0) return '';
+    if (!/^[0-9a-fA-F]+$/.test(clean)) {
+      throw new Error('Input contains non-hex characters — expected only 0-9 and a-f.');
+    }
+    if (clean.length % 2 !== 0) {
+      throw new Error('Hex input has an odd number of digits — bytes come in pairs.');
+    }
+    const bytes = new Uint8Array(clean.length / 2);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
+    }
+    return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
+  }
+
+  encodeBtn?.addEventListener('click', () => {
+    setError('');
+    if (output && input) output.value = textToHex(input.value);
+  });
+
+  decodeBtn?.addEventListener('click', () => {
+    setError('');
+    if (!output || !input) return;
+    try {
+      output.value = hexToText(input.value);
+    } catch (err) {
+      output.value = '';
+      setError(err instanceof Error ? err.message : 'Could not decode that hex.');
+    }
+  });
+
+  swapBtn?.addEventListener('click', () => {
+    if (!output || !input || output.value === '') return;
+    input.value = output.value;
+    output.value = '';
+    setError('');
+    input.focus();
+  });
+
+  copyBtn?.addEventListener('click', () => {
+    const value = output?.value ?? '';
+    if (!value || !navigator.clipboard || !copyBtn) return;
+    navigator.clipboard
+      .writeText(value)
+      .then(() => {
+        copyBtn.textContent = 'Copied';
+        window.setTimeout(() => (copyBtn.textContent = 'Copy'), 1400);
+      })
+      .catch(() => {
+        copyBtn.textContent = 'Failed';
+        window.setTimeout(() => (copyBtn.textContent = 'Copy'), 1400);
+      });
+  });
+</script>

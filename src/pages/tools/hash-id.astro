@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="Hash Identifier"
+  description="Guess the likely algorithm behind a hash from its length and character set — MD5, SHA family, bcrypt, NTLM, CRC32, and more. Heuristic, client-side, offline."
+>
+  <PageHeader
+    kicker="~/tools/hash-id"
+    title="Hash identifier"
+    lede="Paste a hash and get the likely algorithms, inferred from its length and character set. A triage helper for CTFs — heuristic, not authoritative."
+  />
+
+  <section class="py-10">
+    <div class="grid gap-4">
+      <div>
+        <label for="hid-input" class="label">Hash</label>
+        <input
+          id="hid-input"
+          type="text"
+          class="input font-mono"
+          placeholder="e.g. 5f4dcc3b5aa765d61d8327deb882cf99"
+          spellcheck="false"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-ghost px-2.5 py-1 text-xs" data-sample="5f4dcc3b5aa765d61d8327deb882cf99">MD5 sample</button>
+        <button class="btn btn-ghost px-2.5 py-1 text-xs" data-sample="5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8">SHA-1 sample</button>
+        <button class="btn btn-ghost px-2.5 py-1 text-xs" data-sample="$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy">bcrypt sample</button>
+      </div>
+    </div>
+
+    <div aria-live="polite">
+      <div id="hid-results" class="mt-8" hidden>
+        <h2 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+          <span class="text-accent" aria-hidden="true">##</span> Candidates
+        </h2>
+        <p id="hid-summary" class="mt-3 font-mono text-xs text-faint"></p>
+        <ul id="hid-list" class="mt-4 grid gap-2" role="list"></ul>
+      </div>
+      <p id="hid-empty" class="mt-8 text-sm text-muted" hidden>
+        No known algorithm matches that length and character set. Prefixed formats
+        (<code class="font-mono text-xs text-ink">$2y$</code>, <code class="font-mono text-xs text-ink">$6$</code>&hellip;)
+        and plain hex of a standard digest length are the most reliably identified.
+      </p>
+    </div>
+
+    <div class="mt-10 max-w-2xl rounded-lg border border-warn/30 bg-warn/10 p-4 text-sm leading-relaxed text-muted">
+      <p>
+        <span class="font-mono text-xs uppercase tracking-wider text-warn">heuristic only</span> &mdash;
+        many algorithms share a digest length (MD5, NTLM, and MD4 are all 32 hex chars), so identical
+        lengths are indistinguishable from the hash alone. Treat this as a ranked starting point, not
+        a definitive answer.
+      </p>
+    </div>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  interface Candidate {
+    name: string;
+    note?: string;
+  }
+  interface Rule {
+    test: (h: string) => boolean;
+    candidates: Candidate[];
+  }
+
+  const isHex = (h: string, len: number) => new RegExp(`^[0-9a-fA-F]{${String(len)}}$`).test(h);
+
+  const rules: Rule[] = [
+    {
+      test: (h) => /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/.test(h),
+      candidates: [{ name: 'bcrypt', note: 'Blowfish-based password hash ($2a/$2b/$2y$)' }],
+    },
+    {
+      test: (h) => /^\$argon2(id|i|d)\$/.test(h),
+      candidates: [{ name: 'Argon2', note: 'Modern memory-hard password hash' }],
+    },
+    {
+      test: (h) => /^\$6\$/.test(h),
+      candidates: [{ name: 'sha512crypt', note: 'Unix crypt ($6$) — /etc/shadow' }],
+    },
+    {
+      test: (h) => /^\$5\$/.test(h),
+      candidates: [{ name: 'sha256crypt', note: 'Unix crypt ($5$) — /etc/shadow' }],
+    },
+    {
+      test: (h) => /^\$1\$/.test(h),
+      candidates: [{ name: 'md5crypt', note: 'Unix crypt ($1$) — legacy /etc/shadow' }],
+    },
+    {
+      test: (h) => /^[0-9a-fA-F]{32}:[0-9a-fA-F]{32}$/.test(h) || /^[^:]+:[0-9a-fA-F]{32}$/.test(h),
+      candidates: [{ name: 'NTLM / salted MD5', note: 'user:hash or salt:hash pair, 32-hex digest' }],
+    },
+    {
+      test: (h) => isHex(h, 8),
+      candidates: [
+        { name: 'CRC-32', note: 'Checksum, not cryptographic' },
+        { name: 'Adler-32' },
+      ],
+    },
+    {
+      test: (h) => isHex(h, 32),
+      candidates: [
+        { name: 'MD5' },
+        { name: 'NTLM', note: 'Windows password hash' },
+        { name: 'MD4' },
+        { name: 'MD2' },
+      ],
+    },
+    {
+      test: (h) => isHex(h, 40),
+      candidates: [
+        { name: 'SHA-1' },
+        { name: 'RIPEMD-160' },
+      ],
+    },
+    {
+      test: (h) => isHex(h, 56),
+      candidates: [{ name: 'SHA-224' }, { name: 'SHA3-224' }],
+    },
+    {
+      test: (h) => isHex(h, 64),
+      candidates: [
+        { name: 'SHA-256' },
+        { name: 'SHA3-256' },
+        { name: 'BLAKE2s-256' },
+      ],
+    },
+    {
+      test: (h) => isHex(h, 96),
+      candidates: [{ name: 'SHA-384' }, { name: 'SHA3-384' }],
+    },
+    {
+      test: (h) => isHex(h, 128),
+      candidates: [
+        { name: 'SHA-512' },
+        { name: 'SHA3-512' },
+        { name: 'BLAKE2b-512' },
+        { name: 'Whirlpool' },
+      ],
+    },
+  ];
+
+  const input = document.getElementById('hid-input') as HTMLInputElement | null;
+  const results = document.getElementById('hid-results');
+  const list = document.getElementById('hid-list');
+  const summary = document.getElementById('hid-summary');
+  const empty = document.getElementById('hid-empty');
+
+  function identify(): void {
+    if (!input || !list || !results || !empty || !summary) return;
+    const value = input.value.trim();
+    list.replaceChildren();
+
+    if (value === '') {
+      results.hidden = true;
+      empty.hidden = true;
+      return;
+    }
+
+    const matched: Candidate[] = [];
+    for (const rule of rules) {
+      if (rule.test(value)) matched.push(...rule.candidates);
+    }
+
+    if (matched.length === 0) {
+      results.hidden = true;
+      empty.hidden = false;
+      return;
+    }
+
+    summary.textContent = `length: ${String(value.length)} chars · ${String(matched.length)} candidate${matched.length === 1 ? '' : 's'}`;
+
+    for (const c of matched) {
+      const li = document.createElement('li');
+      li.className = 'panel flex flex-wrap items-baseline gap-x-3 gap-y-1 p-3';
+      const name = document.createElement('span');
+      name.className = 'font-mono text-sm text-accent';
+      name.textContent = c.name;
+      li.appendChild(name);
+      if (c.note) {
+        const note = document.createElement('span');
+        note.className = 'text-xs text-muted';
+        note.textContent = c.note;
+        li.appendChild(note);
+      }
+      list.appendChild(li);
+    }
+    empty.hidden = true;
+    results.hidden = false;
+  }
+
+  input?.addEventListener('input', identify);
+
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('button[data-sample]')) {
+    btn.addEventListener('click', () => {
+      if (!input) return;
+      input.value = btn.dataset.sample ?? '';
+      identify();
+      input.focus();
+    });
+  }
+</script>

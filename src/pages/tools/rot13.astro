@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+const shifts = Array.from({ length: 25 }, (_, i) => i + 1);
+---
+
+<BaseLayout
+  title="ROT13 / Caesar Converter"
+  description="Apply ROT13 or any Caesar shift to text, live in your browser. A CTF staple for spotting rotated flags — obfuscation, not encryption."
+>
+  <PageHeader
+    kicker="~/tools/rot13"
+    title="ROT13 / Caesar converter"
+    lede="Rotate letters by a fixed shift — ROT13 by default. Converts live as you type, entirely in your browser."
+  />
+
+  <section class="py-10">
+    <div class="grid gap-6">
+      <div>
+        <label for="rot-input" class="label">Input</label>
+        <textarea
+          id="rot-input"
+          class="input min-h-36"
+          rows="6"
+          placeholder="Type or paste text&hellip;"
+          spellcheck="false"
+          autocomplete="off"></textarea>
+      </div>
+
+      <div class="flex flex-wrap items-end gap-4">
+        <div>
+          <label for="rot-shift" class="label">Shift</label>
+          <select id="rot-shift" class="input w-28">
+            {shifts.map((n) => <option value={n} selected={n === 13}>{n}</option>)}
+          </select>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button id="rot-reverse" type="button" class="btn btn-ghost">
+            Reverse direction (shift 13)
+          </button>
+          <button id="rot-swap" type="button" class="btn btn-ghost">Use output as input</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-1.5 flex items-center justify-between">
+          <label for="rot-output" class="label mb-0">Output</label>
+          <button id="rot-copy" type="button" class="btn btn-ghost px-2.5 py-1 text-xs">Copy</button>
+        </div>
+        <textarea
+          id="rot-output"
+          class="input min-h-36"
+          rows="6"
+          readonly
+          spellcheck="false"
+          aria-live="polite"></textarea>
+      </div>
+    </div>
+
+    <div class="mt-8 grid max-w-2xl gap-2 text-sm text-muted">
+      <p>
+        <span class="font-mono text-faint">note:</span> ROT13 is its own inverse — applying it twice
+        returns the original text. For any other shift <em>n</em>, decoding means shifting by
+        26&nbsp;&minus;&nbsp;<em>n</em> (the Reverse button does the math for you).
+      </p>
+      <p>
+        <span class="font-mono text-faint">note:</span> Caesar rotation is obfuscation, not
+        encryption. It shows up constantly in CTFs and old-school forums, never in real security
+        controls.
+      </p>
+    </div>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('rot-input') as HTMLTextAreaElement | null;
+  const output = document.getElementById('rot-output') as HTMLTextAreaElement | null;
+  const shiftSel = document.getElementById('rot-shift') as HTMLSelectElement | null;
+  const reverseBtn = document.getElementById('rot-reverse') as HTMLButtonElement | null;
+  const swapBtn = document.getElementById('rot-swap');
+  const copyBtn = document.getElementById('rot-copy') as HTMLButtonElement | null;
+
+  function rotate(text: string, shift: number): string {
+    return text.replace(/[a-zA-Z]/g, (ch) => {
+      const base = ch <= 'Z' ? 65 : 97;
+      return String.fromCharCode(((ch.charCodeAt(0) - base + shift) % 26) + base);
+    });
+  }
+
+  function update(): void {
+    if (!input || !output || !shiftSel) return;
+    output.value = rotate(input.value, Number(shiftSel.value));
+    if (reverseBtn) {
+      // shift is always 1-25, so the decoding shift is simply 26 - n
+      reverseBtn.textContent = `Reverse direction (shift ${String(26 - Number(shiftSel.value))})`;
+    }
+  }
+
+  input?.addEventListener('input', update);
+  shiftSel?.addEventListener('change', update);
+
+  reverseBtn?.addEventListener('click', () => {
+    if (!shiftSel) return;
+    shiftSel.value = String(26 - Number(shiftSel.value));
+    update();
+  });
+
+  swapBtn?.addEventListener('click', () => {
+    if (!input || !output || output.value === '') return;
+    input.value = output.value;
+    update();
+    input.focus();
+  });
+
+  copyBtn?.addEventListener('click', () => {
+    const value = output?.value ?? '';
+    if (!value || !navigator.clipboard || !copyBtn) return;
+    navigator.clipboard
+      .writeText(value)
+      .then(() => {
+        copyBtn.textContent = 'Copied';
+        window.setTimeout(() => (copyBtn.textContent = 'Copy'), 1400);
+      })
+      .catch(() => {
+        copyBtn.textContent = 'Failed';
+        window.setTimeout(() => (copyBtn.textContent = 'Copy'), 1400);
+      });
+  });
+</script>
