@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { SITE, EDUCATION, CERTIFICATIONS, COMPETITIONS } from '../consts';
+
+const description =
+  'Resume of Derek Wei — CompTIA Security+, CySA+, and PenTest+ certified, incoming UTSA B.S. Cybersecurity Honors student based in San Antonio, Texas.';
+---
+
+<BaseLayout title="Resume" description={description}>
+  <PageHeader
+    kicker="~/resume"
+    title="Resume"
+    lede="A concise overview of my education, certifications, and competition experience — formatted to print cleanly."
+  />
+
+  <div
+    class="print-hidden flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-line py-5"
+  >
+    <button id="print-btn" class="btn btn-primary" type="button">
+      Print / save as PDF
+    </button>
+    <p class="font-mono text-xs text-faint">
+      // print-friendly — site chrome is stripped and output renders dark-on-white
+    </p>
+  </div>
+
+  <section class="py-10" aria-label="Contact information">
+    <div class="panel p-5">
+      <ul
+        role="list"
+        class="flex flex-col gap-2 font-mono text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6"
+      >
+        <li>
+          <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </li>
+        <li class="text-muted">{SITE.location}</li>
+        <li class="w-full text-muted sm:w-auto">{SITE.clearance}</li>
+        <li class="text-xs text-faint">updated 2026-07-09</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-10" aria-labelledby="summary-heading">
+    <h2
+      id="summary-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Summary
+    </h2>
+    <p class="mt-6 max-w-2xl leading-relaxed text-muted">
+      Early-career cybersecurity candidate entering the B.S. Cybersecurity
+      program in the Honors College at the University of Texas at San Antonio
+      in Fall 2026. CompTIA-certified across IT fundamentals, networking,
+      security operations, and penetration testing, with hands-on experience
+      from the NEISD iCSI Cybersecurity Program and national CTF and cyber
+      defense competitions. Focused on blue-team analysis and practical
+      security tooling; currently pursuing cybersecurity internships.
+    </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="education-heading">
+    <h2
+      id="education-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Education
+    </h2>
+    <ul role="list" class="mt-6 divide-y divide-line">
+      {
+        EDUCATION.map((entry) => (
+          <li class="flex flex-col gap-1 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            <div>
+              <p class="font-medium text-ink">{entry.school}</p>
+              <p class="text-sm text-muted">{entry.program}</p>
+            </div>
+            <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="certifications-heading">
+    <h2
+      id="certifications-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Certifications
+    </h2>
+    <!-- TODO(derek): add earned dates for each certification -->
+    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        CERTIFICATIONS.map((cert) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{cert.name}</p>
+            <p class="mt-1 font-mono text-xs text-faint">{cert.issuer}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="competitions-heading">
+    <h2
+      id="competitions-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Competitions &amp;
+      CTF experience
+    </h2>
+    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2">
+      {
+        COMPETITIONS.map((comp) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{comp.name}</p>
+            <p class="mt-1 font-mono text-xs text-faint">{comp.kind}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+      Event formats range from jeopardy-style CTF challenges — spanning web
+      exploitation, cryptography, forensics, and OSINT categories — to
+      defensive competitions centered on hardening and securing live systems.
+    </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="skills-heading">
+    <h2
+      id="skills-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Core skills
+    </h2>
+    <p class="mt-6 max-w-2xl text-sm leading-relaxed text-faint">
+      Stated conservatively — aligned to certification domains and hands-on
+      practice rather than professional experience.
+    </p>
+    <ul
+      role="list"
+      class="mt-4 max-w-2xl list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+    >
+      <li>
+        Networking fundamentals — protocols, addressing, and troubleshooting
+        (aligned to Network+)
+      </li>
+      <li>Security operations and log analysis (aligned to CySA+)</li>
+      <li>
+        Vulnerability assessment and threat identification (aligned to
+        Security+ and CySA+)
+      </li>
+      <li>
+        Penetration testing methodology and reporting (aligned to PenTest+)
+      </li>
+      <li>Windows and Linux basics, practiced through homelab builds</li>
+      <li>Clear technical documentation and competition writeups</li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<script>
+  const printBtn = document.getElementById('print-btn') as HTMLButtonElement | null;
+  printBtn?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<!--
+  TODO(derek): personalize this resume —
+  - Add earned dates for each certification (see Certifications section TODO).
+  - Add competition seasons/years and any team roles you want listed (keep placements/scores off unless verifiable).
+  - Add sections for activities, clubs, or volunteer work if applicable.
+  - Add the GitHub repo URL for this site once the repository is public.
+  - Add LinkedIn/GitHub profile links to the contact strip when those profiles are ready.
+-->

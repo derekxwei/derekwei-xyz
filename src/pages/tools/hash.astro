@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+const algorithms = [
+  { id: 'sha-1', name: 'SHA-1' },
+  { id: 'sha-256', name: 'SHA-256' },
+  { id: 'sha-384', name: 'SHA-384' },
+  { id: 'sha-512', name: 'SHA-512' },
+] as const;
+---
+
+<BaseLayout
+  title="Hash Generator"
+  description="Compute SHA-1, SHA-256, SHA-384, and SHA-512 digests of text or files entirely in your browser using the Web Crypto API. Nothing ever leaves your machine."
+>
+  <PageHeader
+    kicker="~/tools/hash"
+    title="Hash Generator"
+    lede="Compute SHA-1, SHA-256, SHA-384, and SHA-512 digests of text or a file. Everything runs locally in your browser via the Web Crypto API — nothing is uploaded anywhere."
+  />
+
+  <section class="py-10">
+    <h2 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Input
+    </h2>
+
+    <div class="mt-5 grid gap-6">
+      <div>
+        <label for="hash-text" class="label">Text to hash</label>
+        <textarea
+          id="hash-text"
+          class="input min-h-36"
+          rows="6"
+          placeholder="Type or paste text to hash…"
+          spellcheck="false"
+          autocomplete="off"></textarea>
+      </div>
+
+      <div>
+        <span class="label">Or hash a file</span>
+        <div class="flex flex-wrap items-center gap-3">
+          <input id="hash-file" type="file" class="peer sr-only" aria-describedby="hash-file-name" />
+          <label
+            for="hash-file"
+            class="btn btn-ghost cursor-pointer peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent"
+          >
+            Choose file…
+          </label>
+          <span id="hash-file-name" class="font-mono text-sm text-muted">No file selected</span>
+          <button id="hash-file-clear" type="button" class="btn btn-ghost px-2.5 py-1 text-xs" hidden>
+            Clear file
+          </button>
+        </div>
+        <p class="mt-2 max-w-2xl text-xs text-faint">
+          If a file is selected, it takes priority over the text field. The file is read locally with
+          the File API and never uploaded.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button id="hash-compute" type="button" class="btn btn-primary">Compute hashes</button>
+        <p id="hash-error" class="text-sm text-danger" hidden></p>
+      </div>
+    </div>
+
+    <div aria-live="polite">
+      <div id="hash-results-panel" class="panel mt-8 p-5" hidden>
+        <p id="hash-source" class="font-mono text-xs text-faint"></p>
+        <dl class="mt-3 divide-y divide-line">
+          {
+            algorithms.map((algo) => (
+              <div class="py-3 sm:grid sm:grid-cols-[6.5rem_1fr] sm:gap-4">
+                <dt class="pt-1 font-mono text-xs uppercase tracking-wider text-faint">{algo.name}</dt>
+                <dd class="mt-1 min-w-0 sm:mt-0">
+                  <div class="flex items-start gap-3">
+                    <code id={`hash-out-${algo.id}`} class="min-w-0 flex-1 break-all font-mono text-sm text-ink" />
+                    <button
+                      type="button"
+                      class="btn btn-ghost shrink-0 px-2.5 py-1 text-xs"
+                      data-copy-target={`hash-out-${algo.id}`}
+                      aria-label={`Copy ${algo.name} digest`}
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+
+    <div class="mt-8 grid max-w-2xl gap-2 text-sm text-muted">
+      <p>
+        <span class="font-mono text-faint">note:</span> MD5 is not offered because the Web Crypto API
+        (SubtleCrypto) does not implement it.
+      </p>
+      <p>
+        <span class="font-mono text-faint">note:</span> SHA-1 is included only for comparing checksums
+        from legacy tooling — it is cryptographically broken, so prefer SHA-256 or stronger for
+        anything security-relevant.
+      </p>
+    </div>
+
+    <p class="mt-10">
+      <a href="/tools/" class="link font-mono text-sm">&larr; ~/tools</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  const ALGOS = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'] as const;
+
+  const textInput = document.getElementById('hash-text') as HTMLTextAreaElement | null;
+  const fileInput = document.getElementById('hash-file') as HTMLInputElement | null;
+  const fileNameEl = document.getElementById('hash-file-name');
+  const clearFileBtn = document.getElementById('hash-file-clear') as HTMLButtonElement | null;
+  const computeBtn = document.getElementById('hash-compute') as HTMLButtonElement | null;
+  const errorEl = document.getElementById('hash-error') as HTMLParagraphElement | null;
+  const resultsPanel = document.getElementById('hash-results-panel');
+  const sourceEl = document.getElementById('hash-source');
+
+  function setError(message: string): void {
+    if (!errorEl) return;
+    errorEl.textContent = message;
+    errorEl.hidden = message === '';
+  }
+
+  function formatBytes(n: number): string {
+    if (n < 1024) return `${String(n)} B`;
+    if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KiB`;
+    return `${(n / (1024 * 1024)).toFixed(1)} MiB`;
+  }
+
+  function toHex(buffer: ArrayBuffer): string {
+    return Array.from(new Uint8Array(buffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  function updateFileName(): void {
+    const file = fileInput?.files?.[0];
+    if (fileNameEl) {
+      fileNameEl.textContent = file ? `${file.name} (${formatBytes(file.size)})` : 'No file selected';
+    }
+    if (clearFileBtn) clearFileBtn.hidden = !file;
+  }
+
+  async function compute(): Promise<void> {
+    if (!computeBtn) return;
+    setError('');
+
+    if (typeof crypto === 'undefined' || !crypto.subtle) {
+      setError('The Web Crypto API is unavailable here — this tool needs a secure (https) context.');
+      return;
+    }
+
+    const file = fileInput?.files?.[0] ?? null;
+    const text = textInput?.value ?? '';
+    if (!file && text.length === 0) {
+      setError('Nothing to hash — type some text or choose a file first.');
+      if (resultsPanel) resultsPanel.hidden = true;
+      return;
+    }
+
+    computeBtn.disabled = true;
+    computeBtn.textContent = 'Hashing…';
+    try {
+      const data: BufferSource = file
+        ? await file.arrayBuffer()
+        : new TextEncoder().encode(text);
+
+      const digests = await Promise.all(ALGOS.map((algo) => crypto.subtle.digest(algo, data)));
+      ALGOS.forEach((algo, i) => {
+        const out = document.getElementById(`hash-out-${algo.toLowerCase()}`);
+        const digest = digests[i];
+        if (out && digest) out.textContent = toHex(digest);
+      });
+
+      if (sourceEl) {
+        sourceEl.textContent = file
+          ? `input: file "${file.name}" (${formatBytes(file.size)})`
+          : `input: text (${formatBytes(new TextEncoder().encode(text).length)}, UTF-8)`;
+      }
+      if (resultsPanel) resultsPanel.hidden = false;
+    } catch {
+      setError('Hashing failed — the file could not be read or the digest could not be computed.');
+      if (resultsPanel) resultsPanel.hidden = true;
+    } finally {
+      computeBtn.disabled = false;
+      computeBtn.textContent = 'Compute hashes';
+    }
+  }
+
+  fileInput?.addEventListener('change', updateFileName);
+  clearFileBtn?.addEventListener('click', () => {
+    if (fileInput) fileInput.value = '';
+    updateFileName();
+  });
+  computeBtn?.addEventListener('click', () => {
+    void compute();
+  });
+
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('button[data-copy-target]')) {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.copyTarget ?? '');
+      const value = target?.textContent ?? '';
+      if (!value || !navigator.clipboard) return;
+      navigator.clipboard
+        .writeText(value)
+        .then(() => {
+          btn.textContent = 'Copied';
+          window.setTimeout(() => {
+            btn.textContent = 'Copy';
+          }, 1400);
+        })
+        .catch(() => {
+          btn.textContent = 'Failed';
+          window.setTimeout(() => {
+            btn.textContent = 'Copy';
+          }, 1400);
+        });
+    });
+  }
+</script>

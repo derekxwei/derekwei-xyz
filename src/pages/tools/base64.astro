@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="Base64 encoder/decoder"
+  description="Encode and decode Base64 in the browser with standard or URL-safe alphabets. UTF-8 safe, copy and swap included — no backend, nothing leaves your machine."
+>
+  <PageHeader
+    kicker="~/tools/base64"
+    title="Base64 encoder/decoder"
+    lede="UTF-8-safe Base64 encoding and decoding, standard or URL-safe. Runs entirely in your browser — no backend, nothing you enter leaves this page."
+  />
+
+  <section class="py-10">
+    <div class="panel p-5 sm:p-6">
+      <div class="grid gap-4">
+        <div>
+          <label for="b64-input" class="label">Input</label>
+          <textarea
+            id="b64-input"
+            class="input"
+            rows="6"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            placeholder="Text to encode, or Base64 to decode"></textarea>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" id="b64-encode" class="btn btn-primary">
+            Encode
+          </button>
+          <button type="button" id="b64-decode" class="btn btn-primary">
+            Decode
+          </button>
+          <button type="button" id="b64-swap" class="btn btn-ghost">
+            Use output as input
+          </button>
+          <label
+            for="b64-urlsafe"
+            class="flex cursor-pointer items-center gap-2 font-mono text-xs text-muted"
+          >
+            <input
+              type="checkbox"
+              id="b64-urlsafe"
+              class="h-4 w-4 accent-accent"
+            />
+            URL-safe alphabet
+          </label>
+        </div>
+
+        <p
+          id="b64-status"
+          class="min-h-5 font-mono text-xs text-faint"
+          aria-live="polite"
+        >
+        </p>
+
+        <div aria-live="polite">
+          <div class="flex items-end justify-between gap-4">
+            <label for="b64-output" class="label">Output</label>
+            <button type="button" id="b64-copy" class="btn btn-ghost">
+              Copy
+            </button>
+          </div>
+          <textarea
+            id="b64-output"
+            class="input"
+            rows="6"
+            readonly
+            spellcheck="false"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 max-w-2xl text-sm leading-relaxed text-muted">
+      <p>
+        Encoding is UTF-8 safe: text is converted to bytes with
+        <code class="font-mono text-xs text-ink">TextEncoder</code> before
+        Base64 conversion, so multi-byte characters round-trip correctly. The
+        URL-safe option uses the RFC 4648 §5 alphabet
+        (<code class="font-mono text-xs text-ink">+</code> becomes
+        <code class="font-mono text-xs text-ink">-</code>,
+        <code class="font-mono text-xs text-ink">/</code> becomes
+        <code class="font-mono text-xs text-ink">_</code>) and omits
+        <code class="font-mono text-xs text-ink">=</code> padding; padding is
+        restored automatically when decoding.
+      </p>
+      <p class="mt-2">
+        Everything happens in this page’s JavaScript — no backend, nothing you
+        enter leaves your browser.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('b64-input') as HTMLTextAreaElement | null;
+  const output = document.getElementById('b64-output') as HTMLTextAreaElement | null;
+  const urlSafe = document.getElementById('b64-urlsafe') as HTMLInputElement | null;
+  const status = document.getElementById('b64-status') as HTMLParagraphElement | null;
+  const encodeBtn = document.getElementById('b64-encode') as HTMLButtonElement | null;
+  const decodeBtn = document.getElementById('b64-decode') as HTMLButtonElement | null;
+  const swapBtn = document.getElementById('b64-swap') as HTMLButtonElement | null;
+  const copyBtn = document.getElementById('b64-copy') as HTMLButtonElement | null;
+
+  if (
+    input &&
+    output &&
+    urlSafe &&
+    status &&
+    encodeBtn &&
+    decodeBtn &&
+    swapBtn &&
+    copyBtn
+  ) {
+    const setStatus = (message: string, isError = false): void => {
+      status.textContent = message;
+      status.classList.toggle('text-danger', isError);
+      status.classList.toggle('text-faint', !isError);
+    };
+
+    const encode = (): void => {
+      if (input.value.length === 0) {
+        output.value = '';
+        setStatus('Nothing to encode.');
+        return;
+      }
+      const bytes = new TextEncoder().encode(input.value);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i += 1) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      let encoded = btoa(binary);
+      if (urlSafe.checked) {
+        encoded = encoded
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_')
+          .replace(/=+$/, '');
+      }
+      output.value = encoded;
+      setStatus('Encoded.');
+    };
+
+    const decode = (): void => {
+      let text = input.value.replace(/\s+/g, '');
+      if (text.length === 0) {
+        output.value = '';
+        setStatus('Nothing to decode.');
+        return;
+      }
+      if (urlSafe.checked) {
+        text = text.replace(/-/g, '+').replace(/_/g, '/');
+        const remainder = text.length % 4;
+        if (remainder > 0) {
+          text += '='.repeat(4 - remainder);
+        }
+      }
+      try {
+        const binary = atob(text);
+        const bytes = Uint8Array.from(binary, (ch) => ch.charCodeAt(0));
+        const decoded = new TextDecoder('utf-8', { fatal: false }).decode(bytes);
+        output.value = decoded;
+        if (decoded.includes('�')) {
+          setStatus(
+            'Decoded, but the bytes are not valid UTF-8 — replacement characters (�) were substituted.'
+          );
+        } else {
+          setStatus('Decoded.');
+        }
+      } catch {
+        output.value = '';
+        const hint =
+          !urlSafe.checked && /[-_]/.test(text)
+            ? ' The input contains "-" or "_" — try enabling the URL-safe alphabet.'
+            : '';
+        setStatus(
+          `Invalid Base64 — the input contains characters outside the expected alphabet, or has an invalid length.${hint}`,
+          true
+        );
+      }
+    };
+
+    encodeBtn.addEventListener('click', encode);
+    decodeBtn.addEventListener('click', decode);
+
+    swapBtn.addEventListener('click', () => {
+      input.value = output.value;
+      output.value = '';
+      setStatus('Moved output to input.');
+      input.focus();
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (output.value.length === 0) {
+        setStatus('Nothing to copy.');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(output.value);
+        const original = copyBtn.textContent ?? 'Copy';
+        copyBtn.textContent = 'Copied';
+        window.setTimeout(() => {
+          copyBtn.textContent = original;
+        }, 1500);
+      } catch {
+        setStatus(
+          'Clipboard unavailable — select the output text and copy manually.',
+          true
+        );
+      }
+    });
+  }
+</script>

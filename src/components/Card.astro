@@ -1,0 +1,40 @@
+---
+import Badge from './Badge.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  /** Right-aligned mono metadata, e.g. a date or event name */
+  meta?: string;
+  tags?: string[];
+  status?: 'shipped' | 'in-progress' | 'planned';
+}
+
+const { href, title, description, meta, tags = [], status } = Astro.props;
+
+const statusLabel: string | undefined =
+  status === 'in-progress' ? 'in progress' : status;
+const statusTone: 'accent' | 'warn' | 'muted' =
+  status === 'shipped' ? 'accent' : status === 'in-progress' ? 'warn' : 'muted';
+---
+
+<li class="panel group relative p-5 transition-colors hover:border-line-2">
+  <div class="flex items-baseline justify-between gap-4">
+    <h3 class="text-base font-medium leading-snug">
+      <a href={href} class="card-link">{title}</a>
+    </h3>
+    {meta && <span class="shrink-0 font-mono text-xs text-faint">{meta}</span>}
+  </div>
+  <p class="mt-2 text-sm leading-relaxed text-muted">{description}</p>
+  {
+    (statusLabel || tags.length > 0) && (
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        {statusLabel && <Badge label={statusLabel} tone={statusTone} />}
+        {tags.map((tag) => (
+          <Badge label={tag} />
+        ))}
+      </div>
+    )
+  }
+</li>

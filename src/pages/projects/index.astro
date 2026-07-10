@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Card from '../../components/Card.astro';
+
+const projects = (
+  await getCollection('projects', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+---
+
+<BaseLayout
+  title="Projects"
+  description="Security projects by Derek Wei — practical tooling and infrastructure built to learn by doing, documented honestly with real status for each entry."
+>
+  <PageHeader
+    kicker="~/projects"
+    title="Projects"
+    lede="Practical security tooling and infrastructure I build to learn by doing. Each entry documents what it is, how it's built, and where it actually stands — shipped, in progress, or planned."
+  />
+
+  <section class="py-10">
+    <h2 class="sr-only">Project list</h2>
+    {
+      projects.length > 0 ? (
+        <ul class="grid gap-4 sm:grid-cols-2" role="list">
+          {projects.map((project) => (
+            <Card
+              href={`/projects/${project.id}/`}
+              title={project.data.title}
+              description={project.data.description}
+              meta={fmt(project.data.date)}
+              tags={project.data.tags}
+              status={project.data.status}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div class="panel p-6">
+          <p class="max-w-2xl leading-relaxed text-muted">
+            No projects are published here yet — entries land as they're documented. In the
+            meantime, the{' '}
+            <a href="/architecture/" class="link">
+              architecture page
+            </a>{' '}
+            covers how this site itself is built and secured.
+          </p>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

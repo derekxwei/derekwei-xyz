@@ -1,0 +1,17 @@
+---
+interface Props {
+  /** Small mono label above the title, e.g. "~/projects" */
+  kicker?: string;
+  title: string;
+  lede?: string;
+}
+
+const { kicker, title, lede } = Astro.props;
+---
+
+<header class="border-b border-line py-10 sm:py-14">
+  {kicker && <p class="kicker">{kicker}</p>}
+  <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+  {lede && <p class="mt-3 max-w-2xl leading-relaxed text-muted">{lede}</p>}
+  <slot />
+</header>

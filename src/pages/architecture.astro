@@ -1,0 +1,293 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+interface SecurityHeader {
+  name: string;
+  value: string;
+  why: string;
+}
+
+/** Mirrors public/_headers exactly — update both together. */
+const securityHeaders: SecurityHeader[] = [
+  {
+    name: 'Strict-Transport-Security',
+    value: 'max-age=31536000; includeSubDomains; preload',
+    why: 'Browsers connect over HTTPS only for a year, subdomains included; eligible for the preload list.',
+  },
+  {
+    name: 'Content-Security-Policy',
+    value:
+      "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests",
+    why: 'Everything is denied by default; only same-origin scripts, styles, images, fonts, and connections are allowlisted.',
+  },
+  {
+    name: 'X-Content-Type-Options',
+    value: 'nosniff',
+    why: 'Stops browsers from MIME-sniffing responses into executable content types.',
+  },
+  {
+    name: 'X-Frame-Options',
+    value: 'DENY',
+    why: "Legacy clickjacking defense for browsers that don't enforce frame-ancestors.",
+  },
+  {
+    name: 'Referrer-Policy',
+    value: 'strict-origin-when-cross-origin',
+    why: 'Cross-origin requests receive the origin only — full URLs never leak to other sites.',
+  },
+  {
+    name: 'Permissions-Policy',
+    value:
+      'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
+    why: 'Opts the site out of powerful browser APIs it never uses.',
+  },
+  {
+    name: 'Cross-Origin-Opener-Policy',
+    value: 'same-origin',
+    why: 'Severs window references from cross-origin openers, isolating the browsing context.',
+  },
+  {
+    name: 'Cross-Origin-Resource-Policy',
+    value: 'same-origin',
+    why: "Prevents other origins from embedding this site's resources in their pages.",
+  },
+  {
+    name: 'X-XSS-Protection',
+    value: '0',
+    why: 'Explicitly disables the legacy XSS auditor, which introduced bugs of its own; the CSP covers this ground.',
+  },
+];
+
+const deliveryDiagram = `git push (local machine)
+    │
+    ▼
+GitHub repository
+    │  push triggers a deploy
+    ▼
+Cloudflare Pages build
+    │  npm run build ──▶ dist/ (prerendered HTML, CSS, JS)
+    ▼
+Cloudflare global edge network
+    │  HTTPS
+    ▼
+browser`;
+
+const deliveryDiagramLabel =
+  'Delivery pipeline diagram: a git push goes to the GitHub repository, which triggers a Cloudflare Pages build running npm run build to produce the dist directory of prerendered HTML, CSS, and JS. The output is distributed to the Cloudflare global edge network and served to the browser over HTTPS.';
+---
+
+<BaseLayout
+  title="Architecture"
+  description="How derekwei.xyz works: Astro 5 static output, zero client JavaScript by default, strict security headers, and delivery from Cloudflare Pages' global edge."
+>
+  <PageHeader
+    kicker="~/architecture"
+    title="How this site works"
+    lede="A security-focused site should be able to explain itself. This page documents the stack, the delivery pipeline, and every security header this site serves — all of it verifiable against the source."
+  />
+
+  <section class="py-10" aria-labelledby="stack-heading">
+    <h2
+      id="stack-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Stack
+    </h2>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2" role="list">
+      <li class="panel p-5">
+        <h3 class="font-mono text-sm text-ink">Astro 5, static output</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Every page is prerendered to plain HTML at build time. There is no
+          server, no runtime, no rendering on request — the deploy artifact is
+          a folder of files.
+        </p>
+      </li>
+      <li class="panel p-5">
+        <h3 class="font-mono text-sm text-ink">TypeScript, strict</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          The project extends Astro's strict tsconfig, and
+          <code class="text-ink">astro check</code> type-checks every page and
+          component, including the script blocks.
+        </p>
+      </li>
+      <li class="panel p-5">
+        <h3 class="font-mono text-sm text-ink">Tailwind CSS 4</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Styling via the Tailwind Vite plugin, with the design tokens (colors,
+          fonts) defined once in a single global stylesheet.
+        </p>
+      </li>
+      <li class="panel p-5">
+        <h3 class="font-mono text-sm text-ink">Content collections</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Projects, writeups, and lab notes are Markdown/MDX files in typed
+          content collections — frontmatter is validated by schema at build
+          time, so a malformed entry fails the build instead of shipping.
+        </p>
+      </li>
+      <li class="panel p-5">
+        <h3 class="font-mono text-sm text-ink">Zero client JS by default</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Pages ship no JavaScript. The only scripts on the whole site are the
+          mobile nav toggle and the interactive
+          <a href="/tools/" class="link">tools</a> pages, bundled by Astro into
+          external files.
+        </p>
+      </li>
+      <li class="panel p-5">
+        <h3 class="font-mono text-sm text-ink">No external requests</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          System font stack, no CDN scripts, no remote images, no third-party
+          anything. Every byte the browser loads comes from this origin.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="delivery-heading">
+    <h2
+      id="delivery-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Delivery
+    </h2>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+      The pipeline is deliberately short: a push to GitHub triggers a
+      Cloudflare Pages build, and the static output is replicated to
+      Cloudflare's edge. There is no origin server to keep patched.
+    </p>
+    <pre
+      class="mt-6 overflow-x-auto rounded-lg border border-line bg-panel-2 p-5 font-mono text-xs leading-relaxed text-muted"
+      role="img"
+      aria-label={deliveryDiagramLabel}
+      tabindex="0">{deliveryDiagram}</pre>
+  </section>
+
+  <section class="py-10" aria-labelledby="headers-heading">
+    <h2
+      id="headers-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Security headers
+    </h2>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+      Every response carries this header set, configured in
+      <code class="text-ink">public/_headers</code> and applied by Cloudflare
+      Pages at the edge:
+    </p>
+    <div
+      class="mt-6 overflow-x-auto rounded-lg border border-line"
+      tabindex="0"
+      role="region"
+      aria-labelledby="headers-heading"
+    >
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">
+          Security headers served on every response, mirroring public/_headers:
+          header name, value, and purpose.
+        </caption>
+        <thead>
+          <tr class="border-b border-line-2 bg-panel-2">
+            <th
+              scope="col"
+              class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-faint"
+            >
+              Header
+            </th>
+            <th
+              scope="col"
+              class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-faint"
+            >
+              Value
+            </th>
+            <th
+              scope="col"
+              class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-faint"
+            >
+              Why
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            securityHeaders.map((h) => (
+              <tr class="border-b border-line last:border-b-0">
+                <th
+                  scope="row"
+                  class="whitespace-nowrap px-4 py-3 align-top font-mono text-xs font-normal text-accent"
+                >
+                  {h.name}
+                </th>
+                <td class="whitespace-nowrap px-4 py-3 align-top">
+                  <code class="font-mono text-xs text-muted">{h.value}</code>
+                </td>
+                <td class="min-w-64 px-4 py-3 align-top text-sm leading-relaxed text-muted">
+                  {h.why}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-muted">
+      <p>
+        The CSP is built on an allowlist model:
+        <code class="text-ink">default-src 'none'</code> denies every resource
+        type outright, then individual directives grant back only what the
+        site actually uses — same-origin scripts, styles, images, fonts, and
+        connections, nothing else. A blocklist has to anticipate attacks; an
+        allowlist only has to describe the site.
+      </p>
+      <p>
+        That model holds because nothing here needs inline code. Astro is
+        configured with <code class="text-ink">inlineStylesheets: 'never'</code>
+        so all CSS ships as external files, and the few scripts are bundled
+        into external files as well — which means
+        <code class="text-ink">script-src 'self'</code> and
+        <code class="text-ink">style-src 'self'</code> work without
+        <code class="text-ink">'unsafe-inline'</code>. Even if an injection
+        bug existed, injected inline script would not execute.
+      </p>
+      <p>
+        <code class="text-ink">frame-ancestors 'none'</code> (with
+        <code class="text-ink">X-Frame-Options: DENY</code> as the legacy
+        fallback) means no other site can embed this one in a frame, and HSTS
+        with <code class="text-ink">preload</code> keeps every visit on HTTPS
+        from the very first request.
+      </p>
+      <p>
+        One honest caveat: these headers are applied by Cloudflare Pages at
+        the edge. Running <code class="text-ink">npm run preview</code> locally
+        serves the same HTML without them — the policy only exists on the
+        deployed site.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-10" aria-labelledby="privacy-heading">
+    <h2
+      id="privacy-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Privacy &amp;
+      performance
+    </h2>
+    <div class="mt-4 max-w-2xl space-y-4 text-sm leading-relaxed text-muted">
+      <p>
+        Static HTML with no backend means there is nothing to track you with:
+        no cookies, no analytics, no trackers, and no requests to any
+        third-party origin. Reading this site tells no one anything.
+      </p>
+      <p>
+        It is also why the site is fast. Build assets under
+        <code class="text-ink">/_astro/</code> carry a content hash in their
+        filename, so they are served with
+        <code class="text-ink">Cache-Control: public, max-age=31536000,
+        immutable</code> — cached for a year and never revalidated. When a file
+        changes, its hash changes, and the browser fetches the new URL.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

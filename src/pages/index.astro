@@ -1,0 +1,219 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/Card.astro';
+import { SITE, CERTIFICATIONS, COMPETITIONS } from '../consts';
+
+const featuredProjects = (
+  await getCollection(
+    'projects',
+    ({ data }) => (import.meta.env.PROD ? !data.draft : true) && data.featured
+  )
+)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: SITE.url,
+  email: `mailto:${SITE.email}`,
+  jobTitle: 'Cybersecurity Student',
+  alumniOf: {
+    '@type': 'HighSchool',
+    name: 'MacArthur High School',
+  },
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'The University of Texas at San Antonio',
+  },
+};
+---
+
+<BaseLayout title="Derek Wei">
+  <!-- Hero -->
+  <section class="relative border-b border-line">
+    <div class="bg-grid hero-fade absolute inset-0" aria-hidden="true"></div>
+    <div class="relative py-16 sm:py-24">
+      <p class="kicker normal-case">$ whoami</p>
+      <h1 class="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+        Derek Wei
+      </h1>
+      <p class="mt-4 max-w-2xl leading-relaxed text-muted">
+        Incoming B.S. Cybersecurity student in the Honors College at The
+        University of Texas at San Antonio. CompTIA-certified, CTF competitor,
+        focused on blue-team defense. Based in {SITE.location}.
+      </p>
+      <p
+        class="mt-5 inline-flex items-center gap-2 rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted"
+      >
+        <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"
+        ></span>
+        {SITE.clearance}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/resume/" class="btn btn-primary">View resume</a>
+        <a href="/projects/" class="btn btn-ghost">Projects</a>
+        <a href="/contact/" class="btn btn-ghost">Contact</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section class="py-10" aria-labelledby="certifications-heading">
+    <h2
+      id="certifications-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Certifications
+    </h2>
+    <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {
+        CERTIFICATIONS.map((cert) => (
+          <li class="panel flex flex-col gap-1 p-4" title={cert.name}>
+            <span class="font-mono text-sm text-accent">{cert.short}</span>
+            <span class="text-xs text-muted">{cert.name}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Focus -->
+  <section class="py-10" aria-labelledby="focus-heading">
+    <h2
+      id="focus-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Focus
+    </h2>
+    <ul class="mt-5 grid gap-4 md:grid-cols-3" role="list">
+      <li class="panel flex flex-col p-5">
+        <h3 class="font-mono text-sm text-accent">Blue-team analysis</h3>
+        <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
+          Defense is the focus: hardening systems, reading logs, and
+          understanding attacks from the analyst's side. That direction comes
+          out of the NEISD iCSI Cybersecurity Program and CyberPatriot, backed
+          by the CompTIA CySA+ certification.
+        </p>
+        <a href="/resume/" class="link mt-4 font-mono text-xs">Resume →</a>
+      </li>
+      <li class="panel flex flex-col p-5">
+        <h3 class="font-mono text-sm text-accent">CTF competition</h3>
+        <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
+          I compete in events like National Cyber League, BYU CTF, RowdyCon,
+          CTF@CIT, and Squ1rrel CTF. CTFs are where fundamentals get
+          pressure-tested against real challenges, and writeups are published
+          here as they're finished.
+        </p>
+        <a href="/writeups/" class="link mt-4 font-mono text-xs">Writeups →</a>
+      </li>
+      <li class="panel flex flex-col p-5">
+        <h3 class="font-mono text-sm text-accent">Tools &amp; homelab</h3>
+        <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
+          Practical tooling matters: this site ships small browser-based
+          security utilities, and a homelab gives me a safe place for hands-on
+          experiments. Notes from that work are collected as lab notes.
+        </p>
+        <a href="/tools/" class="link mt-4 font-mono text-xs">Tools →</a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Featured projects -->
+  <section class="py-10" aria-labelledby="featured-projects-heading">
+    <div class="flex flex-wrap items-baseline justify-between gap-4">
+      <h2
+        id="featured-projects-heading"
+        class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+      >
+        <span class="text-accent" aria-hidden="true">##</span> Featured projects
+      </h2>
+      <a href="/projects/" class="link font-mono text-sm">All projects →</a>
+    </div>
+    {
+      featuredProjects.length > 0 ? (
+        <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
+          {featuredProjects.map((project) => (
+            <Card
+              href={`/projects/${project.id}/`}
+              title={project.data.title}
+              description={project.data.description}
+              meta={fmt(project.data.date)}
+              tags={[...project.data.tags]}
+              status={project.data.status}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div class="panel mt-5 p-6">
+          <!-- TODO(derek): set `featured: true` on published projects to surface them here -->
+          <p class="text-sm leading-relaxed text-muted">
+            No featured projects published yet — current work is in progress
+            and will appear here once it ships. The
+            <a href="/projects/" class="link">projects page</a> has the full
+            list.
+          </p>
+        </div>
+      )
+    }
+  </section>
+
+  <!-- Competitions -->
+  <section class="py-10" aria-labelledby="competitions-heading">
+    <h2
+      id="competitions-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Competitions
+    </h2>
+    <div class="panel mt-5 p-5 sm:p-6">
+      <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2" role="list">
+        {
+          COMPETITIONS.map((comp) => (
+            <li class="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+              <span class="font-mono text-sm text-ink">{comp.name}</span>
+              <span class="font-mono text-xs text-faint">{comp.kind}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-5 border-t border-line pt-4 text-sm leading-relaxed text-muted">
+        Writeups from these events are collected under
+        <a href="/writeups/" class="link">writeups</a> as they're completed.
+      </p>
+    </div>
+  </section>
+
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(personSchema)}
+  />
+</BaseLayout>
+
+<style>
+  .hero-fade {
+    mask-image: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.9) 0%,
+      rgb(0 0 0 / 0.35) 60%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.9) 0%,
+      rgb(0 0 0 / 0.35) 60%,
+      transparent 100%
+    );
+  }
+</style>

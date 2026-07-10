@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="URL encoder/decoder"
+  description="Percent-encode and decode text as a URI component or full URI, entirely in your browser. Clear errors for malformed sequences — nothing leaves your machine."
+>
+  <PageHeader
+    kicker="~/tools/url"
+    title="URL encoder/decoder"
+    lede="Percent-encoding for URI components or full URIs. Runs entirely in your browser — no backend, nothing you enter leaves this page."
+  />
+
+  <section class="py-10">
+    <div class="panel p-5 sm:p-6">
+      <div class="grid gap-4">
+        <div>
+          <label for="url-input" class="label">Input</label>
+          <textarea
+            id="url-input"
+            class="input"
+            rows="5"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            placeholder="Text to encode, or percent-encoded text to decode"
+          ></textarea>
+        </div>
+
+        <fieldset>
+          <legend class="label">Mode</legend>
+          <div class="flex flex-wrap gap-x-6 gap-y-2">
+            <label
+              for="url-mode-component"
+              class="flex cursor-pointer items-center gap-2 font-mono text-xs text-muted"
+            >
+              <input
+                type="radio"
+                id="url-mode-component"
+                name="url-mode"
+                value="component"
+                class="accent-accent"
+                checked
+              />
+              Component (encodeURIComponent)
+            </label>
+            <label
+              for="url-mode-full"
+              class="flex cursor-pointer items-center gap-2 font-mono text-xs text-muted"
+            >
+              <input
+                type="radio"
+                id="url-mode-full"
+                name="url-mode"
+                value="full"
+                class="accent-accent"
+              />
+              Full URI (encodeURI)
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" id="url-encode" class="btn btn-primary">
+            Encode
+          </button>
+          <button type="button" id="url-decode" class="btn btn-primary">
+            Decode
+          </button>
+        </div>
+
+        <p
+          id="url-status"
+          class="min-h-5 font-mono text-xs text-faint"
+          aria-live="polite"
+        >
+        </p>
+
+        <div aria-live="polite">
+          <div class="flex items-end justify-between gap-4">
+            <label for="url-output" class="label">Output</label>
+            <button type="button" id="url-copy" class="btn btn-ghost">
+              Copy
+            </button>
+          </div>
+          <textarea
+            id="url-output"
+            class="input"
+            rows="5"
+            readonly
+            spellcheck="false"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 max-w-2xl text-sm leading-relaxed text-muted">
+      <p>
+        Component mode
+        (<code class="font-mono text-xs text-ink">encodeURIComponent</code>)
+        escapes reserved characters like
+        <code class="font-mono text-xs text-ink">?</code>,
+        <code class="font-mono text-xs text-ink">&amp;</code>,
+        <code class="font-mono text-xs text-ink">=</code>, and
+        <code class="font-mono text-xs text-ink">/</code> — use it for
+        query-string values and path segments. Full URI mode
+        (<code class="font-mono text-xs text-ink">encodeURI</code>) leaves
+        those separators intact — use it to encode a complete URL without
+        breaking its structure.
+      </p>
+      <p class="mt-2">
+        Everything happens in this page’s JavaScript — no backend, nothing you
+        enter leaves your browser.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('url-input') as HTMLTextAreaElement | null;
+  const output = document.getElementById('url-output') as HTMLTextAreaElement | null;
+  const status = document.getElementById('url-status') as HTMLParagraphElement | null;
+  const encodeBtn = document.getElementById('url-encode') as HTMLButtonElement | null;
+  const decodeBtn = document.getElementById('url-decode') as HTMLButtonElement | null;
+  const copyBtn = document.getElementById('url-copy') as HTMLButtonElement | null;
+
+  if (input && output && status && encodeBtn && decodeBtn && copyBtn) {
+    const setStatus = (message: string, isError = false): void => {
+      status.textContent = message;
+      status.classList.toggle('text-danger', isError);
+      status.classList.toggle('text-faint', !isError);
+    };
+
+    const getMode = (): 'component' | 'full' => {
+      const checked = document.querySelector<HTMLInputElement>(
+        'input[name="url-mode"]:checked'
+      );
+      return checked?.value === 'full' ? 'full' : 'component';
+    };
+
+    encodeBtn.addEventListener('click', () => {
+      if (input.value.length === 0) {
+        output.value = '';
+        setStatus('Nothing to encode.');
+        return;
+      }
+      try {
+        output.value =
+          getMode() === 'full'
+            ? encodeURI(input.value)
+            : encodeURIComponent(input.value);
+        setStatus('Encoded.');
+      } catch {
+        // encodeURI/encodeURIComponent throw URIError on unpaired surrogates
+        output.value = '';
+        setStatus(
+          'Cannot encode — the input contains an unpaired surrogate character that has no valid UTF-8 form.',
+          true
+        );
+      }
+    });
+
+    decodeBtn.addEventListener('click', () => {
+      if (input.value.length === 0) {
+        output.value = '';
+        setStatus('Nothing to decode.');
+        return;
+      }
+      try {
+        output.value =
+          getMode() === 'full'
+            ? decodeURI(input.value)
+            : decodeURIComponent(input.value);
+        setStatus('Decoded.');
+      } catch {
+        output.value = '';
+        setStatus(
+          'Malformed percent-encoding — every "%" must be followed by two hex digits (e.g. %20). Check for stray "%" characters or a truncated sequence.',
+          true
+        );
+      }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (output.value.length === 0) {
+        setStatus('Nothing to copy.');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(output.value);
+        const original = copyBtn.textContent ?? 'Copy';
+        copyBtn.textContent = 'Copied';
+        window.setTimeout(() => {
+          copyBtn.textContent = original;
+        }, 1500);
+      } catch {
+        setStatus(
+          'Clipboard unavailable — select the output text and copy manually.',
+          true
+        );
+      }
+    });
+  }
+</script>

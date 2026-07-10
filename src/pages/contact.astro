@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { SITE } from '../consts';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Derek Wei about cybersecurity internship opportunities, CTF collaboration, or security projects. Based in San Antonio, Texas."
+>
+  <PageHeader
+    kicker="~/contact"
+    title="Contact"
+    lede="Email is the one channel I check. No forms, no socials required — just write."
+  />
+
+  <section class="py-10">
+    <h2 class="sr-only">How to reach me</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="panel p-6">
+        <h3 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+          <span class="text-accent" aria-hidden="true">##</span> Email
+        </h3>
+        <p class="mt-4">
+          <a href={`mailto:${SITE.email}`} class="link font-mono text-base sm:text-lg"
+            >{SITE.email}</a
+          >
+        </p>
+        <p class="mt-4 text-sm leading-relaxed text-muted">Worth writing about:</p>
+        <ul class="mt-2 grid gap-1.5 text-sm text-muted" role="list">
+          <li class="flex gap-2">
+            <span class="text-accent" aria-hidden="true">-</span>
+            internship opportunities
+          </li>
+          <li class="flex gap-2">
+            <span class="text-accent" aria-hidden="true">-</span>
+            CTF teams and collaboration
+          </li>
+          <li class="flex gap-2">
+            <span class="text-accent" aria-hidden="true">-</span>
+            security projects and tooling
+          </li>
+          <li class="flex gap-2">
+            <span class="text-accent" aria-hidden="true">-</span>
+            questions about anything on this site
+          </li>
+        </ul>
+        <!--
+          TODO(derek): add real profile URLs, then uncomment.
+          <ul class="mt-4 grid gap-1.5 font-mono text-sm" role="list">
+            <li><a class="link" href="https://www.linkedin.com/in/YOUR-HANDLE" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a class="link" href="https://github.com/YOUR-HANDLE" rel="noopener noreferrer">GitHub</a></li>
+          </ul>
+        -->
+      </div>
+
+      <div class="panel p-6">
+        <h3 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+          <span class="text-accent" aria-hidden="true">##</span> Details
+        </h3>
+        <dl class="mt-4 grid gap-4 text-sm">
+          <div>
+            <dt class="font-mono text-xs uppercase tracking-wider text-faint">Location</dt>
+            <dd class="mt-1 text-muted">{SITE.location}</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-xs uppercase tracking-wider text-faint">Clearance</dt>
+            <dd class="mt-1 text-muted">{SITE.clearance}</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-xs uppercase tracking-wider text-faint">Status</dt>
+            <dd class="mt-1 text-muted">
+              Incoming UTSA B.S. Cybersecurity (Honors College) student, seeking cybersecurity
+              internships.
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <p class="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
+      There is no contact form here on purpose: this site is fully static with no backend to
+      receive one — a deliberate part of its
+      <a href="/architecture/" class="link">security architecture</a>. Email works better anyway.
+    </p>
+  </section>
+</BaseLayout>

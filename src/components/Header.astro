@@ -1,0 +1,83 @@
+---
+import { NAV } from '../consts';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => {
+  const h = href.replace(/\/$/, '') || '/';
+  return h === '/' ? path === '/' : path === h || path.startsWith(`${h}/`);
+};
+---
+
+<header class="print-hidden sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
+  <div class="relative mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <a
+      href="/"
+      class="font-mono text-sm font-semibold tracking-tight transition-colors hover:text-accent"
+    >
+      <span class="text-accent" aria-hidden="true">~/</span>derekwei.xyz
+    </a>
+    <nav aria-label="Primary">
+      <button
+        id="nav-toggle"
+        type="button"
+        class="btn btn-ghost px-2.5 py-1.5 lg:hidden"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path
+            d="M2 4h12M2 8h12M2 12h12"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <ul
+        id="nav-menu"
+        class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-line bg-bg px-4 py-3 shadow-lg lg:static lg:flex lg:flex-row lg:items-center lg:gap-0.5 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+      >
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'block rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors',
+                  isActive(item.href)
+                    ? 'text-accent'
+                    : 'text-muted hover:bg-panel hover:text-ink',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-menu');
+
+  const setOpen = (open: boolean) => {
+    btn?.setAttribute('aria-expanded', String(open));
+    menu?.classList.toggle('hidden', !open);
+    menu?.classList.toggle('flex', open);
+  };
+
+  btn?.addEventListener('click', () => {
+    setOpen(btn.getAttribute('aria-expanded') !== 'true');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+</script>

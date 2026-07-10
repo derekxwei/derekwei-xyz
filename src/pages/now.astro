@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const items = [
+  {
+    title: 'Getting ready for UTSA',
+    body: 'Preparing to start the B.S. Cybersecurity program in the Honors College at The University of Texas at San Antonio this fall.',
+    href: undefined,
+    linkLabel: undefined,
+  },
+  {
+    title: 'Looking for internship opportunities',
+    body: 'Actively seeking cybersecurity internships — especially anything blue-team, SOC, or security-operations adjacent.',
+    href: '/contact/',
+    linkLabel: 'Get in touch',
+  },
+  {
+    title: 'Building out the home security lab',
+    body: 'Standing up a homelab for hands-on defensive practice: virtualization, a segmented lab network, and log collection experiments.',
+    href: '/projects/home-security-lab/',
+    linkLabel: 'Project page',
+  },
+  {
+    title: 'Staying competition-sharp',
+    body: 'Keeping CTF skills current between events and turning past challenges into publishable writeups.',
+    href: '/writeups/',
+    linkLabel: 'Writeups',
+  },
+  {
+    title: 'Shipping browser security tools',
+    body: 'Expanding the collection of small, client-side security utilities on this site — no backend, nothing leaves the browser.',
+    href: '/tools/',
+    linkLabel: 'Tools',
+  },
+];
+---
+
+<BaseLayout
+  title="Now"
+  description="What Derek Wei is focused on right now: starting UTSA's B.S. Cybersecurity program, internship search, homelab build-out, and CTF preparation."
+>
+  <PageHeader
+    kicker="~/now"
+    title="Now"
+    lede="What I'm focused on at the moment — the short list, kept current."
+  >
+    <p class="mt-4 font-mono text-xs text-faint">Last updated: July 9, 2026</p>
+  </PageHeader>
+
+  <!-- TODO(derek): update this page every month or two — stale /now pages are worse than none. -->
+
+  <section class="py-10">
+    <h2 class="sr-only">Current focus</h2>
+    <ul class="grid gap-4" role="list">
+      {
+        items.map((item) => (
+          <li class="panel p-5">
+            <h3 class="font-mono text-sm text-ink">{item.title}</h3>
+            <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{item.body}</p>
+            {item.href && (
+              <p class="mt-3">
+                <a href={item.href} class="link font-mono text-xs">
+                  {item.linkLabel} &rarr;
+                </a>
+              </p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-8 max-w-2xl text-xs leading-relaxed text-faint">
+      This is a <a href="https://nownownow.com/about" class="link" rel="noopener noreferrer">now page</a>
+      — a snapshot of current focus rather than a feed. If it's been more than a couple of
+      months since the date above, ask me what changed.
+    </p>
+  </section>
+</BaseLayout>

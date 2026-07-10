@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Card from '../../components/Card.astro';
+import { COMPETITIONS } from '../../consts';
+
+const writeups = (
+  await getCollection('writeups', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="CTF Writeups"
+  description="CTF writeups by Derek Wei — methodology-first notes from National Cyber League, CyberPatriot, and other capture-the-flag events, written to learn in public."
+>
+  <PageHeader
+    kicker="~/writeups"
+    title="CTF Writeups"
+    lede="Notes from CTF competitions, written to learn in public — methodology and reasoning over flag spoilers."
+  />
+
+  <section class="py-10">
+    {
+      writeups.length > 0 ? (
+        <ul class="grid gap-4 sm:grid-cols-2" role="list">
+          {writeups.map((entry) => (
+            <Card
+              href={`/writeups/${entry.id}/`}
+              title={entry.data.title}
+              description={entry.data.description}
+              meta={entry.data.event}
+              tags={[
+                entry.data.category,
+                ...(entry.data.difficulty ? [entry.data.difficulty] : []),
+                ...entry.data.tags,
+              ]}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div class="panel p-6">
+          <h2 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+            <span class="text-accent" aria-hidden="true">
+              //
+            </span>{' '}
+            writeups incoming
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
+            Detailed writeups are being prepared — the goal is to document methodology and
+            reasoning, dead ends included, not just flags. They'll appear here as they're
+            finished.
+          </p>
+          <p
+            id="competed-events"
+            class="mt-6 font-mono text-xs uppercase tracking-wider text-faint"
+          >
+            Events I've competed in
+          </p>
+          <ul role="list" aria-labelledby="competed-events" class="mt-2 grid gap-1.5 sm:grid-cols-2">
+            {COMPETITIONS.map((c) => (
+              <li class="font-mono text-sm text-muted">
+                <span class="text-accent" aria-hidden="true">
+                  -
+                </span>{' '}
+                {c.name} <span class="text-faint">— {c.kind}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

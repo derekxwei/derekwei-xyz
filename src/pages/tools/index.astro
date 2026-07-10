@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Card from '../../components/Card.astro';
+
+const tools = [
+  {
+    href: '/tools/base64/',
+    title: 'Base64 encoder/decoder',
+    description:
+      'Encode and decode Base64 with the standard or URL-safe alphabet. UTF-8 safe in both directions, with copy and swap.',
+  },
+  {
+    href: '/tools/url/',
+    title: 'URL encoder/decoder',
+    description:
+      'Percent-encode or decode text as a URI component or a full URI, with clear errors on malformed sequences.',
+  },
+  {
+    href: '/tools/hash/',
+    title: 'Hash generator',
+    description:
+      'Generate cryptographic hash digests of text using the browser’s built-in Web Crypto API.',
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Tools"
+  description="Client-side security utilities by Derek Wei: Base64, URL encoding, JWT decoding, hashing, and IPv4 subnetting. No backend — nothing leaves your browser."
+>
+  <PageHeader
+    kicker="~/tools"
+    title="Tools"
+    lede="Small security utilities that run entirely in the browser — no backend, no data leaves the machine (CSP: connect-src 'self')."
+  />
+
+  <section class="py-10">
+    <h2 class="mb-4 font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> utilities
+    </h2>
+    <ul class="grid gap-4 sm:grid-cols-2" role="list">
+      {
+        tools.map((tool) => (
+          <Card
+            href={tool.href}
+            title={tool.title}
+            description={tool.description}
+            tags={['client-side']}
+          />
+        ))
+      }
+    </ul>
+    <p class="mt-6 max-w-2xl text-sm leading-relaxed text-muted">
+      These tools are static pages — all processing happens in your browser’s
+      JavaScript. There is no backend, and the site’s Content Security Policy
+      (<code class="font-mono text-xs text-ink">connect-src 'self'</code>)
+      prevents the page from sending data anywhere else.
+    </p>
+  </section>
+</BaseLayout>
