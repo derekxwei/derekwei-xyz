@@ -1,4 +1,5 @@
 ---
+import { existsSync } from 'node:fs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import {
@@ -7,6 +8,7 @@ import {
   CERTIFICATIONS,
   CERTIFICATION_NOTE,
   CERT_ROADMAP,
+  CORE_AREAS,
   COMPETITIONS,
   EXPERIENCE,
   SKILL_GROUPS,
@@ -23,6 +25,10 @@ const description =
   'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
 
 const competitionNames = COMPETITIONS.map((c) => c.name).join(', ');
+
+// Only surface the download button when the file is actually present in public/.
+const resumePdf = '/Derek_Wei_Resume_Public.pdf';
+const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
 ---
 
 <BaseLayout title="Resume" description={description}>
@@ -38,6 +44,13 @@ const competitionNames = COMPETITIONS.map((c) => c.name).join(', ');
     <button id="print-btn" class="btn btn-primary" type="button">
       Print / save as PDF
     </button>
+    {
+      resumePdfExists && (
+        <a href={resumePdf} class="btn btn-ghost" download>
+          Download PDF
+        </a>
+      )
+    }
     <p class="font-mono text-xs text-faint">
       // print-friendly: site chrome is stripped and output renders dark-on-white
     </p>
@@ -82,6 +95,24 @@ const competitionNames = COMPETITIONS.map((c) => c.name).join(', ');
       offensive work by connecting findings back to defense. Seeking
       cybersecurity internships.
     </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="core-areas-heading">
+    <h2
+      id="core-areas-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Core areas
+    </h2>
+    <ul class="mt-6 flex flex-wrap gap-2" role="list">
+      {
+        CORE_AREAS.map((area) => (
+          <li class="rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted">
+            {area}
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <section class="py-10" aria-labelledby="certifications-heading">

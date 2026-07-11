@@ -158,9 +158,10 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
     org: 'CyberTexas Foundation',
     period: 'Jun 2026 to Present',
     bullets: [
-      "Support delivery of hands-on cybersecurity training to area students at St. Mary's University, assisting instructors with labs, exercises, and classroom activities",
-      'Build and configure hands-on lab exercises in virtual machine (VM) environments so students can safely practice core security tasks, reducing instructor setup time and standardizing each station',
-      'Guide students through hands-on cybersecurity exercises and resolve hardware, software, and connectivity issues during lab activities',
+      "Guide students through hands-on cybersecurity exercises at St. Mary's University",
+      'Support instructors during classroom and lab activities',
+      'Troubleshoot laptops, Windows issues, software problems, network connectivity issues, and workstation failures',
+      'Resolve real technical issues including blue screens, corrupted files, installation problems, and OS troubleshooting',
     ],
   },
   {
@@ -183,6 +184,18 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
     ],
   },
 ];
+
+/** Concise, ATS-friendly core areas shown near the top of the resume. */
+export const CORE_AREAS = [
+  'Web Application Security',
+  'Capture the Flag (CTF)',
+  'Digital Forensics',
+  'Open Source Intelligence (OSINT)',
+  'Network Analysis',
+  'Password Auditing',
+  'Penetration Testing Fundamentals',
+  'Security Tooling',
+] as const;
 
 export interface SkillGroup {
   label: string;
