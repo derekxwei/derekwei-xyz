@@ -112,16 +112,16 @@ export const COMPETITIONS: readonly Competition[] = [
 export const NCL_CATEGORIES =
   'cryptography, password cracking, digital forensics, log analysis, network traffic analysis, OSINT, enumeration, and web application exploitation';
 
-/** Concise skill areas across CTF competitions, for the homepage summary. */
+/** Competition skill areas, shown as a titled list on the homepage. */
 export const COMPETITION_SKILLS = [
-  'web exploitation',
-  'cryptography',
-  'reverse engineering',
-  'digital forensics',
-  'OSINT',
-  'password cracking',
-  'network analysis',
-  'scripting',
+  'Web exploitation',
+  'Cryptography',
+  'Reverse engineering',
+  'Digital forensics',
+  'Open source intelligence (OSINT)',
+  'Password cracking',
+  'Network analysis',
+  'Scripting and automation',
 ] as const;
 
 export interface EducationEntry {
@@ -134,7 +134,7 @@ export interface EducationEntry {
 export const EDUCATION: readonly EducationEntry[] = [
   {
     school: 'The University of Texas at San Antonio (UTSA)',
-    program: 'B.S. Cybersecurity, Honors College; planned minor in AI/Data Science',
+    program: 'B.S. Cybersecurity, Honors College',
     detail: 'Expected May 2030',
   },
   {
@@ -160,7 +160,7 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
     bullets: [
       "Support delivery of hands-on cybersecurity training to area students at St. Mary's University, assisting instructors with labs, exercises, and classroom activities",
       'Build and configure hands-on lab exercises in virtual machine (VM) environments so students can safely practice core security tasks, reducing instructor setup time and standardizing each station',
-      'Reinforce foundational security topics, including incident detection and response, by guiding students through live exercises and resolving hardware, software, and connectivity issues in real time',
+      'Guide students through hands-on cybersecurity exercises and resolve hardware, software, and connectivity issues during lab activities',
     ],
   },
   {

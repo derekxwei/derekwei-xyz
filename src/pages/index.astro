@@ -75,6 +75,36 @@ const personSchema = {
     </div>
   </section>
 
+  <!-- Current focus -->
+  <section class="py-10" aria-labelledby="current-focus-heading">
+    <h2
+      id="current-focus-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Current focus
+    </h2>
+    <div class="panel mt-5 p-5 sm:p-6">
+      <ul class="grid gap-2.5 sm:grid-cols-2" role="list">
+        {
+          [
+            'Certified Penetration Testing Specialist (CPTS) preparation',
+            'Capture the Flag competition practice',
+            'Offensive security labs',
+            'Cybersecurity portfolio development',
+            'Beginning UTSA Cybersecurity Honors coursework',
+          ].map((item) => (
+            <li class="flex gap-2 text-sm leading-relaxed text-muted">
+              <span class="text-accent" aria-hidden="true">
+                -
+              </span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <!-- Certifications -->
   <section class="py-10" aria-labelledby="certifications-heading">
     <h2
@@ -175,41 +205,33 @@ const personSchema = {
     }
   </section>
 
-  <!-- Competition experience -->
+  <!-- Competition skill areas -->
   <section class="py-10" aria-labelledby="competitions-heading">
     <div class="flex flex-wrap items-baseline justify-between gap-4">
       <h2
         id="competitions-heading"
         class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
       >
-        <span class="text-accent" aria-hidden="true">##</span> Competition experience
+        <span class="text-accent" aria-hidden="true">##</span> Competition skill areas
       </h2>
       <a href="/achievements/" class="link font-mono text-sm">Achievements →</a>
     </div>
     <div class="panel mt-5 p-5 sm:p-6">
-      <p class="text-sm leading-relaxed text-muted">
-        Competition experience spans
+      <ul class="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4" role="list">
         {
-          COMPETITION_SKILLS.map((skill, i) => (
-            <>
-              {i > 0 && ', '}
-              {i === COMPETITION_SKILLS.length - 1 && 'and '}
-              <span class="text-ink">{skill}</span>
-            </>
-          ))
-        }, developed through:
-      </p>
-      <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2" role="list">
-        {
-          COMPETITIONS.map((comp) => (
-            <li class="font-mono text-sm text-muted">
-              <span class="text-accent" aria-hidden="true">-</span> {comp.name}
+          COMPETITION_SKILLS.map((skill) => (
+            <li class="flex gap-2 text-sm leading-relaxed text-muted">
+              <span class="text-accent" aria-hidden="true">
+                -
+              </span>
+              {skill}
             </li>
           ))
         }
       </ul>
       <p class="mt-5 border-t border-line pt-4 text-sm leading-relaxed text-muted">
-        Full placements are on the <a href="/achievements/" class="link">achievements</a>
+        Developed through {COMPETITIONS.map((c) => c.name).join(', ')}. Full
+        placements are on the <a href="/achievements/" class="link">achievements</a>
         page, and sanitized writeups are under
         <a href="/ctf/" class="link">CTF writeups</a> as they're completed.
       </p>

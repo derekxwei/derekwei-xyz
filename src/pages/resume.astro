@@ -8,7 +8,6 @@ import {
   CERTIFICATION_NOTE,
   CERT_ROADMAP,
   COMPETITIONS,
-  NCL_CATEGORIES,
   EXPERIENCE,
   SKILL_GROUPS,
   LEADERSHIP,
@@ -23,9 +22,7 @@ const roadmap = [
 const description =
   'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
 
-const ncl = COMPETITIONS[0];
-const otherResults = COMPETITIONS.slice(1).filter((c) => c.result);
-const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
+const competitionNames = COMPETITIONS.map((c) => c.name).join(', ');
 ---
 
 <BaseLayout title="Resume" description={description}>
@@ -63,8 +60,7 @@ const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
       </ul>
       <p class="mt-4 border-t border-line pt-4 font-mono text-xs leading-relaxed text-muted">
         5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
-        &middot; 1st of 1,692 teams, National Cyber League High School division
-        &middot; CTF competitor
+        &middot; CTF competitor &middot; preparing for the CPTS
       </p>
     </div>
   </section>
@@ -135,47 +131,12 @@ const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
       id="competitions-heading"
       class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
     >
-      <span class="text-accent" aria-hidden="true">##</span> Competition results
+      <span class="text-accent" aria-hidden="true">##</span> Competition experience
     </h2>
-
-    {
-      ncl && (
-        <div class="panel mt-6 p-5">
-          <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-            <h3 class="font-medium text-ink">{ncl.name}</h3>
-            <p class="shrink-0 font-mono text-xs text-faint">Spring 2026</p>
-          </div>
-          <ul
-            role="list"
-            class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
-          >
-            <li>
-              Placed 1st of 1,692 teams in the High School division and 5th of
-              3,638 in the Standard Team division (Team Difference)
-            </li>
-            <li>Competed across {NCL_CATEGORIES}</li>
-          </ul>
-        </div>
-      )
-    }
-
-    <ul role="list" class="mt-4 grid gap-3 sm:grid-cols-2">
-      {
-        otherResults.map((comp) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium text-ink">{comp.name}</p>
-            <p class="mt-1 font-mono text-xs leading-relaxed text-faint">{comp.result}</p>
-          </li>
-        ))
-      }
-    </ul>
-    {
-      noResult.length > 0 && (
-        <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
-          Also competed in {noResult.map((c) => c.name).join(' and ')}.
-        </p>
-      )
-    }
+    <p class="mt-6 max-w-2xl leading-relaxed text-muted">
+      Competition experience includes {competitionNames}. Detailed placements and
+      results are on the <a href="/achievements/" class="link">achievements page</a>.
+    </p>
   </section>
 
   <section class="py-10" aria-labelledby="experience-heading">

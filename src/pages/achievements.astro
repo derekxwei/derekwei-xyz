@@ -135,6 +135,67 @@ const roadmap = [
     }
   </section>
 
+  <section class="py-10" aria-labelledby="skills-demonstrated">
+    <h2 id="skills-demonstrated" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Technical skills demonstrated through competition
+    </h2>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+      Across these competitions, challenges reinforced hands-on skills that
+      transfer directly to offensive security work:
+    </p>
+    <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+      {
+        [
+          {
+            skill: 'Web application exploitation',
+            detail:
+              'Finding and exploiting flaws such as injection, authentication bypass, and broken access control in deliberately vulnerable web challenges.',
+          },
+          {
+            skill: 'Reverse engineering',
+            detail:
+              'Reading and understanding compiled binaries to recover program logic and locate the intended path to the flag.',
+          },
+          {
+            skill: 'Cryptography',
+            detail:
+              'Recognizing weak or misused cryptographic schemes and recovering plaintext or keys from them.',
+          },
+          {
+            skill: 'Digital forensics',
+            detail:
+              'Recovering artifacts from disk images, memory captures, and carved files to reconstruct what happened.',
+          },
+          {
+            skill: 'Network traffic analysis',
+            detail:
+              'Inspecting packet captures to reconstruct sessions and extract data hidden in the traffic.',
+          },
+          {
+            skill: 'Open Source Intelligence (OSINT)',
+            detail:
+              'Pivoting across public sources to assemble the information a challenge depends on.',
+          },
+          {
+            skill: 'Password auditing',
+            detail:
+              'Cracking and analyzing password hashes to understand where credential weaknesses come from.',
+          },
+          {
+            skill: 'Scripting and automation',
+            detail:
+              'Writing Python and Bash to automate repetitive steps and solve challenges at scale.',
+          },
+        ].map((item) => (
+          <div class="panel p-4">
+            <dt class="font-mono text-sm text-accent">{item.skill}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-muted">{item.detail}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
   <section class="py-10" aria-labelledby="internships">
     <h2 id="internships" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
       <span class="text-accent" aria-hidden="true">##</span> Internship experience
