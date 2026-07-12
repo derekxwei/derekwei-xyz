@@ -144,6 +144,11 @@
   .prose-custom :where(pre) {
     border: 1px solid var(--color-line);
   }
+  /* Keep embedded diagrams at a readable size instead of filling the column. */
+  .prose-custom :where(img) {
+    max-width: min(100%, 34rem);
+    height: auto;
+  }
 }
 
 /* print: resume prints clean on white without a separate stylesheet */

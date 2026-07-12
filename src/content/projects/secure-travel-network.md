@@ -12,6 +12,16 @@ as a VPN gateway so several devices get a safer, more consistent default route o
 Wi-Fi. Devices connect to the travel router instead of trusting the venue network
 directly, and the router carries their traffic over the tunnel.
 
+## Architecture
+
+![Secure travel network diagram: trusted personal devices connect to a GL.iNet GL-SFT1200 Opal travel router, which routes their traffic through an encrypted VPN gateway. The untrusted public Wi-Fi uplink carries only encrypted traffic to the internet. This is a mitigation, not a guarantee.](/images/architecture/secure-travel-network.svg)
+
+The flow in order: trusted personal devices, then the GL.iNet GL-SFT1200 Opal travel
+router, then an encrypted VPN gateway, then the public Wi-Fi uplink, then the internet.
+The router provides a trusted local network for the devices and is the only thing that
+talks to the untrusted venue Wi-Fi, which only ever sees encrypted traffic. Low-latency
+remote access (Parsec) is intentionally kept off this VPN path.
+
 ## Threat model
 
 - **Untrusted networks.** Coffee-shop, hotel, and campus Wi-Fi are shared and unverified.

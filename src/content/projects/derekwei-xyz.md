@@ -29,6 +29,14 @@ the attack surface in version 1.
   static output to Cloudflare's edge. The repository is kept private while the site is
   actively maintained.
 
+## Architecture
+
+![Delivery pipeline diagram: local development pushes to a private GitHub repository, which triggers a Cloudflare Pages build. The Cloudflare edge serves the static output over HTTPS with strict security headers to the visitor's browser, with no origin server.](/images/architecture/derekwei-site-architecture.svg)
+
+The flow in order: local development, then a push to the private GitHub repository, then a
+Cloudflare Pages build, then the Cloudflare edge over HTTPS, then the visitor's browser.
+There is no origin server and no backend at request time.
+
 ## Security considerations
 
 A static portfolio doesn't have much attack surface, which is exactly why it should get

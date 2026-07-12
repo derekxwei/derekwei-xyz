@@ -59,22 +59,8 @@ const securityHeaders: SecurityHeader[] = [
   },
 ];
 
-const deliveryDiagram = `git push (local machine)
-    │
-    ▼
-GitHub repository
-    │  push triggers a deploy
-    ▼
-Cloudflare Pages build
-    │  npm run build ──▶ dist/ (prerendered HTML, CSS, JS)
-    ▼
-Cloudflare global edge network
-    │  HTTPS
-    ▼
-browser`;
-
-const deliveryDiagramLabel =
-  'Delivery pipeline diagram: a git push goes to the GitHub repository, which triggers a Cloudflare Pages build running npm run build to produce the dist directory of prerendered HTML, CSS, and JS. The output is distributed to the Cloudflare global edge network and served to the browser over HTTPS.';
+const deliveryDiagramAlt =
+  "Delivery pipeline diagram: local development pushes to a private GitHub repository, which triggers a Cloudflare Pages build that produces static output. The Cloudflare edge serves it over HTTPS with strict security headers to the visitor's browser, with no origin server.";
 ---
 
 <BaseLayout
@@ -160,11 +146,21 @@ const deliveryDiagramLabel =
       less to attack and far less to maintain, which makes it the safer and
       simpler first version.
     </p>
-    <pre
-      class="mt-6 overflow-x-auto rounded-lg border border-line bg-panel-2 p-5 font-mono text-xs leading-relaxed text-muted"
-      role="img"
-      aria-label={deliveryDiagramLabel}
-      tabindex="0">{deliveryDiagram}</pre>
+    <figure class="mt-6">
+      <img
+        src="/images/architecture/derekwei-site-architecture.svg"
+        alt={deliveryDiagramAlt}
+        width="560"
+        height="596"
+        loading="lazy"
+        class="w-full max-w-xl"
+      />
+      <figcaption class="mt-3 max-w-2xl text-xs leading-relaxed text-faint">
+        Delivery pipeline: local development, then a push to the private GitHub
+        repository, then a Cloudflare Pages build, then the Cloudflare edge over
+        HTTPS, then the visitor's browser.
+      </figcaption>
+    </figure>
   </section>
 
   <section class="py-10" aria-labelledby="headers-heading">

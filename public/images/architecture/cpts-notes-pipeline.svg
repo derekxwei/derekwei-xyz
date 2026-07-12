@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 712" width="560" height="712" role="img" aria-labelledby="cpts-title cpts-desc">
+  <title id="cpts-title">Certified Penetration Testing Specialist (CPTS) study notes pipeline</title>
+  <desc id="cpts-desc">Flow diagram: authorized study material is processed by Claude Code and Claude Haiku into structured notes and checklists, then review artifacts. A prominent human accuracy review gates everything before it enters the Obsidian vault. This is a study workflow toward the CPTS, not an earned certification.</desc>
+  <defs>
+    <marker id="cpts-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="558" height="710" rx="12" fill="#0a0f1a" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- 1. Authorized study material -->
+  <rect x="60" y="28" width="440" height="76" rx="10" fill="#101827" stroke="#334862" stroke-width="1.5"/>
+  <text x="34" y="73" font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#6b7f9c" text-anchor="middle">01</text>
+  <text x="280" y="60" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="600" fill="#e8eef6" text-anchor="middle">Authorized study material</text>
+  <text x="280" y="84" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#9db0c6" text-anchor="middle">used privately, never redistributed</text>
+  <line x1="280" y1="112" x2="280" y2="134" stroke="#38bdf8" stroke-width="2" marker-end="url(#cpts-arrow)"/>
+
+  <!-- 2. Claude processing -->
+  <rect x="60" y="144" width="440" height="76" rx="10" fill="#101827" stroke="#334862" stroke-width="1.5"/>
+  <text x="34" y="189" font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#6b7f9c" text-anchor="middle">02</text>
+  <text x="280" y="176" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="600" fill="#e8eef6" text-anchor="middle">Claude Code and Claude Haiku</text>
+  <text x="280" y="200" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#9db0c6" text-anchor="middle">model-assisted structuring and formatting</text>
+  <line x1="280" y1="228" x2="280" y2="250" stroke="#38bdf8" stroke-width="2" marker-end="url(#cpts-arrow)"/>
+
+  <!-- 3. Structured notes -->
+  <rect x="60" y="260" width="440" height="76" rx="10" fill="#101827" stroke="#334862" stroke-width="1.5"/>
+  <text x="34" y="305" font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#6b7f9c" text-anchor="middle">03</text>
+  <text x="280" y="292" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="600" fill="#e8eef6" text-anchor="middle">Structured notes and checklists</text>
+  <text x="280" y="316" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#9db0c6" text-anchor="middle">consistent topic summaries and technique lists</text>
+  <line x1="280" y1="344" x2="280" y2="366" stroke="#38bdf8" stroke-width="2" marker-end="url(#cpts-arrow)"/>
+
+  <!-- 4. Review artifacts -->
+  <rect x="60" y="376" width="440" height="76" rx="10" fill="#101827" stroke="#334862" stroke-width="1.5"/>
+  <text x="34" y="421" font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#6b7f9c" text-anchor="middle">04</text>
+  <text x="280" y="408" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="600" fill="#e8eef6" text-anchor="middle">Review artifacts</text>
+  <text x="280" y="432" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#9db0c6" text-anchor="middle">spaced-review prompts generated from the notes</text>
+  <line x1="280" y1="460" x2="280" y2="482" stroke="#38bdf8" stroke-width="2" marker-end="url(#cpts-arrow)"/>
+
+  <!-- 5. Human accuracy review (prominent) -->
+  <rect x="60" y="492" width="440" height="76" rx="10" fill="#0f2233" stroke="#38bdf8" stroke-width="2.5"/>
+  <text x="34" y="537" font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#6b7f9c" text-anchor="middle">05</text>
+  <text x="280" y="524" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="600" fill="#e8eef6" text-anchor="middle">Human accuracy review</text>
+  <text x="280" y="548" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#7dd3fc" text-anchor="middle">accuracy gate: nothing is trusted unchecked</text>
+  <line x1="280" y1="576" x2="280" y2="598" stroke="#38bdf8" stroke-width="2" marker-end="url(#cpts-arrow)"/>
+
+  <!-- 6. Obsidian vault -->
+  <rect x="60" y="608" width="440" height="76" rx="10" fill="#101827" stroke="#334862" stroke-width="1.5"/>
+  <text x="34" y="653" font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#6b7f9c" text-anchor="middle">06</text>
+  <text x="280" y="640" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="19" font-weight="600" fill="#e8eef6" text-anchor="middle">Obsidian vault</text>
+  <text x="280" y="664" font-family="ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#9db0c6" text-anchor="middle">linkable, searchable knowledge base</text>
+</svg>

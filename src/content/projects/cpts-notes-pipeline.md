@@ -41,14 +41,12 @@ The pipeline standardizes how raw material becomes durable notes:
 
 ## Workflow
 
-```text
-source material
-    -> processing (Claude Code + Claude Haiku)
-    -> structured notes (summaries, checklists)
-    -> review artifacts (spaced-review prompts)
-    -> human review (accuracy check)
-    -> Obsidian vault
-```
+![Pipeline diagram for the Certified Penetration Testing Specialist (CPTS) study workflow: authorized study material flows through Claude Code and Claude Haiku processing into structured notes and checklists, then review artifacts, then a highlighted human accuracy review step, and finally the Obsidian vault.](/images/architecture/cpts-notes-pipeline.svg)
+
+The steps in order: authorized study material, then Claude Code and Claude Haiku
+processing, then structured notes and checklists, then review artifacts, then a human
+accuracy review, and finally the Obsidian vault. The human review is the gate: nothing is
+trusted without it.
 
 ## Security considerations
 
