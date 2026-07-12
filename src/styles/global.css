@@ -149,6 +149,13 @@
     max-width: min(100%, 34rem);
     height: auto;
   }
+  /* Ensure <details> spoilers actually collapse, regardless of the CSS reset. */
+  .prose-custom details:not([open]) > :not(summary) {
+    display: none;
+  }
+  .prose-custom details > summary {
+    cursor: pointer;
+  }
 }
 
 /* print: resume prints clean on white without a separate stylesheet */
