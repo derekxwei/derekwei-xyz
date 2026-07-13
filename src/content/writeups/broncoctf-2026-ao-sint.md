@@ -1,10 +1,10 @@
 ---
 title: 'BroncoCTF: AO-SINT'
-description: 'An evidence-first OSINT writeup using topography, architecture, map geometry, sightlines, and in-game verification to identify four Arcane Odyssey locations.'
-event: 'BroncoCTF 2025'
+description: 'An evidence-first OSINT writeup using topography, architecture, map geometry, and sightlines to identify four Arcane Odyssey locations from four screenshots.'
+event: 'BroncoCTF 2026'
 category: 'osint'
 difficulty: 'hard'
-date: 2025-02-08
+date: 2026-07-11
 tags:
   - osint
   - geolocation
@@ -15,17 +15,17 @@ tags:
 draft: false
 ---
 
-<!-- Spoiler-safe by default: the final flag is hidden behind a details toggle. -->
-<!-- Screenshots are local placeholders; replace the files under -->
-<!-- public/images/ctf/broncoctf-ao-sint/ with the real captures at the same paths. -->
+<!-- The final flag is hidden behind a details toggle. Difficulty is my own qualitative rating, not an official BroncoCTF classification. -->
 
 ## Challenge overview
 
-**Event:** BroncoCTF 2025
+**Event:** BroncoCTF 2026
 **Challenge:** AO-SINT
 **Category:** Open Source Intelligence (OSINT)
 **Author:** `blunderous_wonders`
-**Points:** 492
+**Game:** Roblox Arcane Odyssey
+
+Team idktheflag placed 8th of 753 teams at BroncoCTF 2026.
 
 AO-SINT provided four screenshots from the Roblox game *Arcane Odyssey*: two from the Bronze Sea and two from the Nimbus Sea.
 
@@ -42,8 +42,6 @@ The challenge included an important hint:
 > The challenge is talking about the place where the character is, not what they are looking at. This may be the same place in some cases.
 
 That distinction defined the entire solve. Several screenshots prominently displayed distant islands, unusual weather, or visual glitches. Those details were often distractions rather than reliable evidence of the character's location.
-
-![Screenshot placeholder: the AO-SINT challenge prompt and required flag format, bronco followed by four underscore-separated location names.](/images/ctf/broncoctf-ao-sint/challenge-prompt.png)
 
 ## Final result
 
@@ -100,7 +98,9 @@ The player stood at a high elevation on a narrow rocky pillar. Several islands w
 
 The most visually prominent island was not necessarily the answer. The challenge asked where the player was standing, not what the player was viewing.
 
-![Screenshot placeholder: Location 1, the player on a high rock pillar in heavy rain with a distant frozen island (Frostmill) on the horizon.](/images/ctf/broncoctf-ao-sint/location-1-ierochos.png)
+![Arcane Odyssey character standing on a high narrow rock pillar with several distant islands visible through severe weather.](/images/ctf/broncoctf-2026-ao-sint/location-1-ierochos.webp)
+
+*The foreground pillar and multi-island sightline supported Ierochos.*
 
 ### Initial candidates
 
@@ -141,23 +141,15 @@ Ierochos
     -> Frostmill Island
 ```
 
-![Screenshot placeholder: the Bronze Sea map with an arrow drawn through Ierochos, Cedar Arch, Elm Island, Dawn Island, and Frostmill Island.](/images/ctf/broncoctf-ao-sint/bronze-sea-map.png)
+![Bronze Sea map used to compare Ierochos with Cedar Arch, Elm Island, Dawn Island, and Frostmill Island.](/images/ctf/broncoctf-2026-ao-sint/bronze-sea-map.webp)
+
+*Landmark order and relative distance helped reconstruct the Bronze Sea sightline.*
 
 ### Verification
 
-I reproduced the viewpoint in-game and compared:
+I later reproduced the viewpoint in-game and compared the elevation, foreground pillar, landmark order, and relative size of the visible islands. The reconstructed view was consistent with Ierochos. The verification screenshot is omitted to avoid publishing account-identifying information.
 
-- Camera elevation
-- Foreground pillar shape
-- Direction toward Frostmill Island
-- Visibility of Cedar Arch
-- Visibility of Elm Island
-- Visibility of Dawn Island
-- Relative landmark sizes
-
-The reconstructed view aligned with Ierochos.
-
-![Screenshot placeholder: in-game reproduction from Ierochos matching the original camera angle, elevation, foreground rock, and multi-island alignment.](/images/ctf/broncoctf-ao-sint/ierochos-verification.png)
+The challenge was designed to be solvable without downloading Roblox. In-game reproduction was an optional confirmation step after the screenshot and map analysis.
 
 **Answer:** `ierochos`
 
@@ -179,7 +171,9 @@ The second screenshot showed a developed merchant settlement with:
 - Waterfront infrastructure
 - Tall vegetated stone formations
 
-![Screenshot placeholder: Location 2, a timber-framed merchant harbor town with cargo, market stalls, red and brown roofs, and waterfront structures.](/images/ctf/broncoctf-ao-sint/port-mistral.png)
+![Port Mistral waterfront with timber-framed buildings, cargo, market structures, and red-brown roofs.](/images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral.webp)
+
+*Port Mistral's merchant architecture and waterfront layout distinguished it from Redwake.*
 
 ### False lead: Redwake
 
@@ -194,6 +188,10 @@ The strongest Nimbus Sea match was Port Mistral.
 The settlement's dense harbor layout, merchant structures, docks, cargo, cranes, and red-roofed buildings closely matched the screenshot.
 
 The intact appearance was also consistent with visiting Port Mistral before the storyline events that alter the settlement.
+
+![Nimbus Sea map with Port Mistral in the southwest and Makrinaos in the southeast.](/images/ctf/broncoctf-2026-ao-sint/nimbus-sea-map.webp)
+
+*The Nimbus Sea map located Port Mistral and Makrinaos, confirming both screenshots belonged to the Nimbus Sea.*
 
 **Answer:** `portmistral`
 
@@ -215,7 +213,9 @@ Visible details included:
 - A reception-like area
 - A facility constructed inside mountainous terrain
 
-![Screenshot placeholder: Location 3, a dark stone Assassin Syndicate interior with a red banner, a contract board, and torch-lit walls inside a mountain.](/images/ctf/broncoctf-ao-sint/makrinaos-interior.png)
+![Interior of the Dead Halls at Makrinaos with Assassin Syndicate signage, dark stone walls, and wooden construction.](/images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos.webp)
+
+*The Nimbus Sea context and Assassin Syndicate interior supported Makrinaos.*
 
 ### Whitesummit versus Makrinaos
 
@@ -232,9 +232,9 @@ However, the screenshot belonged to the Nimbus Sea set. This shifted the investi
 
 Makrinaos contains the Dead Halls, the Assassin Syndicate's Nimbus Sea base. The island is mountainous, and much of the facility is concealed inside the terrain.
 
-The challenge also referenced a miniboss hidden inside somewhere. That clue aligned with Architect Kalliste, a miniboss associated with the Dead Halls.
+The challenge also referenced a miniboss hidden inside somewhere. That clue appeared to match Architect Kalliste, a miniboss associated with the Dead Halls.
 
-The challenge's references to tornadoes and severe weather provided additional support. Makrinaos is surrounded by the Veiling Storms, an area associated with hazardous weather and rough seas.
+The challenge's references to tornadoes and severe weather provided additional evidence. Makrinaos is surrounded by the Veiling Storms, an area associated with hazardous weather and rough seas.
 
 These clues collectively supported Makrinaos:
 
@@ -260,7 +260,9 @@ The fourth screenshot contained several unusual visual elements:
 - Distant structures and terrain
 - A whale apparently flying through the air
 
-![Screenshot placeholder: Location 4, a red-lit coastal scene with reduced visibility, distant structures, and a whale appearing to fly through the air.](/images/ctf/broncoctf-ao-sint/ravenna.png)
+![Ravenna terrain and distant structures under red lighting, with an airborne whale visible as an unreliable physics clue.](/images/ctf/broncoctf-2026-ao-sint/location-4-ravenna.webp)
+
+*The airborne whale was treated as a low-confidence physics glitch rather than geographic evidence.*
 
 ### False lead: Akursius Keep
 
@@ -282,7 +284,7 @@ I therefore ignored the whale and focused on:
 - Settlement geometry
 - Character position
 
-The underlying environment matched Ravenna, the major Bronze Sea island associated with the Ravenna Realm.
+The underlying environment appeared to match Ravenna, the major Bronze Sea island associated with the Ravenna Realm.
 
 **Answer:** `ravenna`
 

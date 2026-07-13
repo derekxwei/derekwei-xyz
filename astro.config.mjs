@@ -11,6 +11,7 @@ export default defineConfig({
   // a small redirect HTML page for each, so existing links do not 404.
   redirects: {
     '/writeups': '/ctf',
+    '/ctf/broncoctf-2025-ao-sint': '/ctf/broncoctf-2026-ao-sint',
   },
   build: {
     // Keep all CSS in external files so the strict Content-Security-Policy
