@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Derek Wei
+N:Wei;Derek;;;
+ORG:The University of Texas at San Antonio
+TITLE:B.S. Cybersecurity Honors Student
+TEL;TYPE=CELL:+12107160226
+EMAIL;TYPE=INTERNET:derekxwei@gmail.com
+URL:https://derekwei.xyz
+URL:https://linkedin.com/in/derekxwei
+ADR;TYPE=WORK:;;;San Antonio;TX;;United States
+END:VCARD

@@ -51,7 +51,7 @@ The CSP is only as strong as the code that respects it. Enforce the coding rules
 ## Content safety
 
 - [ ] Writeups redact flags where competition rules require, and contain no real credentials or sensitive infrastructure detail (see [CONTENT_GUIDE.md](CONTENT_GUIDE.md)).
-- [ ] No personal data beyond what's intended (email and city). No phone number, home address, or date of birth anywhere in the repo.
+- [ ] No personal data beyond what's intended: email, city, and the intentionally public Google Voice number in `src/consts.ts` (`CONTACT`). No carrier phone number, home address, or date of birth anywhere in the repo.
 
 ## Post-deploy verification
 

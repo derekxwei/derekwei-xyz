@@ -3,3 +3,5 @@
 *.png binary
 *.jpg binary
 *.woff2 binary
+# vCard 3.0 requires CRLF line endings - never normalize.
+*.vcf -text

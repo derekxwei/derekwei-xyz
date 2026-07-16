@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../consts';
+
+// Networking card opened from an NFC tap or QR code at career fairs and
+// conferences. Publicly accessible but intentionally unlisted: noindex here,
+// X-Robots-Tag in public/_headers, and excluded from the sitemap in
+// astro.config.mjs. None of that is a security control - everything on this
+// page is deliberately public.
+
+const mailtoHref = `mailto:${CONTACT.email}?subject=Following%20up%20with%20Derek%20Wei`;
+const description =
+  'Connect with Derek Wei, a B.S. Cybersecurity Honors student at The University of Texas at San Antonio.';
+
+// GitHub is intentionally absent: no public GitHub profile URL exists in this
+// repository, and links are never invented.
+const profileLinks = [
+  { label: 'LinkedIn', href: CONTACT.linkedin, external: true },
+  { label: 'Resume (PDF)', href: CONTACT.resumePdf, external: false },
+  { label: 'Projects', href: CONTACT.projects, external: false },
+  { label: 'Full Website', href: CONTACT.website, external: false },
+];
+---
+
+<BaseLayout title="Professional Contact" description={description} noindex minimal>
+  <div class="mx-auto flex w-full max-w-sm flex-col items-center pt-10 text-center sm:pt-16">
+    <div
+      class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-accent/60 bg-panel font-mono text-2xl font-semibold text-accent"
+      aria-hidden="true"
+    >
+      DW
+    </div>
+
+    <h1 class="mt-5 text-3xl font-semibold tracking-tight">{CONTACT.name}</h1>
+    <p class="mt-2 font-mono text-sm text-accent">{CONTACT.title}</p>
+    <p class="mt-1 text-sm text-muted">{CONTACT.institution}</p>
+    <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+      Cybersecurity competitions, technical support, offensive security, and defensive analysis.
+    </p>
+
+    <div class="mt-8 grid w-full gap-3">
+      <a
+        href={CONTACT.vcard}
+        download="derek-wei.vcf"
+        class="btn btn-primary w-full py-3 text-base"
+        aria-label="Save Contact: download Derek Wei's contact card"
+      >
+        Save Contact
+      </a>
+      <a
+        href={`sms:${CONTACT.phoneE164}`}
+        class="btn btn-ghost w-full py-3"
+        aria-label="Text Derek Wei at his professional Google Voice number"
+      >
+        Text Derek
+      </a>
+      <a
+        href={mailtoHref}
+        class="btn btn-ghost w-full py-3"
+        aria-label="Email Derek Wei at his professional email address"
+      >
+        Email Derek
+      </a>
+      <a
+        href={`tel:${CONTACT.phoneE164}`}
+        class="btn btn-ghost w-full py-3"
+        aria-label="Call Derek Wei at his professional Google Voice number"
+      >
+        Call Derek
+      </a>
+    </div>
+
+    <nav class="mt-8 w-full border-t border-line pt-6" aria-label="Professional links">
+      <ul class="grid gap-2 font-mono text-sm" role="list">
+        {
+          profileLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="link"
+                rel={item.external ? 'noopener noreferrer' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <p class="mt-8 font-mono text-xs leading-relaxed text-faint">
+      CompTIA Security+ | CySA+ | PenTest+ | Network+
+    </p>
+
+    <footer class="mt-10 border-t border-line pt-5 pb-4 font-mono text-xs text-faint">
+      <p>{CONTACT.website.replace('https://', '')}</p>
+      <p class="mt-1">{CONTACT.location}</p>
+    </footer>
+  </div>
+</BaseLayout>

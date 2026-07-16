@@ -3,7 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import {
   CERTIFICATIONS,
-  CERTIFICATION_NOTE,
+  STACKABLE_CERTIFICATIONS,
+  STACKABLE_NOTE,
+  CREDLY_PROFILE,
+  NJHS_AWARD,
   CERT_ROADMAP,
   COMPETITIONS,
   NCL_CATEGORIES,
@@ -54,11 +57,64 @@ const roadmap = [
               {cert.issuer}
               {cert.year && ` · ${cert.year}`}
             </p>
+            {(cert.issued || cert.expires) && (
+              <p class="mt-1 font-mono text-xs text-faint">
+                {cert.issued && `Issued ${cert.issued}`}
+                {cert.issued && cert.expires && ' · '}
+                {cert.expires && `Expires ${cert.expires}`}
+              </p>
+            )}
+            {cert.verifyUrl && (
+              <p class="mt-2 font-mono text-xs">
+                <a
+                  class="link"
+                  href={cert.verifyUrl}
+                  rel="noopener noreferrer"
+                  aria-label={`Verify the ${cert.name} badge on Credly`}
+                >
+                  Verify badge
+                </a>
+              </p>
+            )}
           </li>
         ))
       }
     </ul>
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">{CERTIFICATION_NOTE}</p>
+
+    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
+      CompTIA stackable certifications
+    </h3>
+    <ul role="list" class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        STACKABLE_CERTIFICATIONS.map((cert) => (
+          <li class="rounded-md border border-line bg-panel-2 p-4">
+            <p class="text-sm text-muted">{cert.name}</p>
+            <p class="mt-1 font-mono text-xs text-faint">
+              {cert.issuer}
+              {cert.expires && ` · Expires ${cert.expires}`}
+            </p>
+            {cert.verifyUrl && (
+              <p class="mt-2 font-mono text-xs">
+                <a
+                  class="link"
+                  href={cert.verifyUrl}
+                  rel="noopener noreferrer"
+                  aria-label={`Verify the ${cert.name} badge on Credly`}
+                >
+                  Verify badge
+                </a>
+              </p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
+    <p class="mt-4 font-mono text-xs">
+      <a class="link" href={CREDLY_PROFILE} rel="noopener noreferrer">
+        Verify credentials on Credly
+      </a>
+    </p>
 
     <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
       Current certification roadmap
@@ -87,6 +143,18 @@ const roadmap = [
       class="mt-6 max-w-2xl list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
     >
       {awards.map((award) => <li>{award}</li>)}
+      <li>
+        {NJHS_AWARD.name}, {NJHS_AWARD.year}
+        {' · '}
+        <a
+          class="link font-mono text-xs"
+          href={NJHS_AWARD.verifyUrl}
+          rel="noopener noreferrer"
+          aria-label="Verify the National Junior Honor Society award badge on Credly"
+        >
+          Verify badge
+        </a>
+      </li>
     </ul>
   </section>
 

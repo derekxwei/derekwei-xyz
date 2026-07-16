@@ -13,9 +13,31 @@ export const SITE = {
     'Cybersecurity portfolio of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student, 5x CompTIA certified, 1st of 1,692 teams in the NCL High School division.',
   email: 'derekxwei@gmail.com',
   location: 'San Antonio, Texas',
-  linkedin: 'https://www.linkedin.com/in/derekxwei',
+  linkedin: 'https://linkedin.com/in/derekxwei',
   /** Exact wording, do not paraphrase. */
   clearance: 'U.S. citizen eligible to obtain a Secret security clearance.',
+} as const;
+
+/**
+ * Public professional contact identity, used by the Contact page, /card, and
+ * the vCard. The Google Voice number here is intentionally public; it is the
+ * only telephone number that may appear anywhere on this site or in any
+ * generated asset. This data renders in the browser on purpose - it is not a
+ * secret and does not belong in environment variables.
+ */
+export const CONTACT = {
+  name: SITE.name,
+  title: 'B.S. Cybersecurity Honors Student',
+  institution: 'The University of Texas at San Antonio',
+  email: SITE.email,
+  phoneDisplay: '(210) 716-0226',
+  phoneE164: '+12107160226',
+  website: SITE.url,
+  linkedin: SITE.linkedin,
+  resumePdf: '/Derek_Wei_Resume_Public.pdf',
+  projects: '/projects/',
+  location: SITE.location,
+  vcard: '/derek-wei.vcf',
 } as const;
 
 export const NAV = [
@@ -36,24 +58,102 @@ export interface Certification {
   short: string;
   issuer: string;
   year?: string;
+  /** From the public Credly badge, verbatim. Omit when Credly lists none. */
+  issued?: string;
+  expires?: string;
+  /** Public Credly badge URL. Never link Credly edit or account pages. */
+  verifyUrl?: string;
 }
+
+/** Public Credly verification profile (the public URL, never the edit URL). */
+export const CREDLY_PROFILE = 'https://www.credly.com/users/derek-wei.f1a98326';
 
 /** Most advanced first, matching the resume. */
 export const CERTIFICATIONS: readonly Certification[] = [
-  { name: 'CompTIA CySA+', short: 'CySA+', issuer: 'CompTIA', year: '2026' },
-  { name: 'CompTIA PenTest+', short: 'PenTest+', issuer: 'CompTIA', year: '2026' },
-  { name: 'CompTIA Security+', short: 'Security+', issuer: 'CompTIA' },
-  { name: 'CompTIA Network+', short: 'Network+', issuer: 'CompTIA' },
-  { name: 'CompTIA IT Fundamentals+', short: 'ITF+', issuer: 'CompTIA' },
+  {
+    name: 'CompTIA CySA+',
+    short: 'CySA+',
+    issuer: 'CompTIA',
+    year: '2026',
+    expires: 'May 14, 2029',
+    verifyUrl: 'https://www.credly.com/badges/c567b6a1-ce8c-4b22-9707-a6ef7ed6b773/public_url',
+  },
+  {
+    name: 'CompTIA PenTest+',
+    short: 'PenTest+',
+    issuer: 'CompTIA',
+    year: '2026',
+    expires: 'April 29, 2032',
+    verifyUrl: 'https://www.credly.com/badges/9755d071-4b25-4765-af4d-12cdd5a6f563/public_url',
+  },
+  {
+    name: 'CompTIA Security+',
+    short: 'Security+',
+    issuer: 'CompTIA',
+    expires: 'April 29, 2032',
+    verifyUrl: 'https://www.credly.com/badges/3a66db4e-f145-4eaa-a953-41d95ccfe70e/public_url',
+  },
+  {
+    name: 'CompTIA Network+',
+    short: 'Network+',
+    issuer: 'CompTIA',
+    expires: 'April 29, 2032',
+    verifyUrl: 'https://www.credly.com/badges/a9116ea8-2afb-4fbb-af6e-1d5267c7c0f3/public_url',
+  },
+  {
+    name: 'CompTIA IT Fundamentals+',
+    short: 'ITF+',
+    issuer: 'CompTIA',
+    issued: 'April 26, 2023',
+    verifyUrl: 'https://www.credly.com/badges/c3447ccb-bffa-4505-80f8-6771fe62983e/public_url',
+  },
   {
     name: 'Microsoft Office Specialist: Word Associate',
     short: 'MOS Word',
     issuer: 'Microsoft',
+    issued: 'December 8, 2023',
+    verifyUrl: 'https://www.credly.com/badges/03879611-277a-42a3-af16-ec92f94f51ff/public_url',
   },
 ];
 
-export const CERTIFICATION_NOTE =
-  'Security+ and CySA+ satisfy the DoD 8570 Information Assurance (IA) baseline.';
+/**
+ * CompTIA stackable certifications. Awarded for qualifying combinations of
+ * the underlying certifications above - they are not additional exams and
+ * are never counted toward the "5x CompTIA certified" statement.
+ */
+export const STACKABLE_CERTIFICATIONS: readonly Certification[] = [
+  {
+    name: 'CompTIA Network Security Professional (CNSP)',
+    short: 'CNSP',
+    issuer: 'CompTIA',
+    expires: 'May 14, 2029',
+    verifyUrl: 'https://www.credly.com/badges/c98ebc78-0824-4359-af3a-e1305ee31dde/public_url',
+  },
+  {
+    name: 'CompTIA Network Vulnerability Assessment Professional (CNVP)',
+    short: 'CNVP',
+    issuer: 'CompTIA',
+    expires: 'April 29, 2032',
+    verifyUrl: 'https://www.credly.com/badges/dd01f58a-4a40-4be6-b77f-475568bcae1c/public_url',
+  },
+  {
+    name: 'CompTIA Security Analytics Professional (CSAP)',
+    short: 'CSAP',
+    issuer: 'CompTIA',
+    expires: 'May 14, 2029',
+    verifyUrl: 'https://www.credly.com/badges/1de0b981-705a-445b-8b6f-3ec041228470/public_url',
+  },
+];
+
+export const STACKABLE_NOTE =
+  'CompTIA awards stackable certifications for earning qualifying combinations of underlying certifications. These credentials are listed separately and do not represent additional certification exams.';
+
+/** Academic recognition from Credly. Never listed as a technical certification. */
+export const NJHS_AWARD = {
+  name: 'National Junior Honor Society Outstanding Achievement Award Recipient',
+  year: '2022',
+  verifyUrl: 'https://www.credly.com/badges/da66bf02-d8d2-4a3f-a8c1-57b7bb71d584/public_url',
+} as const;
 
 /**
  * Certification roadmap. These are goals in various stages, not earned

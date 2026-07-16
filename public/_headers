@@ -15,3 +15,14 @@
 # Fingerprinted build assets are immutable - cache aggressively.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# /card is public but intentionally unlisted (NFC/QR networking page).
+# This is a discoverability preference, not a security control.
+/card
+  X-Robots-Tag: noindex, nofollow, noarchive
+/card/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+# vCard download used by the Save Contact button on /card.
+/derek-wei.vcf
+  Content-Type: text/vcard; charset=utf-8

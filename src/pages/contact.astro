@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { SITE } from '../consts';
+import { SITE, CONTACT } from '../consts';
+
+const mailtoHref = `mailto:${CONTACT.email}?subject=Professional%20Inquiry%20for%20Derek%20Wei`;
 ---
 
 <BaseLayout
@@ -11,7 +13,7 @@ import { SITE } from '../consts';
   <PageHeader
     kicker="~/contact"
     title="Contact"
-    lede="Email is the fastest way to reach me. LinkedIn works too."
+    lede="Email is the fastest way to reach me. Calls, texts, and LinkedIn work too."
   />
 
   <section class="py-10">
@@ -19,13 +21,40 @@ import { SITE } from '../consts';
     <div class="grid gap-4 sm:grid-cols-2">
       <div class="panel p-6">
         <h3 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
-          <span class="text-accent" aria-hidden="true">##</span> Email
+          <span class="text-accent" aria-hidden="true">##</span> Direct contact
         </h3>
-        <p class="mt-4">
-          <a href={`mailto:${SITE.email}`} class="link font-mono text-base sm:text-lg"
-            >{SITE.email}</a
-          >
-        </p>
+        <dl class="mt-4 grid gap-3">
+          <div>
+            <dt class="font-mono text-xs uppercase tracking-wider text-faint">Email Derek</dt>
+            <dd class="mt-1">
+              <a
+                href={mailtoHref}
+                class="link font-mono text-base sm:text-lg"
+                aria-label={`Email Derek Wei at ${CONTACT.email}`}
+                >{CONTACT.email}</a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt class="font-mono text-xs uppercase tracking-wider text-faint">
+              Call or text Derek
+            </dt>
+            <dd class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
+              <a
+                href={`tel:${CONTACT.phoneE164}`}
+                class="link font-mono text-base sm:text-lg"
+                aria-label={`Call Derek Wei at ${CONTACT.phoneDisplay}, his professional Google Voice number`}
+                >{CONTACT.phoneDisplay}</a
+              >
+              <a
+                href={`sms:${CONTACT.phoneE164}`}
+                class="link font-mono text-sm"
+                aria-label="Text Derek Wei at his professional Google Voice number"
+                >Text Derek</a
+              >
+            </dd>
+          </div>
+        </dl>
         <p class="mt-4 text-sm leading-relaxed text-muted">Worth writing about:</p>
         <ul class="mt-2 grid gap-1.5 text-sm text-muted" role="list">
           <li class="flex gap-2">
@@ -47,7 +76,12 @@ import { SITE } from '../consts';
         </ul>
         <ul class="mt-5 grid gap-1.5 border-t border-line pt-4 font-mono text-sm" role="list">
           <li>
-            <a class="link" href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a>
+            <a
+              class="link"
+              href={SITE.linkedin}
+              rel="noopener noreferrer"
+              aria-label="Connect on LinkedIn with Derek Wei">Connect on LinkedIn</a
+            >
             <span class="text-faint"> /in/derekxwei</span>
           </li>
         </ul>

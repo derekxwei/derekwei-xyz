@@ -6,7 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://derekwei.xyz',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // /card is publicly accessible but intentionally unlisted: it is excluded
+    // from the sitemap and carries noindex (meta + X-Robots-Tag). Not a
+    // security control - the page contains only deliberately public info.
+    sitemap({ filter: (page) => new URL(page).pathname !== '/card/' }),
+  ],
   // Old routes kept alive after the /ctf and /lab rename. Static builds emit
   // a small redirect HTML page for each, so existing links do not 404.
   redirects: {
