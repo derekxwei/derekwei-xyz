@@ -170,6 +170,8 @@ export interface Competition {
   kind: string;
   /** Verifiable placement, straight from the resume. Omit when none. */
   result?: string;
+  /** Published writeup that evidences this result, if one exists. */
+  writeup?: { label: string; href: string };
 }
 
 export const COMPETITIONS: readonly Competition[] = [
@@ -198,6 +200,12 @@ export const COMPETITIONS: readonly Competition[] = [
     name: 'RowdyCon CTF',
     kind: 'Capture the Flag',
     result: '3rd of 85 teams (2026)',
+  },
+  {
+    name: 'BroncoCTF 2026',
+    kind: 'Capture the Flag',
+    result: '8th of 753 teams with 3,777 points, Team idktheflag',
+    writeup: { label: 'Read the AO-SINT writeup', href: '/ctf/broncoctf-2026-ao-sint/' },
   },
   {
     name: 'CTF@CIT',

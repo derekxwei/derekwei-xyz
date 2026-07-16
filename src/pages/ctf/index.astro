@@ -9,6 +9,11 @@ const writeups = (
   await getCollection('writeups', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
 ).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+// Team results shown as secondary context on writeup cards, keyed by entry id.
+const teamResults: Record<string, string> = {
+  'broncoctf-2026-ao-sint': 'Team idktheflag placed 8th of 753 teams.',
+};
+
 const categories = [
   { name: 'Web', note: 'web application exploitation' },
   { name: 'Cryptography', note: 'ciphers, hashing, and key mistakes' },
@@ -74,6 +79,7 @@ const structure = [
               title={entry.data.title}
               description={entry.data.description}
               meta={entry.data.event}
+              note={teamResults[entry.id]}
               tags={[
                 entry.data.category,
                 ...(entry.data.difficulty ? [entry.data.difficulty] : []),

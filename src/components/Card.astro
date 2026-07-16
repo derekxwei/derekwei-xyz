@@ -7,11 +7,13 @@ interface Props {
   description: string;
   /** Right-aligned mono metadata, e.g. a date or event name */
   meta?: string;
+  /** Subdued secondary context line, e.g. a team competition result */
+  note?: string;
   tags?: string[];
   status?: 'shipped' | 'in-progress' | 'planned';
 }
 
-const { href, title, description, meta, tags = [], status } = Astro.props;
+const { href, title, description, meta, note, tags = [], status } = Astro.props;
 
 const statusLabel: string | undefined =
   status === 'in-progress' ? 'in progress' : status;
@@ -27,6 +29,7 @@ const statusTone: 'accent' | 'warn' | 'muted' =
     {meta && <span class="shrink-0 font-mono text-xs text-faint">{meta}</span>}
   </div>
   <p class="mt-2 text-sm leading-relaxed text-muted">{description}</p>
+  {note && <p class="mt-2 font-mono text-xs text-faint">{note}</p>}
   {
     (statusLabel || tags.length > 0) && (
       <div class="mt-4 flex flex-wrap items-center gap-2">
