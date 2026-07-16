@@ -6,7 +6,6 @@ category: 'osint'
 difficulty: 'hard'
 date: 2026-07-11
 tags:
-  - osint
   - geolocation
   - roblox
   - arcane-odyssey
@@ -19,11 +18,7 @@ draft: false
 
 ## Challenge overview
 
-**Event:** BroncoCTF 2026
-**Challenge:** AO-SINT
-**Category:** Open Source Intelligence (OSINT)
-**Author:** `blunderous_wonders`
-**Game:** Roblox Arcane Odyssey
+**Challenge author:** `blunderous_wonders` · **Game:** Roblox Arcane Odyssey
 
 Team idktheflag placed 8th of 753 teams at BroncoCTF 2026.
 
@@ -77,16 +72,7 @@ For every image, I separated the evidence into two groups.
 - Map direction
 - In-game viewpoint reproduction
 
-**Supporting evidence**
-
-- Weather
-- Lighting
-- Story clues
-- Visual effects
-- Physics behavior
-- Distant landmarks
-
-The supporting evidence could strengthen a theory, but it was not reliable enough to establish a location by itself.
+**Supporting evidence** was everything else: weather, lighting, story clues, visual effects, physics behavior, and distant landmarks. Supporting evidence could strengthen a theory, but it was never reliable enough to establish a location by itself.
 
 ## Location 1: Ierochos
 
@@ -134,11 +120,7 @@ I treated the visible islands as reference points and worked backward to find a 
 The approximate sightline was:
 
 ```text
-Ierochos
-    -> Cedar Arch
-    -> Elm Island
-    -> Dawn Island
-    -> Frostmill Island
+Ierochos → Cedar Arch → Elm Island → Dawn Island → Frostmill Island
 ```
 
 ![Bronze Sea map used to compare Ierochos with Cedar Arch, Elm Island, Dawn Island, and Frostmill Island.](/images/ctf/broncoctf-2026-ao-sint/bronze-sea-map.webp)
@@ -159,17 +141,7 @@ The challenge was designed to be solvable without downloading Roblox. In-game re
 
 ### Initial observations
 
-The second screenshot showed a developed merchant settlement with:
-
-- Timber-framed buildings
-- Light-colored plaster walls
-- Red and brown roofs
-- Stone foundations
-- Barrels and cargo crates
-- Market equipment
-- Fish or seafood displays
-- Waterfront infrastructure
-- Tall vegetated stone formations
+The second screenshot showed a developed merchant settlement: timber-framed buildings with light plaster walls and red-brown roofs on stone foundations, barrels and cargo crates, market equipment and seafood displays, waterfront infrastructure, and tall vegetated stone formations behind the town.
 
 ![Port Mistral waterfront with timber-framed buildings, cargo, market structures, and red-brown roofs.](/images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral.webp)
 
@@ -236,14 +208,7 @@ The challenge also referenced a miniboss hidden inside somewhere. That clue appe
 
 The challenge's references to tornadoes and severe weather provided additional evidence. Makrinaos is surrounded by the Veiling Storms, an area associated with hazardous weather and rough seas.
 
-These clues collectively supported Makrinaos:
-
-- Nimbus Sea context
-- Assassin Syndicate interior
-- Mountain-based facility
-- Dead Halls
-- Hidden miniboss clue
-- Severe weather association
+Taken together, the Nimbus Sea context, the Assassin Syndicate interior, the mountain-based facility, the Dead Halls, the hidden-miniboss clue, and the severe-weather association all pointed the same way.
 
 **Answer:** `makrinaos`
 
@@ -276,13 +241,7 @@ Flying whales can occur as a physics glitch in Arcane Odyssey. Similar incidents
 
 The red lighting was also weak evidence because lighting and weather effects are not necessarily unique to one island.
 
-I therefore ignored the whale and focused on:
-
-- Terrain beneath the character
-- Nearby structures
-- General landform
-- Settlement geometry
-- Character position
+I therefore ignored the whale and focused on the terrain beneath the character, the nearby structures, the general landform, and the settlement geometry around the character's position.
 
 The underlying environment appeared to match Ravenna, the major Bronze Sea island associated with the Ravenna Realm.
 
@@ -294,16 +253,7 @@ The underlying environment appeared to match Ravenna, the major Bronze Sea islan
 
 The four confirmed locations were `ierochos`, `portmistral`, `makrinaos`, and `ravenna`.
 
-The challenge required:
-
-- Lowercase letters
-- Underscores between locations
-- No spaces within multiword names
-
-<details>
-<summary><strong>Spoiler: show the assembled flag</strong></summary>
-<pre><code>bronco{ierochos_portmistral_makrinaos_ravenna}</code></pre>
-</details>
+The challenge required lowercase letters, underscores between locations, and no spaces within multiword names. The assembled flag is behind the spoiler under [Final result](#final-result) above.
 
 ## Failed approaches
 
@@ -339,14 +289,9 @@ A better process would have been:
 The general process can be expressed as:
 
 ```text
-Standing terrain
-    -> Elevation
-    -> Visible landmarks
-    -> Landmark order
-    -> Map direction
-    -> Distance and apparent size
-    -> In-game verification
-    -> Final location
+Standing terrain → Elevation → Visible landmarks → Landmark order
+    → Map direction → Distance and apparent size
+    → In-game verification → Final location
 ```
 
 ## Defensive and analytical takeaway
@@ -369,7 +314,4 @@ AO-SINT was not primarily a landmark-recognition challenge. It was an evidence-r
 
 The most difficult step was identifying Ierochos from its topography and sightline toward Cedar Arch, Elm Island, Dawn Island, and Frostmill Island. Once the analysis focused on the character's actual standing position, the challenge hint became much clearer.
 
-<details>
-<summary><strong>Spoiler: show the final answer</strong></summary>
-<pre><code>bronco{ierochos_portmistral_makrinaos_ravenna}</code></pre>
-</details>
+The final flag is behind the spoiler under [Final result](#final-result) at the top of this writeup.

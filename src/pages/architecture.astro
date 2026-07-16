@@ -80,55 +80,55 @@ const deliveryDiagramAlt =
     >
       <span class="text-accent" aria-hidden="true">##</span> Stack
     </h2>
-    <ul class="mt-6 grid gap-4 sm:grid-cols-2" role="list">
-      <li class="panel p-5">
-        <h3 class="font-mono text-sm text-ink">Astro 5, static output</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
+    <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+      <div>
+        <dt class="font-mono text-sm text-ink">Astro 5, static output</dt>
+        <dd class="mt-2 text-sm leading-relaxed text-muted">
           Every page is prerendered to plain HTML at build time. There is no
           server, no runtime, no rendering on request - the deploy artifact is
           a folder of files.
-        </p>
-      </li>
-      <li class="panel p-5">
-        <h3 class="font-mono text-sm text-ink">TypeScript, strict</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-sm text-ink">TypeScript, strict</dt>
+        <dd class="mt-2 text-sm leading-relaxed text-muted">
           The project extends Astro's strict tsconfig, and
           <code class="text-ink">astro check</code> type-checks every page and
           component, including the script blocks.
-        </p>
-      </li>
-      <li class="panel p-5">
-        <h3 class="font-mono text-sm text-ink">Tailwind CSS 4</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-sm text-ink">Tailwind CSS 4</dt>
+        <dd class="mt-2 text-sm leading-relaxed text-muted">
           Styling via the Tailwind Vite plugin, with the design tokens (colors,
           fonts) defined once in a single global stylesheet.
-        </p>
-      </li>
-      <li class="panel p-5">
-        <h3 class="font-mono text-sm text-ink">Content collections</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-sm text-ink">Content collections</dt>
+        <dd class="mt-2 text-sm leading-relaxed text-muted">
           Projects, writeups, and lab notes are Markdown/MDX files in typed
           content collections - frontmatter is validated by schema at build
           time, so a malformed entry fails the build instead of shipping.
-        </p>
-      </li>
-      <li class="panel p-5">
-        <h3 class="font-mono text-sm text-ink">Zero client JS by default</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-sm text-ink">Zero client JS by default</dt>
+        <dd class="mt-2 text-sm leading-relaxed text-muted">
           Pages ship no JavaScript. The only scripts on the whole site are the
           mobile nav toggle and the interactive
           <a href="/tools/" class="link">tools</a> pages, bundled by Astro into
           external files.
-        </p>
-      </li>
-      <li class="panel p-5">
-        <h3 class="font-mono text-sm text-ink">No external requests</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-sm text-ink">No external requests</dt>
+        <dd class="mt-2 text-sm leading-relaxed text-muted">
           System font stack, no CDN scripts, no remote images, no third-party
           anything. Every byte the browser loads comes from this origin.
-        </p>
-      </li>
-    </ul>
+        </dd>
+      </div>
+    </dl>
   </section>
 
   <section class="py-10" aria-labelledby="delivery-heading">

@@ -44,16 +44,16 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
   <div
     class="print-hidden flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-line py-5"
   >
-    <button id="print-btn" class="btn btn-primary" type="button">
-      Print / save as PDF
-    </button>
     {
       resumePdfExists && (
-        <a href={resumePdf} class="btn btn-ghost" download>
+        <a href={resumePdf} class="btn btn-primary" download>
           Download PDF
         </a>
       )
     }
+    <button id="print-btn" class:list={['btn', resumePdfExists ? 'btn-ghost' : 'btn-primary']} type="button">
+      Print / save as PDF
+    </button>
     <p class="font-mono text-xs text-faint">
       // print-friendly: site chrome is stripped and output renders dark-on-white
     </p>

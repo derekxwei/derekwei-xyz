@@ -34,17 +34,17 @@ const fmt = (d: Date) =>
     title={entry.data.title}
     lede={entry.data.description}
   >
-    <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-      <span class="font-mono text-xs text-faint">{entry.data.event}</span>
-      <Badge label={entry.data.category} tone="accent" />
-      {entry.data.difficulty && <Badge label={entry.data.difficulty} />}
-      <time
-        datetime={entry.data.date.toISOString().slice(0, 10)}
-        class="font-mono text-xs text-faint"
-      >
+    <p class="mt-4 font-mono text-xs text-faint">
+      {entry.data.event}
+      <span aria-hidden="true"> &middot; </span>
+      <time datetime={entry.data.date.toISOString().slice(0, 10)}>
         {fmt(entry.data.date)}
       </time>
-      {entry.data.tags.map((tag) => <Badge label={tag} />)}
+    </p>
+    <div class="mt-3 flex flex-wrap items-center gap-2">
+      <Badge label={entry.data.category} tone="accent" />
+      {entry.data.difficulty && <Badge label={entry.data.difficulty} />}
+      {entry.data.tags.slice(0, 5).map((tag) => <Badge label={tag} />)}
     </div>
   </PageHeader>
 

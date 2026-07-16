@@ -220,7 +220,7 @@ const roadmap = [
       Across these competitions, challenges reinforced hands-on skills that
       transfer directly to offensive security work:
     </p>
-    <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+    <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
       {
         [
           {
@@ -264,9 +264,9 @@ const roadmap = [
               'Writing Python and Bash to automate repetitive steps and solve challenges at scale.',
           },
         ].map((item) => (
-          <div class="panel p-4">
+          <div>
             <dt class="font-mono text-sm text-accent">{item.skill}</dt>
-            <dd class="mt-2 text-sm leading-relaxed text-muted">{item.detail}</dd>
+            <dd class="mt-1.5 text-sm leading-relaxed text-muted">{item.detail}</dd>
           </div>
         ))
       }

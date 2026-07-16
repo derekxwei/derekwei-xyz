@@ -9,11 +9,13 @@ interface Props {
   meta?: string;
   /** Subdued secondary context line, e.g. a team competition result */
   note?: string;
+  /** Span the full grid width, for a featured entry in a two-column list */
+  wide?: boolean;
   tags?: string[];
   status?: 'shipped' | 'in-progress' | 'planned';
 }
 
-const { href, title, description, meta, note, tags = [], status } = Astro.props;
+const { href, title, description, meta, note, wide = false, tags = [], status } = Astro.props;
 
 const statusLabel: string | undefined =
   status === 'in-progress' ? 'in progress' : status;
@@ -21,7 +23,12 @@ const statusTone: 'accent' | 'warn' | 'muted' =
   status === 'shipped' ? 'accent' : status === 'in-progress' ? 'warn' : 'muted';
 ---
 
-<li class="panel group relative p-5 transition-colors hover:border-line-2">
+<li
+  class:list={[
+    'panel group relative p-5 transition-colors hover:border-line-2',
+    wide && 'sm:col-span-2',
+  ]}
+>
   <div class="flex items-baseline justify-between gap-4">
     <h3 class="text-base font-medium leading-snug">
       <a href={href} class="card-link">{title}</a>

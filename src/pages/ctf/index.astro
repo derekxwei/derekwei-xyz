@@ -73,17 +73,18 @@ const structure = [
     {
       writeups.length > 0 ? (
         <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
-          {writeups.map((entry) => (
+          {writeups.map((entry, i) => (
             <Card
               href={`/ctf/${entry.id}/`}
               title={entry.data.title}
               description={entry.data.description}
               meta={entry.data.event}
               note={teamResults[entry.id]}
+              wide={i === 0}
               tags={[
                 entry.data.category,
                 ...(entry.data.difficulty ? [entry.data.difficulty] : []),
-                ...entry.data.tags,
+                ...entry.data.tags.slice(0, 3),
               ]}
             />
           ))}

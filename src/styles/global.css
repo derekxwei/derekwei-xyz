@@ -144,10 +144,22 @@
   .prose-custom :where(pre) {
     border: 1px solid var(--color-line);
   }
-  /* Keep embedded diagrams at a readable size instead of filling the column. */
+  /* Evidence images fill the reading column; diagrams keep their intrinsic
+     width. The column itself is capped in Prose.astro for readable lines. */
   .prose-custom :where(img) {
-    max-width: min(100%, 34rem);
+    max-width: 100%;
     height: auto;
+  }
+  /* Markdown evidence figures: an image paragraph followed by an italic
+     caption paragraph reads as figure + subordinate caption. */
+  .prose-custom :where(p:has(> img:only-child)) {
+    margin-bottom: 0.375rem;
+  }
+  .prose-custom :where(p:has(> img:only-child) + p:has(> em:only-child)) {
+    margin-top: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-faint);
   }
   /* Ensure <details> spoilers actually collapse, regardless of the CSS reset. */
   .prose-custom details:not([open]) > :not(summary) {

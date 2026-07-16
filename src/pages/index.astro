@@ -75,38 +75,68 @@ const personSchema = {
     </div>
   </section>
 
+  <!-- Selected proof -->
+  <section class="py-10" aria-labelledby="selected-proof-heading">
+    <h2
+      id="selected-proof-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Selected proof
+    </h2>
+    <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
+      <Card
+        href="/ctf/broncoctf-2026-ao-sint/"
+        title="AO-SINT: evidence-first game geolocation"
+        description="Used topography, architecture, map geometry, and sightlines to identify four Arcane Odyssey locations from four screenshots."
+        meta="BroncoCTF 2026"
+        note="Team idktheflag placed 8th of 753 teams."
+        wide
+      />
+      <Card
+        href="/achievements/"
+        title="Verified credentials"
+        description="Five CompTIA certifications and one Microsoft certification, each independently verifiable on Credly, with competition placements to match."
+        meta="Achievements"
+      />
+      <Card
+        href="/Derek_Wei_Resume_Public.pdf"
+        title="Resume (PDF)"
+        description="One page, ATS-readable, with clickable contact and credential verification links."
+        meta="Download"
+      />
+    </ul>
+  </section>
+
   <!-- Current focus -->
-  <section class="py-10" aria-labelledby="current-focus-heading">
+  <section class="border-t border-line py-10" aria-labelledby="current-focus-heading">
     <h2
       id="current-focus-heading"
       class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
     >
       <span class="text-accent" aria-hidden="true">##</span> Current focus
     </h2>
-    <div class="panel mt-5 p-5 sm:p-6">
-      <ul class="grid gap-2.5 sm:grid-cols-2" role="list">
-        {
-          [
-            'Certified Penetration Testing Specialist (CPTS) preparation',
-            'Capture the Flag competition practice',
-            'Offensive security labs',
-            'Cybersecurity portfolio development',
-            'Beginning UTSA Cybersecurity Honors coursework',
-          ].map((item) => (
-            <li class="flex gap-2 text-sm leading-relaxed text-muted">
-              <span class="text-accent" aria-hidden="true">
-                -
-              </span>
-              {item}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    <ul class="mt-5 grid gap-2.5 sm:grid-cols-2" role="list">
+      {
+        [
+          'Certified Penetration Testing Specialist (CPTS) preparation',
+          'Capture the Flag competition practice',
+          'Offensive security labs',
+          'Cybersecurity portfolio development',
+          'Beginning UTSA Cybersecurity Honors coursework',
+        ].map((item) => (
+          <li class="flex gap-2 text-sm leading-relaxed text-muted">
+            <span class="text-accent" aria-hidden="true">
+              -
+            </span>
+            {item}
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <!-- Certifications -->
-  <section class="py-10" aria-labelledby="certifications-heading">
+  <section class="border-t border-line py-10" aria-labelledby="certifications-heading">
     <h2
       id="certifications-heading"
       class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
@@ -137,7 +167,7 @@ const personSchema = {
   </section>
 
   <!-- Focus -->
-  <section class="py-10" aria-labelledby="focus-heading">
+  <section class="border-t border-line py-10" aria-labelledby="focus-heading">
     <h2
       id="focus-heading"
       class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
@@ -177,19 +207,19 @@ const personSchema = {
     </ul>
   </section>
 
-  <!-- Featured projects -->
-  <section class="py-10" aria-labelledby="featured-projects-heading">
-    <div class="flex flex-wrap items-baseline justify-between gap-4">
-      <h2
-        id="featured-projects-heading"
-        class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-      >
-        <span class="text-accent" aria-hidden="true">##</span> Featured projects
-      </h2>
-      <a href="/projects/" class="link font-mono text-sm">All projects →</a>
-    </div>
-    {
-      featuredProjects.length > 0 ? (
+  <!-- Featured projects (rendered only when a project is marked featured) -->
+  {
+    featuredProjects.length > 0 && (
+      <section class="border-t border-line py-10" aria-labelledby="featured-projects-heading">
+        <div class="flex flex-wrap items-baseline justify-between gap-4">
+          <h2
+            id="featured-projects-heading"
+            class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+          >
+            <span class="text-accent" aria-hidden="true">##</span> Featured projects
+          </h2>
+          <a href="/projects/" class="link font-mono text-sm">All projects →</a>
+        </div>
         <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
           {featuredProjects.map((project) => (
             <Card
@@ -202,22 +232,12 @@ const personSchema = {
             />
           ))}
         </ul>
-      ) : (
-        <div class="panel mt-5 p-6">
-          <!-- TODO(derek): set `featured: true` on published projects to surface them here -->
-          <p class="text-sm leading-relaxed text-muted">
-            No featured projects published yet. Current work is in progress
-            and will appear here once it ships. The
-            <a href="/projects/" class="link">projects page</a> has the full
-            list.
-          </p>
-        </div>
-      )
-    }
-  </section>
+      </section>
+    )
+  }
 
   <!-- Competition skill areas -->
-  <section class="py-10" aria-labelledby="competitions-heading">
+  <section class="border-t border-line py-10" aria-labelledby="competitions-heading">
     <div class="flex flex-wrap items-baseline justify-between gap-4">
       <h2
         id="competitions-heading"
@@ -227,26 +247,24 @@ const personSchema = {
       </h2>
       <a href="/achievements/" class="link font-mono text-sm">Achievements →</a>
     </div>
-    <div class="panel mt-5 p-5 sm:p-6">
-      <ul class="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4" role="list">
-        {
-          COMPETITION_SKILLS.map((skill) => (
-            <li class="flex gap-2 text-sm leading-relaxed text-muted">
-              <span class="text-accent" aria-hidden="true">
-                -
-              </span>
-              {skill}
-            </li>
-          ))
-        }
-      </ul>
-      <p class="mt-5 border-t border-line pt-4 text-sm leading-relaxed text-muted">
-        Developed through {COMPETITIONS.map((c) => c.name).join(', ')}. Full
-        placements are on the <a href="/achievements/" class="link">achievements</a>
-        page, and sanitized writeups are under
-        <a href="/ctf/" class="link">CTF writeups</a> as they're completed.
-      </p>
-    </div>
+    <ul class="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+      {
+        COMPETITION_SKILLS.map((skill) => (
+          <li class="flex gap-2 text-sm leading-relaxed text-muted">
+            <span class="text-accent" aria-hidden="true">
+              -
+            </span>
+            {skill}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-6 max-w-3xl text-sm leading-relaxed text-muted">
+      Developed through {COMPETITIONS.map((c) => c.name).join(', ')}. Full
+      placements are on the <a href="/achievements/" class="link">achievements</a>
+      page, and sanitized writeups are under
+      <a href="/ctf/" class="link">CTF writeups</a> as they're completed.
+    </p>
   </section>
 
   <script
