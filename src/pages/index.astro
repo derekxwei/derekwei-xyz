@@ -117,7 +117,18 @@ const personSchema = {
       {
         CERTIFICATIONS.map((cert) => (
           <li class="panel flex flex-col gap-1 p-4" title={cert.name}>
-            <span class="font-mono text-sm text-accent">{cert.short}</span>
+            {cert.verifyUrl ? (
+              <a
+                href={cert.verifyUrl}
+                class="link self-start font-mono text-sm"
+                rel="noopener noreferrer"
+                aria-label={`${cert.short}: verify badge on Credly`}
+              >
+                {cert.short}
+              </a>
+            ) : (
+              <span class="font-mono text-sm text-accent">{cert.short}</span>
+            )}
             <span class="text-xs text-muted">{cert.name}</span>
           </li>
         ))

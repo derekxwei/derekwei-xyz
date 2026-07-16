@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { CONTACT } from '../consts';
+import { CONTACT, CREDLY_PROFILE } from '../consts';
 
 // Networking card opened from an NFC tap or QR code at career fairs and
 // conferences. Publicly accessible but intentionally unlisted: noindex here,
@@ -88,9 +88,19 @@ const profileLinks = [
       </ul>
     </nav>
 
-    <p class="mt-8 font-mono text-xs leading-relaxed text-faint">
-      CompTIA Security+ | CySA+ | PenTest+ | Network+
-    </p>
+    <div class="mt-8">
+      <p class="font-mono text-xs leading-relaxed text-faint">
+        CySA+ | PenTest+ | Security+ | Network+ | ITF+
+      </p>
+      <a
+        href={CREDLY_PROFILE}
+        class="link mt-1 inline-block py-1 font-mono text-xs"
+        rel="noopener noreferrer"
+        aria-label="View verified credentials on Credly"
+      >
+        View verified credentials
+      </a>
+    </div>
 
     <footer class="mt-10 border-t border-line pt-5 pb-4 font-mono text-xs text-faint">
       <p>{CONTACT.website.replace('https://', '')}</p>

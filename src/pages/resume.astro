@@ -137,23 +137,23 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
       {
         CERTIFICATIONS.map((cert) => (
           <li class="panel p-4">
-            <p class="text-sm font-medium text-ink">{cert.name}</p>
+            <p class="text-sm font-medium">
+              {cert.verifyUrl ? (
+                <a
+                  class="link"
+                  href={cert.verifyUrl}
+                  rel="noopener noreferrer"
+                  aria-label={`${cert.name}: verify badge on Credly`}
+                >
+                  {cert.name}
+                </a>
+              ) : (
+                <span class="text-ink">{cert.name}</span>
+              )}
+            </p>
             <p class="mt-1 font-mono text-xs text-faint">
               {cert.issuer}
               {cert.year && ` · ${cert.year}`}
-              {cert.verifyUrl && (
-                <>
-                  {' · '}
-                  <a
-                    class="link"
-                    href={cert.verifyUrl}
-                    rel="noopener noreferrer"
-                    aria-label={`Verify the ${cert.name} badge on Credly`}
-                  >
-                    Verify
-                  </a>
-                </>
-              )}
             </p>
           </li>
         ))
@@ -166,20 +166,18 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     <ul role="list" class="mt-3 flex flex-wrap gap-2">
       {
         STACKABLE_CERTIFICATIONS.map((cert) => (
-          <li class="rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted">
-            {cert.short}
-            {cert.verifyUrl && (
-              <>
-                {' · '}
-                <a
-                  class="link"
-                  href={cert.verifyUrl}
-                  rel="noopener noreferrer"
-                  aria-label={`Verify the ${cert.name} badge on Credly`}
-                >
-                  Verify
-                </a>
-              </>
+          <li class="rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs">
+            {cert.verifyUrl ? (
+              <a
+                class="link"
+                href={cert.verifyUrl}
+                rel="noopener noreferrer"
+                aria-label={`${cert.short}: verify the ${cert.name} badge on Credly`}
+              >
+                {cert.short}
+              </a>
+            ) : (
+              <span class="text-muted">{cert.short}</span>
             )}
           </li>
         ))
@@ -188,7 +186,7 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
     <p class="mt-3 font-mono text-xs">
       <a class="link" href={CREDLY_PROFILE} rel="noopener noreferrer">
-        Verify credentials on Credly
+        View all verified credentials on Credly
       </a>
     </p>
 
