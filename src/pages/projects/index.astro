@@ -25,7 +25,16 @@ const fmt = (d: Date) =>
     kicker="~/projects"
     title="Projects"
     lede="Practical security tooling and infrastructure I build to learn by doing. Each entry documents what it is, how it's built, and where it actually stands - shipped, in progress, or planned."
-  />
+  >
+    <nav class="mt-5" aria-label="Also under Work">
+      <p class="font-mono text-xs text-faint">
+        Also under Work:{' '}
+        <a href="/architecture/" class="link">How this site works</a>
+        <span aria-hidden="true"> · </span>
+        <a href="/tools/" class="link">Browser security tools</a>
+      </p>
+    </nav>
+  </PageHeader>
 
   <section class="py-10">
     <h2 class="sr-only">Project list</h2>
