@@ -2,23 +2,25 @@
 import { NAV } from '../consts';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (item: (typeof NAV)[number]) =>
-  item.match.some((m) => path === m || path.startsWith(`${m}/`));
+const isActive = (href: string) => {
+  const h = href.replace(/\/$/, '') || '/';
+  return h === '/' ? path === '/' : path === h || path.startsWith(`${h}/`);
+};
 ---
 
 <header class="print-hidden sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
   <div class="relative mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
     <a
       href="/"
-      class="text-sm font-semibold tracking-tight transition-colors hover:text-accent"
+      class="font-mono text-sm font-semibold tracking-tight transition-colors hover:text-accent"
     >
-      Derek Wei
+      <span class="text-accent" aria-hidden="true">~/</span>derekwei.xyz
     </a>
     <nav aria-label="Primary">
       <button
         id="nav-toggle"
         type="button"
-        class="btn btn-ghost px-2.5 py-1.5 md:hidden"
+        class="btn btn-ghost px-2.5 py-1.5 lg:hidden"
         aria-expanded="false"
         aria-controls="nav-menu"
       >
@@ -33,17 +35,17 @@ const isActive = (item: (typeof NAV)[number]) =>
       </button>
       <ul
         id="nav-menu"
-        class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-line bg-bg px-4 py-3 shadow-lg md:static md:flex md:flex-row md:items-center md:gap-0.5 md:border-0 md:bg-transparent md:p-0 md:shadow-none"
+        class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-line bg-bg px-4 py-3 shadow-lg lg:static lg:flex lg:flex-row lg:items-center lg:gap-0.5 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
       >
         {
           NAV.map((item) => (
             <li>
               <a
                 href={item.href}
-                aria-current={isActive(item) ? 'page' : undefined}
+                aria-current={isActive(item.href) ? 'page' : undefined}
                 class:list={[
                   'block rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors',
-                  isActive(item)
+                  isActive(item.href)
                     ? 'bg-panel text-accent'
                     : 'text-muted hover:bg-panel hover:text-ink',
                 ]}

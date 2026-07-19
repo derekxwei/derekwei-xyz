@@ -39,18 +39,7 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     kicker="~/resume"
     title="Resume"
     lede="Education, certifications, competition results, and experience. Formatted to print cleanly."
-  >
-    <nav class="mt-5" aria-label="Also under Experience">
-      <p class="font-mono text-xs text-faint">
-        Also under Experience:{' '}
-        <a href="/achievements/" class="link">Achievements and placements</a>
-        <span aria-hidden="true"> · </span>
-        <a href={CREDLY_PROFILE} class="link" rel="noopener noreferrer"
-          >Credential verification on Credly</a
-        >
-      </p>
-    </nav>
-  </PageHeader>
+  />
 
   <div
     class="print-hidden flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-line py-5"

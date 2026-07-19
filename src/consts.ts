@@ -40,17 +40,17 @@ export const CONTACT = {
   vcard: '/derek-wei.vcf',
 } as const;
 
-/**
- * Five-section primary navigation. Every old route still exists; secondary
- * routes are reachable from their hub page and light up their hub's nav item
- * via `match`. The brand mark links home; /card/ stays unlisted on purpose.
- */
 export const NAV = [
-  { label: 'Work', href: '/projects/', match: ['/projects', '/architecture', '/tools'] },
-  { label: 'Experience', href: '/resume/', match: ['/resume', '/achievements'] },
-  { label: 'Writing', href: '/ctf/', match: ['/ctf', '/lab'] },
-  { label: 'About', href: '/now/', match: ['/now'] },
-  { label: 'Contact', href: '/contact/', match: ['/contact'] },
+  { label: 'Home', href: '/' },
+  { label: 'Resume', href: '/resume/' },
+  { label: 'Achievements', href: '/achievements/' },
+  { label: 'Projects', href: '/projects/' },
+  { label: 'CTF', href: '/ctf/' },
+  { label: 'Lab', href: '/lab/' },
+  { label: 'Tools', href: '/tools/' },
+  { label: 'Architecture', href: '/architecture/' },
+  { label: 'Now', href: '/now/' },
+  { label: 'Contact', href: '/contact/' },
 ] as const;
 
 export interface Certification {
