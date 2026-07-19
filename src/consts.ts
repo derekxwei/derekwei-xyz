@@ -40,8 +40,8 @@ export const CONTACT = {
   vcard: '/derek-wei.vcf',
 } as const;
 
+// The ~/derekwei.xyz brand mark is the link home, so no separate Home item.
 export const NAV = [
-  { label: 'Home', href: '/' },
   { label: 'Resume', href: '/resume/' },
   { label: 'Achievements', href: '/achievements/' },
   { label: 'Projects', href: '/projects/' },
