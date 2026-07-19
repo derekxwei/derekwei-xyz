@@ -1,0 +1,139 @@
+---
+// Compact theme selector: System / Dark / Light. Mirrors the mobile-nav
+// disclosure pattern already used in the header (button + toggled panel +
+// Escape + focus return). The resolved theme is applied before first paint
+// by /theme-boot.js; this control only updates the stored preference and
+// re-resolves. Stores exactly one string under "derekwei-theme".
+---
+
+<div class="relative" id="theme-widget">
+  <button
+    id="theme-toggle"
+    type="button"
+    class="btn btn-ghost px-2.5 py-1.5 font-mono text-[13px]"
+    aria-expanded="false"
+    aria-controls="theme-menu"
+  >
+    Theme
+  </button>
+  <div
+    id="theme-menu"
+    class="absolute right-0 top-full z-50 mt-1.5 hidden w-36 rounded-md border border-line bg-panel p-1 shadow-lg"
+  >
+    {
+      [
+        { value: 'system', label: 'System' },
+        { value: 'dark', label: 'Dark' },
+        { value: 'light', label: 'Light' },
+      ].map((opt) => (
+        <button
+          type="button"
+          data-theme-value={opt.value}
+          aria-pressed="false"
+          class="theme-option flex w-full items-center gap-2 rounded px-2.5 py-1.5 text-left font-mono text-[13px] text-muted hover:bg-panel-2 hover:text-ink"
+        >
+          <span class="theme-check text-accent" aria-hidden="true">
+            &#10003;
+          </span>
+          {opt.label}
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* Non-color selection cue: the check mark shows only on the active option
+     (aria-pressed also communicates it programmatically). */
+  .theme-option .theme-check {
+    visibility: hidden;
+  }
+  .theme-option[aria-pressed='true'] .theme-check {
+    visibility: visible;
+  }
+  .theme-option[aria-pressed='true'] {
+    color: var(--color-ink);
+  }
+</style>
+
+<script>
+  const KEY = 'derekwei-theme';
+  const btn = document.getElementById('theme-toggle');
+  const menu = document.getElementById('theme-menu');
+  const widget = document.getElementById('theme-widget');
+  const options = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-value]')
+  );
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const readPref = (): string => {
+    try {
+      const v = localStorage.getItem(KEY);
+      if (v === 'dark' || v === 'light') return v;
+    } catch {
+      /* storage unavailable: treat as system */
+    }
+    return 'system';
+  };
+
+  let pref = readPref();
+
+  const apply = () => {
+    const resolved = pref === 'system' ? (media.matches ? 'dark' : 'light') : pref;
+    document.documentElement.setAttribute('data-theme', resolved);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    meta?.setAttribute('content', resolved === 'dark' ? '#0a0f1a' : '#f6f8fb');
+    options.forEach((o) =>
+      o.setAttribute('aria-pressed', String(o.dataset.themeValue === pref))
+    );
+  };
+
+  const setOpen = (open: boolean) => {
+    btn?.setAttribute('aria-expanded', String(open));
+    menu?.classList.toggle('hidden', !open);
+  };
+
+  btn?.addEventListener('click', () => {
+    setOpen(btn.getAttribute('aria-expanded') !== 'true');
+  });
+
+  options.forEach((o) =>
+    o.addEventListener('click', () => {
+      pref = o.dataset.themeValue === 'dark' || o.dataset.themeValue === 'light'
+        ? o.dataset.themeValue
+        : 'system';
+      try {
+        localStorage.setItem(KEY, pref);
+      } catch {
+        /* storage unavailable: the choice still applies for this page */
+      }
+      apply();
+      setOpen(false);
+      btn?.focus();
+    })
+  );
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (
+      btn?.getAttribute('aria-expanded') === 'true' &&
+      e.target instanceof Node &&
+      !widget?.contains(e.target)
+    ) {
+      setOpen(false);
+    }
+  });
+
+  // While the preference is System, follow live OS changes without a reload.
+  media.addEventListener('change', () => {
+    if (pref === 'system') apply();
+  });
+
+  apply();
+</script>

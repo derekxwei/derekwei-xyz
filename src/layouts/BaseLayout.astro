@@ -47,6 +47,11 @@ const fullTitle = title === SITE.name ? SITE.title : `${title} · ${SITE.name}`;
     <meta name="twitter:description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0a0f1a" />
+    <!-- Blocking same-origin theme bootstrap: resolves system|dark|light and
+         stamps data-theme before first paint so the wrong theme never
+         flashes. External file, so the strict CSP (script-src 'self',
+         no inline) is preserved. -->
+    <script is:inline src="/theme-boot.js"></script>
   </head>
   <body class="flex min-h-dvh flex-col bg-bg font-sans text-ink antialiased">
     <a href="#main" class="skip-link">Skip to content</a>

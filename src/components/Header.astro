@@ -1,5 +1,6 @@
 ---
 import { NAV } from '../consts';
+import ThemeToggle from './ThemeToggle.astro';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => {
@@ -16,7 +17,9 @@ const isActive = (href: string) => {
     >
       <span class="text-accent" aria-hidden="true">~/</span>derekwei.xyz
     </a>
-    <nav aria-label="Primary">
+    <div class="flex items-center gap-1.5">
+      <ThemeToggle />
+      <nav aria-label="Primary">
       <button
         id="nav-toggle"
         type="button"
@@ -56,7 +59,8 @@ const isActive = (href: string) => {
           ))
         }
       </ul>
-    </nav>
+      </nav>
+    </div>
   </div>
 </header>
 

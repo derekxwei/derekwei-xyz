@@ -7,7 +7,9 @@
   --font-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
 
-  /* dark navy, high-contrast "blueprint" palette with blue/cyan accents */
+  /* dark navy, high-contrast "blueprint" palette with blue/cyan accents.
+     These are the DARK theme defaults; the light theme overrides them via
+     :root[data-theme='light'] below. */
   --color-bg: #0a0f1a;
   --color-panel: #101827;
   --color-panel-2: #0c1320;
@@ -20,6 +22,55 @@
   --color-accent-2: #7dd3fc;
   --color-warn: #fbbf24;
   --color-danger: #f87171;
+  --color-prose-body: #c3cedb;
+  --color-grid-line: rgb(148 163 184 / 0.05);
+}
+
+/* Light theme: the same Derek Wei identity on a light cool surface.
+   /theme-boot.js resolves the preference (system | dark | light) before
+   first paint and stamps data-theme on <html>. With no attribute (script
+   blocked or JS off) the site renders the approved dark defaults above.
+   All text pairs verified at WCAG AA contrast or better. */
+/* Markdown body palette, used by Prose.astro together with `prose
+   prose-invert`. Deliberately UNLAYERED: the typography plugin defines its
+   own defaults for these variables in the utilities layer, which loads after
+   the components layer, so a layered override would silently lose. Unlayered
+   author styles beat all layered styles, and the site tokens referenced here
+   re-resolve per theme. */
+.prose-custom {
+  --tw-prose-invert-body: var(--color-prose-body);
+  --tw-prose-invert-headings: var(--color-ink);
+  --tw-prose-invert-lead: var(--color-muted);
+  --tw-prose-invert-links: var(--color-accent);
+  --tw-prose-invert-bold: var(--color-ink);
+  --tw-prose-invert-counters: var(--color-faint);
+  --tw-prose-invert-bullets: var(--color-faint);
+  --tw-prose-invert-hr: var(--color-line);
+  --tw-prose-invert-quotes: var(--color-muted);
+  --tw-prose-invert-quote-borders: var(--color-line-2);
+  --tw-prose-invert-code: var(--color-ink);
+  --tw-prose-invert-pre-code: var(--color-prose-body);
+  --tw-prose-invert-pre-bg: var(--color-panel-2);
+  --tw-prose-invert-th-borders: var(--color-line-2);
+  --tw-prose-invert-td-borders: var(--color-line);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #f6f8fb;
+  --color-panel: #ffffff;
+  --color-panel-2: #eef2f7;
+  --color-line: #d8e0ea;
+  --color-line-2: #b6c4d6;
+  --color-ink: #101a2e;
+  --color-muted: #45536b;
+  --color-faint: #5d6b82;
+  --color-accent: #0b63c5;
+  --color-accent-2: #0e7490;
+  --color-warn: #b45309;
+  --color-danger: #b91c1c;
+  --color-prose-body: #2f3b50;
+  --color-grid-line: rgb(71 85 105 / 0.08);
 }
 
 @layer base {
@@ -105,31 +156,13 @@
   .bg-grid {
     background-image: linear-gradient(
         to right,
-        rgb(148 163 184 / 0.05) 1px,
+        var(--color-grid-line) 1px,
         transparent 1px
       ),
-      linear-gradient(to bottom, rgb(148 163 184 / 0.05) 1px, transparent 1px);
+      linear-gradient(to bottom, var(--color-grid-line) 1px, transparent 1px);
     background-size: 36px 36px;
   }
 
-  /* markdown body - used by Prose.astro together with `prose prose-invert` */
-  .prose-custom {
-    --tw-prose-invert-body: #c3cedb;
-    --tw-prose-invert-headings: var(--color-ink);
-    --tw-prose-invert-lead: var(--color-muted);
-    --tw-prose-invert-links: var(--color-accent);
-    --tw-prose-invert-bold: var(--color-ink);
-    --tw-prose-invert-counters: var(--color-faint);
-    --tw-prose-invert-bullets: var(--color-faint);
-    --tw-prose-invert-hr: var(--color-line);
-    --tw-prose-invert-quotes: var(--color-muted);
-    --tw-prose-invert-quote-borders: var(--color-line-2);
-    --tw-prose-invert-code: var(--color-ink);
-    --tw-prose-invert-pre-code: #c3cedb;
-    --tw-prose-invert-pre-bg: var(--color-panel-2);
-    --tw-prose-invert-th-borders: var(--color-line-2);
-    --tw-prose-invert-td-borders: var(--color-line);
-  }
   .prose-custom :where(code):not(:where(pre code)) {
     border: 1px solid var(--color-line);
     border-radius: 0.25rem;
