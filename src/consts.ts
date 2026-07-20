@@ -282,15 +282,6 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
       'Authored and maintained technical documentation and troubleshooting workflows, standardizing common fixes for instructors and students',
     ],
   },
-  {
-    role: 'Founder, LearnLabs Educational Initiative',
-    org: 'LearnLabs Educational Initiative',
-    period: 'Jul 2023 to Present',
-    bullets: [
-      'Provide tutoring and mentoring support to students, developing lesson materials and educational resources across a range of topics',
-      'Research topics and refine instructional materials based on learner feedback; communicate with students and parents in English and Mandarin Chinese',
-    ],
-  },
 ];
 
 /** Concise, ATS-friendly core areas shown near the top of the resume. */
