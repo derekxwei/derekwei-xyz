@@ -253,6 +253,30 @@ export const EDUCATION: readonly EducationEntry[] = [
   },
 ];
 
+export interface Scholarship {
+  name: string;
+  institution: string;
+  year: string;
+  /** Merit award amount. Omit when not applicable. */
+  amount?: string;
+}
+
+/** Verified merit scholarships. Merit awards only, never need-based aid. */
+export const SCHOLARSHIPS: readonly Scholarship[] = [
+  {
+    name: 'Distinguished Presidential Scholarship',
+    institution: 'University of Texas at San Antonio',
+    year: '2026',
+    amount: '$5,000',
+  },
+  {
+    name: 'Honors College Collaborative Scholarship',
+    institution: 'University of Texas at San Antonio',
+    year: '2026',
+    amount: '$1,000',
+  },
+];
+
 export interface ExperienceEntry {
   role: string;
   org: string;

@@ -14,6 +14,7 @@ import {
   CORE_AREAS,
   COMPETITIONS,
   EXPERIENCE,
+  SCHOLARSHIPS,
   SKILL_GROUPS,
   LEADERSHIP,
 } from '../consts';
@@ -274,6 +275,33 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
               <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
             </div>
             {entry.note && <p class="mt-2 text-sm text-muted">{entry.note}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="scholarships-heading">
+    <h2
+      id="scholarships-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Scholarships
+    </h2>
+    <ul role="list" class="mt-6 divide-y divide-line">
+      {
+        SCHOLARSHIPS.map((s) => (
+          <li class="py-4 first:pt-0 last:pb-0">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <div>
+                <p class="font-medium text-ink">{s.name}</p>
+                <p class="text-sm text-muted">{s.institution}</p>
+              </div>
+              <p class="shrink-0 font-mono text-xs text-faint">
+                {s.amount && `${s.amount} · `}
+                {s.year}
+              </p>
+            </div>
           </li>
         ))
       }

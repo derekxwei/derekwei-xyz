@@ -13,6 +13,7 @@ import {
   EDUCATION,
   EXPERIENCE,
   LEADERSHIP,
+  SCHOLARSHIPS,
 } from '../consts';
 
 const description =
@@ -157,6 +158,26 @@ const roadmap = [
           Verify badge
         </a>
       </li>
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="scholarships">
+    <h2 id="scholarships" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
+      <span class="text-accent" aria-hidden="true">##</span> Scholarships
+    </h2>
+    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2">
+      {
+        SCHOLARSHIPS.map((s) => (
+          <li class="panel p-4">
+            <p class="text-sm font-medium text-ink">{s.name}</p>
+            <p class="mt-1 text-sm text-muted">{s.institution}</p>
+            <p class="mt-1 font-mono text-xs text-faint">
+              {s.amount && `${s.amount} · `}
+              {s.year}
+            </p>
+          </li>
+        ))
+      }
     </ul>
   </section>
 
