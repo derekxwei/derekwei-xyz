@@ -49,7 +49,7 @@ export const NAV = [
   { label: 'Lab', href: '/lab/' },
   { label: 'Tools', href: '/tools/' },
   { label: 'Architecture', href: '/architecture/' },
-  { label: 'Now', href: '/now/' },
+  { label: 'About', href: '/about/' },
   { label: 'Contact', href: '/contact/' },
 ] as const;
 

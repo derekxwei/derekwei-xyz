@@ -18,6 +18,7 @@ export default defineConfig({
   redirects: {
     '/writeups': '/ctf',
     '/ctf/broncoctf-2025-ao-sint': '/ctf/broncoctf-2026-ao-sint',
+    '/now': '/about',
   },
   build: {
     // Keep all CSS in external files so the strict Content-Security-Policy

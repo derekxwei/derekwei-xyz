@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+// Combined About + Current Direction page. Facts here are drawn from existing
+// verified site content (consts.ts, projects, CTF writeups). Detailed
+// evidence lives on Resume, Achievements, Projects, and CTF; this page
+// introduces Derek and points to that evidence.
+
+const direction = [
+  {
+    text: 'Beginning UTSA Cybersecurity Honors coursework',
+    note: null,
+  },
+  {
+    text: 'Preparing for the Hack The Box Certified Penetration Testing Specialist (CPTS)',
+    note: 'in progress, not currently held',
+  },
+  {
+    text: 'Preparing for the AWS Certified AI Practitioner',
+    note: 'in progress, not currently held',
+  },
+  {
+    text: 'Building practical projects and publishing Capture the Flag writeups',
+    note: null,
+  },
+];
+
+const principles = [
+  {
+    title: 'Evidence over assumptions',
+    body: 'The AO-SINT writeup identified each location from topography, map geometry, and sightlines rather than the most prominent visual clue, which was usually a distraction.',
+  },
+  {
+    title: 'Reproducible technical documentation',
+    body: 'My writeups and lab notes record the evidence, the approaches that failed, and how the result was validated, so another person can follow the same path.',
+  },
+  {
+    title: 'Practical work over unsupported claims',
+    body: 'Credentials, competition results, and projects link to inspectable or independently verifiable evidence where it exists.',
+  },
+];
+
+const context = [
+  'Bilingual in English and Mandarin Chinese',
+  'Cybersecurity competition participation',
+  'Technical-support experience across Windows and Linux',
+  'Mentoring incoming cybersecurity students at NEISD iCSI',
+  'Interest in both offensive and defensive security',
+];
+
+const destinations = [
+  { label: 'View projects', href: '/projects/' },
+  { label: 'Read CTF writeups', href: '/ctf/' },
+  { label: 'View achievements', href: '/achievements/' },
+  { label: 'Download resume (PDF)', href: '/Derek_Wei_Resume_Public.pdf' },
+  { label: 'Contact Derek', href: '/contact/' },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="About Derek Wei: an incoming UTSA B.S. Cybersecurity Honors student focused on evidence-based offensive and defensive security, with current direction and how he approaches technical work."
+>
+  <PageHeader
+    kicker="~/about"
+    title="About Derek"
+    lede="Who I am, what I am working toward, and how I approach technical work. Detailed evidence lives on the resume, achievements, projects, and CTF pages."
+  />
+
+  <section class="py-10" aria-labelledby="intro-heading">
+    <h2 id="intro-heading" class="sr-only">Introduction</h2>
+    <div class="max-w-2xl space-y-4 leading-relaxed text-muted">
+      <p>
+        I am Derek Wei, an incoming Bachelor of Science in Cybersecurity Honors
+        student at The University of Texas at San Antonio. My background is
+        hands-on: nearly four years of technical support across Windows and
+        Linux systems, cybersecurity lab work, and Capture the Flag competition,
+        alongside documented technical projects I build and write up on this
+        site.
+      </p>
+      <p>
+        I focus on offensive-security fundamentals and the defensive analysis
+        that connects findings back to real systems, and I am comfortable
+        troubleshooting problems down to their root cause. I learn best by
+        investigating real problems, documenting what failed, and turning the
+        result into something another person can reproduce. I am bilingual in
+        English and Mandarin Chinese, and a U.S. citizen eligible to obtain a
+        security clearance.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-10" aria-labelledby="direction-heading">
+    <h2
+      id="direction-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Current direction
+    </h2>
+    <ul class="mt-6 grid max-w-2xl gap-3" role="list">
+      {
+        direction.map((item) => (
+          <li class="flex gap-2 text-sm leading-relaxed text-muted">
+            <span class="text-accent" aria-hidden="true">
+              -
+            </span>
+            <span>
+              {item.text}
+              {item.note && (
+                <span class="text-faint"> ({item.note})</span>
+              )}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="how-heading">
+    <h2
+      id="how-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> How I work
+    </h2>
+    <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+      {
+        principles.map((p) => (
+          <div>
+            <dt class="font-mono text-sm text-accent">{p.title}</dt>
+            <dd class="mt-1.5 max-w-xl text-sm leading-relaxed text-muted">
+              {p.body}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="py-10" aria-labelledby="context-heading">
+    <h2
+      id="context-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Professional context
+    </h2>
+    <ul class="mt-6 grid max-w-2xl gap-2.5 sm:grid-cols-2" role="list">
+      {
+        context.map((item) => (
+          <li class="flex gap-2 text-sm leading-relaxed text-muted">
+            <span class="text-accent" aria-hidden="true">
+              -
+            </span>
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="py-10" aria-labelledby="next-heading">
+    <h2
+      id="next-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Where to go next
+    </h2>
+    <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm" role="list">
+      {
+        destinations.map((d) => (
+          <li>
+            <a class="link" href={d.href}>
+              {d.label} &rarr;
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
