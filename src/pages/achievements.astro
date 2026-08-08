@@ -31,11 +31,13 @@ const awards = [
 
 const internships = EXPERIENCE.filter((job) => /intern/i.test(job.role));
 
+// Empty tiers are hidden so an earned credential leaving the roadmap does not
+// leave a blank card behind.
 const roadmap = [
-  { label: 'In progress', items: CERT_ROADMAP.inProgress },
-  { label: 'Next', items: CERT_ROADMAP.next },
-  { label: 'Planned', items: CERT_ROADMAP.planned },
-];
+  { label: 'In progress', items: CERT_ROADMAP.inProgress as readonly string[] },
+  { label: 'Next', items: CERT_ROADMAP.next as readonly string[] },
+  { label: 'Planned', items: CERT_ROADMAP.planned as readonly string[] },
+].filter((tier) => tier.items.length > 0);
 ---
 
 <BaseLayout title="Achievements" description={description}>

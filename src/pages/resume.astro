@@ -19,11 +19,13 @@ import {
   LEADERSHIP,
 } from '../consts';
 
+// Empty tiers are hidden so an earned credential leaving the roadmap does not
+// leave a blank card behind.
 const roadmap = [
-  { label: 'In progress', items: CERT_ROADMAP.inProgress },
-  { label: 'Next', items: CERT_ROADMAP.next },
-  { label: 'Planned', items: CERT_ROADMAP.planned },
-];
+  { label: 'In progress', items: CERT_ROADMAP.inProgress as readonly string[] },
+  { label: 'Next', items: CERT_ROADMAP.next as readonly string[] },
+  { label: 'Planned', items: CERT_ROADMAP.planned as readonly string[] },
+].filter((tier) => tier.items.length > 0);
 
 const description =
   'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
@@ -85,7 +87,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
       </ul>
       <p class="mt-4 border-t border-line pt-4 font-mono text-xs leading-relaxed text-muted">
         5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
-        &middot; CTF competitor &middot; preparing for the CPTS
+        &middot; AWS Certified AI Practitioner &middot; CTF competitor &middot;
+        preparing for the CPTS
       </p>
     </div>
   </section>
@@ -222,6 +225,33 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
       Competition experience includes {competitionNames}. Detailed placements and
       results are on the <a href="/achievements/" class="link">achievements page</a>.
     </p>
+  </section>
+
+  <section class="py-10" aria-labelledby="writing-heading">
+    <h2
+      id="writing-heading"
+      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
+    >
+      <span class="text-accent" aria-hidden="true">##</span> Selected technical writing
+    </h2>
+    <div class="panel mt-6 p-5">
+      <div
+        class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+      >
+        <h3 class="font-medium text-ink">AO-SINT: evidence-first game geolocation</h3>
+        <p class="shrink-0 font-mono text-xs text-faint">
+          BroncoCTF 2026 &middot; OSINT
+        </p>
+      </div>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+        Used topography, architecture, map geometry, and sightline reconstruction
+        to identify four Arcane Odyssey locations. Team idktheflag placed 8th of
+        753 teams.
+      </p>
+      <p class="mt-3 font-mono text-xs">
+        <a class="link" href="/ctf/broncoctf-2026-ao-sint/">Read the AO-SINT writeup &rarr;</a>
+      </p>
+    </div>
   </section>
 
   <section class="py-10" aria-labelledby="experience-heading">

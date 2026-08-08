@@ -108,6 +108,12 @@ export const CERTIFICATIONS: readonly Certification[] = [
     verifyUrl: 'https://www.credly.com/badges/c3447ccb-bffa-4505-80f8-6771fe62983e/public_url',
   },
   {
+    name: 'AWS Certified AI Practitioner',
+    short: 'AWS AI Practitioner',
+    issuer: 'Amazon Web Services',
+    year: '2026',
+  },
+  {
     name: 'Microsoft Office Specialist: Word Associate',
     short: 'MOS Word',
     issuer: 'Microsoft',
@@ -161,8 +167,8 @@ export const NJHS_AWARD = {
  */
 export const CERT_ROADMAP = {
   inProgress: ['Hack The Box Certified Penetration Testing Specialist (CPTS)'],
-  next: ['AWS Certified AI Practitioner'],
-  planned: ['AWS Certified Solutions Architect - Associate'],
+  next: ['AWS Certified Solutions Architect - Associate'],
+  planned: [],
 } as const;
 
 export interface Competition {
