@@ -112,6 +112,9 @@ export const CERTIFICATIONS: readonly Certification[] = [
     short: 'AWS AI Practitioner',
     issuer: 'Amazon Web Services',
     year: '2026',
+    issued: 'August 7, 2026',
+    expires: 'August 7, 2029',
+    verifyUrl: 'https://www.credly.com/badges/8197c6ef-1a3f-4449-b0e0-739b5329dcd2/public_url',
   },
   {
     name: 'Microsoft Office Specialist: Word Associate',
