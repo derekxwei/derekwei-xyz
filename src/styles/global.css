@@ -203,6 +203,40 @@
   }
 }
 
+/* Press feedback. The pressed state must be visible the instant the pointer
+   goes down, so it is pure CSS :active with no transition on transform: the
+   1px shift lands immediately and reverts on release. Transform only, so
+   nothing reflows and no control changes size. Focus and hover styling are
+   untouched, and the pressed state is never the only signal for a control.
+
+   Deliberately UNLAYERED: Tailwind's hover: utilities live in the utilities
+   layer, which would otherwise beat a layered :active rule for the whole time
+   a mouse is held down (hover and active are both true during a press). */
+.btn:active,
+#nav-menu a:active,
+.theme-option:active {
+  transform: translateY(1px);
+}
+
+/* Fully clickable cards only (Card.astro composes "panel group"); static
+   panels and prose links are intentionally excluded. The border shift is the
+   press signal on touch, where no hover state exists. */
+li.panel.group:active {
+  transform: translateY(1px);
+  border-color: var(--color-line-2);
+}
+
+/* Reduced transparency: the sticky header is the only translucent surface on
+   the site (bg-bg/90 + backdrop-blur). Make it an opaque, theme-aware surface
+   and drop the blur, keeping its size, border, and sticky behavior. */
+@media (prefers-reduced-transparency: reduce) {
+  body > header {
+    background-color: var(--color-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 /* print: resume prints clean on white without a separate stylesheet */
 @media print {
   .print-hidden {
