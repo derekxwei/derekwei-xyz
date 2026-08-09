@@ -17,7 +17,14 @@
   --color-line-2: #334862;
   --color-ink: #e8eef6;
   --color-muted: #9db0c6;
-  --color-faint: #6b7f9c;
+  /* Was #6b7f9c, which measured 4.35:1 on --color-panel and so failed the
+     4.5:1 WCAG AA floor for normal-size text. The token carries meaningful
+     text on panel surfaces (card metadata, certification names), so this is a
+     real failure rather than a decorative one. Lightness raised by 1.0% in
+     HSL with hue and saturation held: 4.53:1 on --color-panel, 4.88:1 on
+     --color-bg, 4.74:1 on --color-panel-2. Still 17% lighter to go before it
+     would collide with --color-muted. */
+  --color-faint: #6e829e;
   --color-accent: #38bdf8;
   --color-accent-2: #7dd3fc;
   --color-warn: #fbbf24;
