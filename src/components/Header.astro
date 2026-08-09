@@ -10,9 +10,12 @@ const isActive = (href: string) => {
 ---
 
 <header class="print-hidden sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
-  <div class="relative mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+  <div
+    class="relative mx-auto flex max-w-shell items-center justify-between gap-2 px-3 py-3 sm:gap-4 sm:px-6 lg:px-10"
+  >
     <a
       href="/"
+      aria-current={path === '/' ? 'page' : undefined}
       class="font-mono text-sm font-semibold tracking-tight transition-colors hover:text-accent"
     >
       <span class="text-accent" aria-hidden="true">~/</span>derekwei.xyz

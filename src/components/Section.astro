@@ -1,0 +1,60 @@
+---
+// Concept D section system.
+//
+// A rule spanning the full usable content width, then an optional monospace
+// number and category, then the title in the interface typeface. This
+// replaces the old "## LABEL" heading, which was set smaller and lighter than
+// the body text it introduced.
+//
+// The number and category are presentational wayfinding, not content, so they
+// are aria-hidden and the section's accessible name stays the title alone.
+// Pass `num` and `cat` only where the sequence helps a reader orient, which in
+// practice means the homepage. Detail pages get the rule and the title.
+
+interface Props {
+  /** Section heading text. Also the section's accessible name. */
+  title: string;
+  /** Anchor and aria-labelledby target. */
+  id: string;
+  /** Two-digit sequence marker, e.g. "01". Homepage only. */
+  num?: string;
+  /** Short category label shown beside the number, e.g. "Evidence". */
+  cat?: string;
+  /** Optional subheading sentence under the title. */
+  note?: string;
+  /** Drop the top rule, for the first section after a page header. */
+  flush?: boolean;
+  /** Extra classes on the section element. */
+  class?: string;
+}
+
+const {
+  title,
+  id,
+  num,
+  cat,
+  note,
+  flush = false,
+  class: className,
+} = Astro.props;
+
+const headingId = `${id}-heading`;
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={[!flush && 'section-rule', 'mt-16 sm:mt-20', className]}
+>
+  {
+    num && (
+      <p class="section-bar" aria-hidden="true">
+        <span class="section-num">{num}</span>
+        {cat && <span class="section-cat">{cat}</span>}
+      </p>
+    )
+  }
+  <h2 id={headingId} class="section-title">{title}</h2>
+  {note && <p class="section-note">{note}</p>}
+  <slot />
+</section>

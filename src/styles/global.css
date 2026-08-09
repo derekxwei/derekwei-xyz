@@ -31,6 +31,22 @@
   --color-danger: #f87171;
   --color-prose-body: #c3cedb;
   --color-grid-line: rgb(148 163 184 / 0.05);
+
+  /* Layered content widths. One width for everything is why an evidence
+     screenshot used to render at 768px inside a 1920px viewport while a
+     paragraph rendered at the same width. Four tiers separate those cases:
+     wide things go wide, prose stays readable. Tailwind turns the
+     --container-* namespace into max-w-* utilities, so this needs no config
+     file and no dependency.
+
+       shell    page frame: header, main, footer, section rules
+       evidence screenshots, diagrams, tables, featured work
+       mid      resume-like and structured list content
+       measure  long prose, about 70 characters at the body size */
+  --container-shell: 90rem;
+  --container-evidence: 76rem;
+  --container-mid: 58rem;
+  --container-measure: 44rem;
 }
 
 /* Light theme: the same Derek Wei identity on a light cool surface.
@@ -122,6 +138,30 @@
     @apply font-mono text-xs uppercase tracking-[0.2em] text-accent;
   }
 
+  /* Section system. A rule spanning the full usable content width, then an
+     optional monospace number and category, then the title in the interface
+     typeface at roughly twice the body size. This replaces the "## LABEL"
+     motif, which appeared about 45 times site-wide and set a heading smaller
+     and lighter than the body text it introduced. */
+  .section-rule {
+    @apply border-t border-line pt-6;
+  }
+  .section-bar {
+    @apply flex items-baseline gap-4 font-mono text-xs uppercase tracking-[0.16em];
+  }
+  .section-num {
+    @apply font-semibold text-accent;
+  }
+  .section-cat {
+    @apply text-faint;
+  }
+  .section-title {
+    @apply mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-[2rem];
+  }
+  .section-note {
+    @apply mt-2.5 max-w-measure leading-relaxed text-muted;
+  }
+
   .panel {
     @apply rounded-lg border border-line bg-panel;
   }
@@ -140,9 +180,11 @@
     inset: 0;
   }
 
-  /* buttons: compose as class="btn btn-primary" / "btn btn-ghost" */
+  /* buttons: compose as class="btn btn-primary" / "btn btn-ghost".
+     min-h-11 is the Concept D control height: comfortably past the 24px
+     target minimum without becoming a slab on mobile. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border px-4 py-2 font-mono text-sm transition-colors;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-4 py-2 font-mono text-sm transition-colors;
   }
   .btn-primary {
     @apply border-accent/40 bg-accent/10 text-accent hover:border-accent hover:bg-accent/20;

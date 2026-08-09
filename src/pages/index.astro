@@ -2,16 +2,27 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/Card.astro';
-import { SITE, CERTIFICATIONS, COMPETITIONS, COMPETITION_SKILLS } from '../consts';
+import Section from '../components/Section.astro';
+import {
+  SITE,
+  CONTACT,
+  CERTIFICATIONS,
+  CERT_ROADMAP,
+  COMPETITIONS,
+  EXPERIENCE,
+} from '../consts';
 
-const featuredProjects = (
-  await getCollection(
-    'projects',
-    ({ data }) => (import.meta.env.PROD ? !data.draft : true) && data.featured
-  )
-)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
+// Supporting work on the homepage is chosen here rather than by the `featured`
+// frontmatter flag, because the two entries that support the AO-SINT feature
+// are a deliberate editorial pair. Nothing in the collections is edited.
+const SUPPORTING_IDS = ['cpts-notes-pipeline', 'secure-travel-network'];
+
+const allProjects = await getCollection('projects', ({ data }) =>
+  import.meta.env.PROD ? !data.draft : true
+);
+const supporting = SUPPORTING_IDS.map((id) =>
+  allProjects.find((p) => p.id === id)
+).filter((p) => p !== undefined);
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', {
@@ -20,6 +31,28 @@ const fmt = (d: Date) =>
     day: 'numeric',
     timeZone: 'UTC',
   });
+
+// The BroncoCTF placement is a team result and is rendered exactly as recorded
+// in consts.ts. It is never restated as an individual placement.
+const broncoCtf = COMPETITIONS.find((c) => c.name === 'BroncoCTF 2026');
+
+const comptia = CERTIFICATIONS.filter((c) => c.issuer === 'CompTIA');
+const aws = CERTIFICATIONS.find((c) => c.short === 'AWS AI Practitioner');
+const mos = CERTIFICATIONS.find((c) => c.short === 'MOS Word');
+
+// Same three items the About page states, including the qualifier that the
+// CPTS is being prepared for and is not currently held.
+const direction = [
+  { text: 'Beginning UTSA Cybersecurity Honors coursework', note: null },
+  {
+    text: `Preparing for the ${CERT_ROADMAP.inProgress[0]}`,
+    note: 'in progress, not currently held',
+  },
+  {
+    text: 'Building practical projects and publishing Capture the Flag writeups',
+    note: null,
+  },
+];
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -42,186 +75,108 @@ const personSchema = {
 
 <BaseLayout title="Derek Wei">
   <!-- Hero -->
-  <section class="relative border-b border-line">
-    <div class="bg-grid hero-fade absolute inset-0" aria-hidden="true"></div>
-    <div class="relative py-16 sm:py-24">
+  <section class="relative" aria-labelledby="hero-heading">
+    <div class="bg-grid hero-fade absolute inset-x-0 top-0 h-96" aria-hidden="true"></div>
+    <div class="relative py-16 sm:py-20 lg:py-24">
       <p class="kicker normal-case">$ whoami</p>
-      <h1 class="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+      <h1
+        id="hero-heading"
+        class="mt-3 text-5xl font-semibold tracking-tight sm:text-6xl lg:text-[4.25rem] lg:leading-[1.02]"
+      >
         Derek Wei
       </h1>
-      <p class="mt-4 max-w-2xl leading-relaxed text-muted">
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-prose-body sm:text-xl">
         Incoming B.S. Cybersecurity student in the Honors College at The
         University of Texas at San Antonio, focused on red-team fundamentals,
         penetration testing labs, Capture the Flag methodology, and practical
         security tooling. Preparing for the Certified Penetration Testing
         Specialist (CPTS).
       </p>
-      <p class="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-faint">
+      <p class="mt-5 max-w-3xl font-mono text-xs leading-relaxed text-faint">
         5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
-        &middot; graduate of the NEISD iCSI Cybersecurity Program, Class of 2026
+        &middot; AWS Certified AI Practitioner &middot; graduate of the NEISD
+        iCSI Cybersecurity Program, Class of 2026
       </p>
       <p
         class="mt-5 inline-flex items-center gap-2 rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted"
       >
-        <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"
-        ></span>
+        <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
         {SITE.clearance}
       </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/resume/" class="btn btn-primary">View resume</a>
-        <a href="/projects/" class="btn btn-ghost">Projects</a>
-        <a href="/contact/" class="btn btn-ghost">Contact</a>
+      <div class="mt-9 flex flex-wrap items-center gap-3">
+        <a href="#selected-work" class="btn btn-primary">View selected work</a>
+        <a href={CONTACT.resumePdf} class="btn btn-ghost">Download resume (PDF)</a>
+        <a href="/contact/" class="link font-mono text-sm">Contact &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- Selected proof -->
-  <section class="py-10" aria-labelledby="selected-proof-heading">
-    <h2
-      id="selected-proof-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Selected proof
-    </h2>
-    <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
-      <Card
-        href="/ctf/broncoctf-2026-ao-sint/"
-        title="AO-SINT: evidence-first game geolocation"
-        description="Used topography, architecture, map geometry, and sightlines to identify four Arcane Odyssey locations from four screenshots."
-        meta="BroncoCTF 2026"
-        note="Team idktheflag placed 8th of 753 teams."
-        wide
-      />
-      <Card
-        href="/achievements/"
-        title="Verified credentials"
-        description="Five CompTIA certifications and one Microsoft certification, each independently verifiable on Credly, with competition placements to match."
-        meta="Achievements"
-      />
-      <Card
-        href="/Derek_Wei_Resume_Public.pdf"
-        title="Resume (PDF)"
-        description="One page, ATS-readable, with clickable contact and credential verification links."
-        meta="Download"
-      />
-    </ul>
-  </section>
-
-  <!-- Current focus -->
-  <section class="border-t border-line py-10" aria-labelledby="current-focus-heading">
-    <h2
-      id="current-focus-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Current focus
-    </h2>
-    <ul class="mt-5 grid gap-2.5 sm:grid-cols-2" role="list">
+  <!-- 01 Evidence -->
+  <Section
+    id="selected-work"
+    num="01"
+    cat="Evidence"
+    title="Selected work"
+    note="Real work, each with its own writeup or project page."
+  >
+    <!-- AO-SINT is the dominant item: the widest image on the site, then the
+         context, the team placement, the method, and the action. -->
+    <div class="evidence-feature mt-8 max-w-evidence">
+      <a href="/ctf/broncoctf-2026-ao-sint/" class="group block">
+        <figure class="m-0">
+          <img
+            src="/images/ctf/broncoctf-2026-ao-sint/location-1-ierochos.webp"
+            alt="Arcane Odyssey character standing on a high narrow rock pillar with several distant islands visible through severe weather."
+            width="1600"
+            height="717"
+            loading="eager"
+            decoding="async"
+            class="evidence-frame w-full rounded-lg border border-line"
+          />
+          <figcaption class="mt-3 text-sm leading-relaxed text-muted">
+            BroncoCTF 2026 challenge screenshot: the foreground pillar and
+            multi-island sightline placed the character on Ierochos.
+          </figcaption>
+        </figure>
+        <p class="kicker mt-8">BroncoCTF 2026 &middot; OSINT</p>
+        <h3
+          class="mt-2 text-2xl font-semibold tracking-tight transition-colors group-hover:text-accent sm:text-[1.75rem]"
+        >
+          AO-SINT: evidence-first game geolocation
+        </h3>
+      </a>
+      <p class="mt-3 max-w-measure leading-relaxed text-prose-body">
+        Used topography, architecture, map geometry, and sightline
+        reconstruction to identify four Arcane Odyssey locations from four
+        screenshots.
+      </p>
       {
-        [
-          'Certified Penetration Testing Specialist (CPTS) preparation',
-          'Capture the Flag competition practice',
-          'Offensive security labs',
-          'Cybersecurity portfolio development',
-          'Beginning UTSA Cybersecurity Honors coursework',
-        ].map((item) => (
-          <li class="flex gap-2 text-sm leading-relaxed text-muted">
-            <span class="text-accent" aria-hidden="true">
-              -
-            </span>
-            {item}
-          </li>
-        ))
+        broncoCtf?.result && (
+          <p class="mt-3 font-medium text-accent">
+            {broncoCtf.name}: {broncoCtf.result}
+          </p>
+        )
       }
-    </ul>
-  </section>
+      <p class="mt-6">
+        <a href="/ctf/broncoctf-2026-ao-sint/" class="btn btn-primary">
+          Read the writeup
+        </a>
+      </p>
+    </div>
 
-  <!-- Certifications -->
-  <section class="border-t border-line py-10" aria-labelledby="certifications-heading">
-    <h2
-      id="certifications-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Certifications
-    </h2>
-    <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
-      {
-        CERTIFICATIONS.map((cert) => (
-          <li class="panel flex flex-col gap-1 p-4" title={cert.name}>
-            {cert.verifyUrl ? (
-              <a
-                href={cert.verifyUrl}
-                class="link self-start font-mono text-sm"
-                rel="noopener noreferrer"
-                aria-label={`${cert.short}: verify badge on Credly`}
-              >
-                {cert.short}
-              </a>
-            ) : (
-              <span class="font-mono text-sm text-accent">{cert.short}</span>
-            )}
-            <span class="text-xs text-muted">{cert.name}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <!-- Focus -->
-  <section class="border-t border-line py-10" aria-labelledby="focus-heading">
-    <h2
-      id="focus-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Focus
-    </h2>
-    <ul class="mt-5 grid gap-4 md:grid-cols-3" role="list">
-      <li class="panel flex flex-col p-5">
-        <h3 class="font-mono text-sm text-accent">Offensive security</h3>
-        <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
-          Red-team fundamentals and penetration testing methodology, practiced
-          in authorized lab environments and reinforced by PenTest+ and ongoing
-          CPTS preparation. Blue-team literacy from CySA+ helps connect
-          offensive findings back to real-world defense.
-        </p>
-        <a href="/lab/" class="link mt-4 font-mono text-xs">Lab →</a>
-      </li>
-      <li class="panel flex flex-col p-5">
-        <h3 class="font-mono text-sm text-accent">Capture the Flag</h3>
-        <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
-          I compete in events like National Cyber League, BYU CTF, RowdyCon,
-          CTF@CIT, and Squ1rrel. CTFs are where offensive fundamentals get
-          pressure-tested against real challenges, and sanitized writeups are
-          published here as they're finished.
-        </p>
-        <a href="/ctf/" class="link mt-4 font-mono text-xs">CTF writeups →</a>
-      </li>
-      <li class="panel flex flex-col p-5">
-        <h3 class="font-mono text-sm text-accent">Tooling &amp; labs</h3>
-        <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
-          Practical tooling matters: this site ships small browser-based
-          security utilities, and an authorized home lab gives me a safe place
-          for penetration testing practice and CTF work.
-        </p>
-        <a href="/tools/" class="link mt-4 font-mono text-xs">Tools →</a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Featured projects (rendered only when a project is marked featured) -->
-  {
-    featuredProjects.length > 0 && (
-      <section class="border-t border-line py-10" aria-labelledby="featured-projects-heading">
-        <div class="flex flex-wrap items-baseline justify-between gap-4">
-          <h2
-            id="featured-projects-heading"
-            class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-          >
-            <span class="text-accent" aria-hidden="true">##</span> Featured projects
-          </h2>
-          <a href="/projects/" class="link font-mono text-sm">All projects →</a>
-        </div>
-        <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
-          {featuredProjects.map((project) => (
+    <!-- Supporting work sits clearly below the feature. Both projects only
+         have tall portrait diagrams, so neither gets a homepage thumbnail:
+         squeezed into a wide crop they are unreadable. -->
+    <div class="mt-14 max-w-evidence">
+      <h3
+        class="font-mono text-xs uppercase tracking-[0.16em] text-faint"
+        id="supporting-work"
+      >
+        Supporting work
+      </h3>
+      <ul class="mt-4 grid gap-4 sm:grid-cols-2" role="list">
+        {
+          supporting.map((project) => (
             <Card
               href={`/projects/${project.id}/`}
               title={project.data.title}
@@ -230,42 +185,127 @@ const personSchema = {
               tags={[...project.data.tags]}
               status={project.data.status}
             />
-          ))}
-        </ul>
-      </section>
-    )
-  }
-
-  <!-- Competition skill areas -->
-  <section class="border-t border-line py-10" aria-labelledby="competitions-heading">
-    <div class="flex flex-wrap items-baseline justify-between gap-4">
-      <h2
-        id="competitions-heading"
-        class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-      >
-        <span class="text-accent" aria-hidden="true">##</span> Competition skill areas
-      </h2>
-      <a href="/achievements/" class="link font-mono text-sm">Achievements →</a>
+          ))
+        }
+      </ul>
+      <p class="mt-5">
+        <a href="/projects/" class="link font-mono text-sm">All projects &rarr;</a>
+      </p>
     </div>
-    <ul class="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+  </Section>
+
+  <!-- 02 Experience -->
+  <Section id="experience" num="02" cat="Experience" title="Relevant experience">
+    <ul class="mt-8 max-w-mid" role="list">
       {
-        COMPETITION_SKILLS.map((skill) => (
-          <li class="flex gap-2 text-sm leading-relaxed text-muted">
-            <span class="text-accent" aria-hidden="true">
-              -
-            </span>
-            {skill}
+        EXPERIENCE.map((job) => (
+          <li class="border-b border-line py-4 last:border-b-0">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+              <p class="font-medium text-ink">
+                {job.role}
+                <span class="font-normal text-muted"> &middot; {job.org}</span>
+              </p>
+              <span class="shrink-0 font-mono text-xs text-faint">{job.period}</span>
+            </div>
           </li>
         ))
       }
     </ul>
-    <p class="mt-6 max-w-3xl text-sm leading-relaxed text-muted">
-      Developed through {COMPETITIONS.map((c) => c.name).join(', ')}. Full
-      placements are on the <a href="/achievements/" class="link">achievements</a>
-      page, and sanitized writeups are under
-      <a href="/ctf/" class="link">CTF writeups</a> as they're completed.
+    <p class="mt-5">
+      <a href="/resume/" class="link font-mono text-sm">Full resume &rarr;</a>
     </p>
-  </section>
+  </Section>
+
+  <!-- 03 Credentials -->
+  <Section id="credentials" num="03" cat="Credentials" title="Verified credentials">
+    <div class="mt-8 max-w-mid space-y-3 leading-relaxed">
+      <p class="text-muted">
+        <strong class="font-medium text-ink">5x CompTIA certified:</strong>{' '}
+        {
+          comptia.map((cert, i) => (
+            <>
+              {i > 0 && <span class="text-faint" aria-hidden="true"> &middot; </span>}
+              <a
+                href={cert.verifyUrl}
+                class="link"
+                rel="noopener noreferrer"
+                aria-label={`${cert.short}: verify badge on Credly`}
+              >
+                {cert.short}
+              </a>
+            </>
+          ))
+        }
+      </p>
+      <p class="text-muted">
+        <strong class="font-medium text-ink">Also earned:</strong>{' '}
+        {
+          aws && (
+            <a
+              href={aws.verifyUrl}
+              class="link"
+              rel="noopener noreferrer"
+              aria-label={`${aws.name}: verify badge on Credly`}
+            >
+              {aws.name}
+            </a>
+          )
+        }
+        <span class="text-faint" aria-hidden="true"> &middot; </span>
+        {
+          mos && (
+            <a
+              href={mos.verifyUrl}
+              class="link"
+              rel="noopener noreferrer"
+              aria-label={`${mos.name}: verify badge on Credly`}
+            >
+              {mos.name}
+            </a>
+          )
+        }
+      </p>
+    </div>
+    <p class="mt-5">
+      <a href="/achievements/" class="link font-mono text-sm">
+        All verified credentials &rarr;
+      </a>
+    </p>
+  </Section>
+
+  <!-- 04 Direction -->
+  <Section id="direction" num="04" cat="Direction" title="Current direction">
+    <ul class="mt-8 grid max-w-measure gap-2.5" role="list">
+      {
+        direction.map((item) => (
+          <li class="flex gap-2 leading-relaxed text-muted">
+            <span class="text-accent" aria-hidden="true">
+              -
+            </span>
+            <span>
+              {item.text}
+              {item.note && <span class="text-faint"> ({item.note})</span>}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-5">
+      <a href="/about/" class="link font-mono text-sm">More about Derek &rarr;</a>
+    </p>
+  </Section>
+
+  <!-- 05 Contact -->
+  <Section id="contact" num="05" cat="Contact" title="Contact and resume">
+    <p class="mt-8 max-w-measure leading-relaxed text-muted">
+      Open to cybersecurity internships, CTF collaboration, and security
+      projects.
+    </p>
+    <div class="mt-7 flex flex-wrap gap-3">
+      <a href="/contact/" class="btn btn-primary">Contact Derek</a>
+      <a href={CONTACT.resumePdf} class="btn btn-ghost">Download resume (PDF)</a>
+    </div>
+  </Section>
 
   <script
     is:inline
