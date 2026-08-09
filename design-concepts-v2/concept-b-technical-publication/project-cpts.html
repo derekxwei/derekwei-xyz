@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CPTS study notes pipeline · Concept B: Technical publication</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:dark}
+:root[data-theme='light']{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:1rem;top:1rem;z-index:99;background:var(--accent);color:var(--bg);padding:.5rem .75rem;border-radius:6px}
+.mono{font-family:var(--mono)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* header shell */
+.site-hd{position:sticky;top:0;z-index:20}
+.hd-in{display:flex;align-items:center;gap:1rem;max-width:var(--wide);margin:0 auto;padding:.85rem var(--pad)}
+.brand{font-family:var(--mono);font-weight:600;text-decoration:none;color:var(--ink);font-size:.95rem;letter-spacing:-.01em}
+.brand .t{color:var(--accent)}
+nav.pri{margin-left:auto}
+nav.pri ul{display:flex;flex-wrap:wrap;gap:.15rem;list-style:none;margin:0;padding:0}
+nav.pri a{display:block;padding:.5rem .6rem;font-size:.82rem;text-decoration:none;color:var(--muted);border-radius:6px}
+nav.pri a:hover{color:var(--ink);background:var(--surf-2)}
+nav.pri a[aria-current=page]{color:var(--accent);background:var(--surf-2);font-weight:600}
+nav.pri a:active{transform:translateY(1px)}
+.hd-ctl{display:flex;align-items:center;gap:.4rem}
+.icon-btn{font:inherit;font-size:.8rem;color:var(--muted);background:var(--surf-2);border:1px solid var(--line);
+  border-radius:7px;padding:.45rem .7rem;cursor:pointer;min-height:34px}
+.icon-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.icon-btn:active{transform:translateY(1px)}
+.tmenu{position:absolute;right:var(--pad);top:100%;background:var(--surf-1);border:1px solid var(--line);
+  border-radius:9px;padding:.3rem;min-width:9rem;box-shadow:var(--shadow);display:none}
+.tmenu[data-open]{display:block}
+.tmenu button{display:flex;width:100%;gap:.5rem;align-items:center;font:inherit;font-size:.82rem;text-align:left;
+  background:none;border:0;color:var(--muted);padding:.5rem .6rem;border-radius:6px;cursor:pointer;min-height:36px}
+.tmenu button:hover{background:var(--surf-2);color:var(--ink)}
+.tmenu button:active{transform:translateY(1px)}
+.tmenu button[aria-pressed=true]{color:var(--ink)}
+.tmenu .ck{visibility:hidden;color:var(--accent)}
+.tmenu button[aria-pressed=true] .ck{visibility:visible}
+#navtog{display:none}
+/* At 320px the brand plus the Theme and Menu buttons do not fit inside a
+   header padded to the page gutter, and the two buttons push about 4px past
+   the viewport. Tighten the header row only, so the page gutter and every
+   other surface keep their normal spacing. */
+@media (max-width:400px){
+  .hd-in{padding-left:1rem;padding-right:1rem;gap:.5rem}
+  .icon-btn{padding-left:.55rem;padding-right:.55rem}
+  .tmenu{right:1rem}
+}
+@media (max-width:900px){
+  #navtog{display:inline-block}
+  nav.pri ul{position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--surf-1);
+    border-bottom:1px solid var(--line);padding:.5rem var(--pad);gap:0;display:none;box-shadow:var(--shadow)}
+  nav.pri ul[data-open]{display:flex}
+  nav.pri a{padding:.7rem .5rem;min-height:44px;display:flex;align-items:center}
+}
+main{max-width:var(--wide);margin:0 auto;padding:0 var(--pad) 4rem}
+/* Prose stacks use display:grid for their paragraph rhythm. A grid track
+   defaults to auto, which sizes to max-content, so one long code span or
+   quotation pushes the whole text column past the viewport. Pin the single
+   column to minmax(0,1fr) so it can shrink, and let long tokens break. */
+.prose{max-width:var(--measure);grid-template-columns:minmax(0,1fr);overflow-wrap:break-word}
+footer.site{border-top:1px solid var(--line);margin-top:3rem}
+footer.site div{max-width:var(--wide);margin:0 auto;padding:1.6rem var(--pad) 2.5rem;color:var(--faint);font-size:.82rem;
+  display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between}
+.proto-tag{font-family:var(--mono);font-size:.72rem;color:var(--faint);border:1px dashed var(--line-2);
+  border-radius:5px;padding:.15rem .45rem}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;
+  font-weight:600;cursor:pointer;border:1px solid transparent;font-size:.92rem;min-height:44px;padding:.6rem 1.1rem;
+  border-radius:var(--r-sm);transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+.btn:active{transform:translateY(1px)}
+.btn-1{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn-1:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.btn-2{background:var(--surf-2);color:var(--ink);border-color:var(--line)}
+.btn-2:hover{border-color:var(--line-2)}
+.tlink{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem}
+.tlink:hover{text-decoration:underline}
+.tlink:active{transform:translateY(1px);display:inline-block}
+/* WCAG 2.5.8 target size. A link sitting in a list row, a table cell, or a
+   definition list is a standalone target, so it gets a 24px minimum; a link
+   inside a sentence is exempt and is left alone. This is vertical padding on
+   an inline box, so the hit area grows without moving any line: using
+   inline-flex here would stop long link text from wrapping and reintroduce
+   horizontal overflow at 320px. */
+li a, td a, dd a, dt a, h2 a, h3 a, h4 a, .tlink, a.tag{padding-block:.22rem}
+summary{padding-block:.2rem}
+/* generic lists */
+ul.clean{list-style:none;margin:0;padding:0}
+.dash{padding-left:1.1rem;position:relative;color:var(--muted)}
+.dash::before{content:"";position:absolute;left:0;top:.75em;width:.5rem;height:1px;background:var(--accent)}
+.meta{color:var(--faint);font-size:.8rem}
+/* Purely decorative separator between meta items. It carries no meaning, so
+   it is hidden from assistive tech, but it is still rendered text, so it is
+   held to the same contrast floor as the items it sits between. */
+.sep{color:var(--faint)}
+figure{margin:0}
+figcaption{color:var(--faint);font-size:.8rem;margin-top:.5rem;line-height:1.5}
+details{border:1px solid var(--line);border-radius:var(--r-sm);padding:.7rem .9rem;background:var(--surf-1)}
+details summary{cursor:pointer;font-weight:600;font-size:.9rem}
+details pre{margin:.6rem 0 0;background:var(--surf-2);padding:.6rem .7rem;border-radius:6px;overflow-x:auto;
+  font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--faint);font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+
+:root{
+  --bg:#07090d;--surf-1:#0d1117;--surf-2:#11161f;--line:#1b2330;--line-2:#2c3848;
+  --ink:#eef2f7;--muted:#9aa8bb;--faint:#748192;--accent:#4ea3ff;--accent-2:#8ecbff;
+  --on-accent:#04080e;--shadow:0 14px 40px rgb(0 0 0 / .5);
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+  --wide:82rem;--measure:40rem;--evidence:72rem;--pad:1.75rem;--r-sm:4px;--r-md:6px;
+}
+:root[data-theme='light']{
+  --bg:#fbfbfc;--surf-1:#fff;--surf-2:#f1f3f6;--line:#e2e5ea;--line-2:#c3c9d2;
+  --ink:#12161c;--muted:#4a525e;--faint:#656e7a;--accent:#0a5fd0;--accent-2:#0e7490;
+  --on-accent:#fff;--shadow:0 12px 32px rgb(18 22 28 / .10);
+}
+.site-hd{background:var(--bg);border-bottom:1px solid var(--line)}
+h1{font-size:clamp(2.6rem,6vw,4.1rem);line-height:.98;letter-spacing:-.035em;margin:.5rem 0 0;font-weight:700}
+.kicker{font-family:var(--mono);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0}
+h2.sec{font-size:1.6rem;font-weight:680;letter-spacing:-.025em;color:var(--ink);margin:0 0 .3rem;line-height:1.15}
+h2.sec .h{display:none}
+h2.sub{font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:0 0 .3rem}
+h3{font-size:1.12rem;font-weight:650;letter-spacing:-.015em;margin:0}
+.lede{color:var(--muted);font-size:1.12rem;line-height:1.55;max-width:38rem}
+/* Running left rail: section index, kind, and date sit outside the text block. */
+section{padding:3.2rem 0;border-top:1px solid var(--line)}
+section.first{border-top:0;padding-top:2.2rem}
+.railed{display:grid;gap:.6rem 2.5rem;grid-template-columns:minmax(0,1fr)}
+@media(min-width:1000px){.railed{grid-template-columns:11rem minmax(0,1fr)}}
+.rail{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+  line-height:1.7;border-top:2px solid var(--accent);padding-top:.5rem;align-self:start}
+.rail .n{display:block;color:var(--accent);font-size:1rem;letter-spacing:0}
+.sec-note{color:var(--faint);font-size:.9rem;margin:.2rem 0 0;max-width:38rem}
+/* Figures break out wider than the prose measure. */
+.evidence{max-width:var(--evidence);margin:1.75rem 0}
+.evidence img{border-radius:var(--r-md);border:1px solid var(--line)}
+.evidence figcaption{max-width:44rem}
+/* Almost no cards: entries are rules + type. */
+.entry{display:block;text-decoration:none;color:inherit;padding:1.35rem 0;border-bottom:1px solid var(--line)}
+.entry:first-of-type{border-top:1px solid var(--line)}
+.entry:hover h3{color:var(--accent)}
+.entry:active{transform:translateY(1px)}
+.entry p{color:var(--muted);margin:.4rem 0 0;max-width:44rem;font-size:.95rem}
+.card{display:block;text-decoration:none;color:inherit;background:var(--surf-1);border:1px solid var(--line);
+  border-radius:var(--r-md);padding:1.1rem 1.2rem}
+.card:active{transform:translateY(1px)}
+.grid2{display:grid;gap:1rem;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.rowlist li{display:flex;flex-wrap:wrap;gap:.2rem 1.5rem;justify-content:space-between;
+  padding:.8rem 0;border-bottom:1px solid var(--line)}
+.rowlist li:last-child{border-bottom:0}
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
+.tag+.tag::before{content:"/";margin-right:.4rem;color:var(--line-2)}
+.badge-ship{color:var(--accent)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-hd">
+  <div class="hd-in">
+    <a class="brand" href="index.html"><span class="t">~/</span>derekwei.xyz</a>
+    <nav class="pri" aria-label="Primary"><ul id="navmenu"><li><a href="resume.html">Resume</a></li><li><a href="achievements.html">Achievements</a></li><li><a href="projects.html" aria-current="page">Projects</a></li><li><a href="ctf.html">CTF</a></li><li><a href="lab.html">Lab</a></li><li><a href="tools.html">Tools</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <div class="hd-ctl">
+      <button class="icon-btn" id="themebtn" aria-haspopup="true" aria-expanded="false" aria-controls="thememenu">Theme</button>
+      <button class="icon-btn" id="navtog" aria-expanded="false" aria-controls="navmenu">Menu</button>
+    </div>
+    <div class="tmenu" id="thememenu">
+      <button data-theme-value="system" aria-pressed="false"><span class="ck" aria-hidden="true">&#10003;</span>System</button>
+      <button data-theme-value="dark" aria-pressed="false"><span class="ck" aria-hidden="true">&#10003;</span>Dark</button>
+      <button data-theme-value="light" aria-pressed="false"><span class="ck" aria-hidden="true">&#10003;</span>Light</button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<section class="s first">
+  <p style="margin:0 0 1rem"><a class="tlink" href="projects.html">&larr; All projects</a></p>
+  <p class="kicker">Project &middot; in progress</p>
+  <h1 style="font-size:clamp(2rem,4vw,2.7rem)">CPTS study notes pipeline</h1>
+  <p class="lede" style="margin-top:.9rem">A Claude Code, Claude Haiku, and Obsidian workflow that turns pasted CPTS study material into structured notes, checklists, and review artifacts, with human review.</p>
+  <p class="meta" style="margin-top:.8rem"><span class="tag">automation</span> <span class="tag">obsidian</span> <span class="tag">claude</span> <span class="tag">workflow</span></p>
+</section>
+<section class="s"><div class="railed">
+      <div class="rail"><span class="n">01</span>Diagram</div>
+      <div><h2 class="sec">Architecture</h2><figure class="evidence"><img src="../../public/images/architecture/cpts-notes-pipeline.svg" alt="Pipeline diagram from authorized study material through Claude processing and human accuracy review into an Obsidian vault." loading="lazy" decoding="async" width="560" height="712">
+    <figcaption>Authorized study material, Claude processing, structured notes, review artifacts, human accuracy review, then the Obsidian vault.</figcaption></figure></div></div></section>
+<section class="s"><div class="railed">
+      <div class="rail"><span class="n">02</span>Method</div>
+      <div><h2 class="sec">How it works</h2><div class="prose" style="color:var(--muted);margin-top:1rem">
+    <p>Study material is pasted into a local workflow that produces structured notes, checklists, and review artifacts. Every generated artifact passes a human accuracy review before it reaches the vault.</p>
+    <p>The pipeline exists to make revision reproducible: the same source produces the same structure, and the review step is where correctness is decided. Certified Penetration Testing Specialist (CPTS) preparation is the current use case. The certification is not yet held.</p>
+  </div>
+  <ol class="clean" style="margin-top:1.2rem;display:grid;gap:.5rem;max-width:40rem;counter-reset:step">
+    <li class="dash"><span class="mono" style="color:var(--accent)">01</span> &nbsp;Authorized study material</li><li class="dash"><span class="mono" style="color:var(--accent)">02</span> &nbsp;Claude Code and Claude Haiku processing</li><li class="dash"><span class="mono" style="color:var(--accent)">03</span> &nbsp;Structured notes and checklists</li><li class="dash"><span class="mono" style="color:var(--accent)">04</span> &nbsp;Review artifacts</li><li class="dash"><span class="mono" style="color:var(--accent)">05</span> &nbsp;Human accuracy review</li><li class="dash"><span class="mono" style="color:var(--accent)">06</span> &nbsp;Obsidian vault</li>
+  </ol></div></div></section>
+</main>
+<footer class="site"><div>
+  <span>&copy; 2026 Derek Wei · Static site, no cookies, no trackers</span>
+  <span class="proto-tag">design prototype, not the live site</span>
+</div></footer>
+<script>
+(function(){
+  var KEY='dwproto-theme', root=document.documentElement;
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function read(){try{var v=localStorage.getItem(KEY);return v==='dark'||v==='light'?v:'system'}catch(e){return 'system'}}
+  var pref=read();
+  function apply(){
+    root.setAttribute('data-theme', pref==='system' ? (mq.matches?'dark':'light') : pref);
+    document.querySelectorAll('[data-theme-value]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.themeValue===pref));
+    });
+  }
+  document.querySelectorAll('[data-theme-value]').forEach(function(b){
+    b.addEventListener('click', function(){
+      pref=b.dataset.themeValue; try{localStorage.setItem(KEY,pref)}catch(e){}
+      apply(); menu.removeAttribute('data-open'); tb.setAttribute('aria-expanded','false'); tb.focus();
+    });
+  });
+  mq.addEventListener('change', function(){ if(pref==='system') apply(); });
+  var tb=document.getElementById('themebtn'), menu=document.getElementById('thememenu');
+  tb.addEventListener('click', function(){
+    var open=menu.hasAttribute('data-open');
+    if(open){menu.removeAttribute('data-open')}else{menu.setAttribute('data-open','')}
+    tb.setAttribute('aria-expanded', String(!open));
+  });
+  var nt=document.getElementById('navtog'), nm=document.getElementById('navmenu');
+  nt.addEventListener('click', function(){
+    var open=nm.hasAttribute('data-open');
+    if(open){nm.removeAttribute('data-open')}else{nm.setAttribute('data-open','')}
+    nt.setAttribute('aria-expanded', String(!open));
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key!=='Escape') return;
+    if(menu.hasAttribute('data-open')){menu.removeAttribute('data-open');tb.setAttribute('aria-expanded','false');tb.focus()}
+    if(nm.hasAttribute('data-open')){nm.removeAttribute('data-open');nt.setAttribute('aria-expanded','false');nt.focus()}
+  });
+  document.addEventListener('click', function(e){
+    if(menu.hasAttribute('data-open') && !menu.contains(e.target) && e.target!==tb){
+      menu.removeAttribute('data-open'); tb.setAttribute('aria-expanded','false');
+    }
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

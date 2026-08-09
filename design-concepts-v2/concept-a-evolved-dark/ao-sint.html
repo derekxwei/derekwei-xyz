@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BroncoCTF: AO-SINT · Concept A: Evolved current identity</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:dark}
+:root[data-theme='light']{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:1rem;top:1rem;z-index:99;background:var(--accent);color:var(--bg);padding:.5rem .75rem;border-radius:6px}
+.mono{font-family:var(--mono)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* header shell */
+.site-hd{position:sticky;top:0;z-index:20}
+.hd-in{display:flex;align-items:center;gap:1rem;max-width:var(--wide);margin:0 auto;padding:.85rem var(--pad)}
+.brand{font-family:var(--mono);font-weight:600;text-decoration:none;color:var(--ink);font-size:.95rem;letter-spacing:-.01em}
+.brand .t{color:var(--accent)}
+nav.pri{margin-left:auto}
+nav.pri ul{display:flex;flex-wrap:wrap;gap:.15rem;list-style:none;margin:0;padding:0}
+nav.pri a{display:block;padding:.5rem .6rem;font-size:.82rem;text-decoration:none;color:var(--muted);border-radius:6px}
+nav.pri a:hover{color:var(--ink);background:var(--surf-2)}
+nav.pri a[aria-current=page]{color:var(--accent);background:var(--surf-2);font-weight:600}
+nav.pri a:active{transform:translateY(1px)}
+.hd-ctl{display:flex;align-items:center;gap:.4rem}
+.icon-btn{font:inherit;font-size:.8rem;color:var(--muted);background:var(--surf-2);border:1px solid var(--line);
+  border-radius:7px;padding:.45rem .7rem;cursor:pointer;min-height:34px}
+.icon-btn:hover{color:var(--ink);border-color:var(--line-2)}
+.icon-btn:active{transform:translateY(1px)}
+.tmenu{position:absolute;right:var(--pad);top:100%;background:var(--surf-1);border:1px solid var(--line);
+  border-radius:9px;padding:.3rem;min-width:9rem;box-shadow:var(--shadow);display:none}
+.tmenu[data-open]{display:block}
+.tmenu button{display:flex;width:100%;gap:.5rem;align-items:center;font:inherit;font-size:.82rem;text-align:left;
+  background:none;border:0;color:var(--muted);padding:.5rem .6rem;border-radius:6px;cursor:pointer;min-height:36px}
+.tmenu button:hover{background:var(--surf-2);color:var(--ink)}
+.tmenu button:active{transform:translateY(1px)}
+.tmenu button[aria-pressed=true]{color:var(--ink)}
+.tmenu .ck{visibility:hidden;color:var(--accent)}
+.tmenu button[aria-pressed=true] .ck{visibility:visible}
+#navtog{display:none}
+/* At 320px the brand plus the Theme and Menu buttons do not fit inside a
+   header padded to the page gutter, and the two buttons push about 4px past
+   the viewport. Tighten the header row only, so the page gutter and every
+   other surface keep their normal spacing. */
+@media (max-width:400px){
+  .hd-in{padding-left:1rem;padding-right:1rem;gap:.5rem}
+  .icon-btn{padding-left:.55rem;padding-right:.55rem}
+  .tmenu{right:1rem}
+}
+@media (max-width:900px){
+  #navtog{display:inline-block}
+  nav.pri ul{position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--surf-1);
+    border-bottom:1px solid var(--line);padding:.5rem var(--pad);gap:0;display:none;box-shadow:var(--shadow)}
+  nav.pri ul[data-open]{display:flex}
+  nav.pri a{padding:.7rem .5rem;min-height:44px;display:flex;align-items:center}
+}
+main{max-width:var(--wide);margin:0 auto;padding:0 var(--pad) 4rem}
+/* Prose stacks use display:grid for their paragraph rhythm. A grid track
+   defaults to auto, which sizes to max-content, so one long code span or
+   quotation pushes the whole text column past the viewport. Pin the single
+   column to minmax(0,1fr) so it can shrink, and let long tokens break. */
+.prose{max-width:var(--measure);grid-template-columns:minmax(0,1fr);overflow-wrap:break-word}
+footer.site{border-top:1px solid var(--line);margin-top:3rem}
+footer.site div{max-width:var(--wide);margin:0 auto;padding:1.6rem var(--pad) 2.5rem;color:var(--faint);font-size:.82rem;
+  display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between}
+.proto-tag{font-family:var(--mono);font-size:.72rem;color:var(--faint);border:1px dashed var(--line-2);
+  border-radius:5px;padding:.15rem .45rem}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;
+  font-weight:600;cursor:pointer;border:1px solid transparent;font-size:.92rem;min-height:44px;padding:.6rem 1.1rem;
+  border-radius:var(--r-sm);transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+.btn:active{transform:translateY(1px)}
+.btn-1{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn-1:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.btn-2{background:var(--surf-2);color:var(--ink);border-color:var(--line)}
+.btn-2:hover{border-color:var(--line-2)}
+.tlink{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem}
+.tlink:hover{text-decoration:underline}
+.tlink:active{transform:translateY(1px);display:inline-block}
+/* WCAG 2.5.8 target size. A link sitting in a list row, a table cell, or a
+   definition list is a standalone target, so it gets a 24px minimum; a link
+   inside a sentence is exempt and is left alone. This is vertical padding on
+   an inline box, so the hit area grows without moving any line: using
+   inline-flex here would stop long link text from wrapping and reintroduce
+   horizontal overflow at 320px. */
+li a, td a, dd a, dt a, h2 a, h3 a, h4 a, .tlink, a.tag{padding-block:.22rem}
+summary{padding-block:.2rem}
+/* generic lists */
+ul.clean{list-style:none;margin:0;padding:0}
+.dash{padding-left:1.1rem;position:relative;color:var(--muted)}
+.dash::before{content:"";position:absolute;left:0;top:.75em;width:.5rem;height:1px;background:var(--accent)}
+.meta{color:var(--faint);font-size:.8rem}
+/* Purely decorative separator between meta items. It carries no meaning, so
+   it is hidden from assistive tech, but it is still rendered text, so it is
+   held to the same contrast floor as the items it sits between. */
+.sep{color:var(--faint)}
+figure{margin:0}
+figcaption{color:var(--faint);font-size:.8rem;margin-top:.5rem;line-height:1.5}
+details{border:1px solid var(--line);border-radius:var(--r-sm);padding:.7rem .9rem;background:var(--surf-1)}
+details summary{cursor:pointer;font-weight:600;font-size:.9rem}
+details pre{margin:.6rem 0 0;background:var(--surf-2);padding:.6rem .7rem;border-radius:6px;overflow-x:auto;
+  font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--faint);font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+
+:root{
+  --bg:#0a0f1a;--surf-1:#101827;--surf-2:#0c1320;--line:#1e293b;--line-2:#334862;
+  --ink:#e8eef6;--muted:#9db0c6;--faint:#6e829f;--accent:#38bdf8;--accent-2:#7dd3fc;
+  --on-accent:#06121f;--shadow:0 10px 30px rgb(0 0 0 / .45);
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+  --wide:76rem;--measure:44rem;--evidence:64rem;--pad:1.5rem;--r-sm:7px;--r-md:11px;
+}
+:root[data-theme='light']{
+  --bg:#f6f8fb;--surf-1:#fff;--surf-2:#eef2f7;--line:#d8e0ea;--line-2:#b6c4d6;
+  --ink:#101a2e;--muted:#45536b;--faint:#5d6b82;--accent:#0b63c5;--accent-2:#0e7490;
+  --on-accent:#fff;--shadow:0 10px 26px rgb(16 26 46 / .10);
+}
+.site-hd{background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+@media (prefers-reduced-transparency:reduce){.site-hd{background:var(--bg);backdrop-filter:none}}
+h1{font-size:clamp(2.4rem,5.5vw,3.5rem);line-height:1.02;letter-spacing:-.03em;margin:.4rem 0 0;font-weight:650}
+.kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0}
+/* Primary section: real landmark. 17px/650 in ink, above body rank. */
+h2.sec{font-size:1.0625rem;font-weight:650;letter-spacing:-.01em;color:var(--ink);margin:0 0 .2rem}
+h2.sec .h{color:var(--accent);font-family:var(--mono);margin-right:.4rem;font-weight:500}
+/* Secondary section: quieter, no ## motif. Not every heading shouts. */
+h2.sub{font-size:.8rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 .2rem}
+h3{font-size:1.02rem;font-weight:600;letter-spacing:-.01em;margin:0}
+.lede{color:var(--muted);font-size:1.05rem;max-width:40rem}
+section{padding:2.6rem 0;border-top:1px solid var(--line)}
+section.first{border-top:0;padding-top:2rem}
+.sec-note{color:var(--faint);font-size:.85rem;margin:.15rem 0 0}
+/* Evidence rail: the signature. Marks anything backed by a real artifact. */
+.evidence{max-width:var(--evidence);border-left:2px solid var(--accent);padding-left:1.25rem;margin:1.5rem 0}
+.evidence img{border-radius:var(--r-md);border:1px solid var(--line)}
+.card{display:block;text-decoration:none;color:inherit;background:var(--surf-1);border:1px solid var(--line);
+  border-radius:var(--r-md);padding:1.1rem 1.2rem;transition:border-color .15s ease}
+.card:hover{border-color:var(--line-2)}
+.card:active{transform:translateY(1px);border-color:var(--accent)}
+.card h3{color:var(--ink)}
+.card:hover h3{color:var(--accent)}
+.grid2{display:grid;gap:1rem;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.rowlist li{display:flex;flex-wrap:wrap;gap:.2rem 1.5rem;justify-content:space-between;
+  padding:.75rem 0;border-bottom:1px solid var(--line)}
+.rowlist li:last-child{border-bottom:0}
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--faint);border:1px solid var(--line);
+  border-radius:999px;padding:.1rem .5rem}
+.badge-ship{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-hd">
+  <div class="hd-in">
+    <a class="brand" href="index.html"><span class="t">~/</span>derekwei.xyz</a>
+    <nav class="pri" aria-label="Primary"><ul id="navmenu"><li><a href="resume.html">Resume</a></li><li><a href="achievements.html">Achievements</a></li><li><a href="projects.html">Projects</a></li><li><a href="ctf.html" aria-current="page">CTF</a></li><li><a href="lab.html">Lab</a></li><li><a href="tools.html">Tools</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <div class="hd-ctl">
+      <button class="icon-btn" id="themebtn" aria-haspopup="true" aria-expanded="false" aria-controls="thememenu">Theme</button>
+      <button class="icon-btn" id="navtog" aria-expanded="false" aria-controls="navmenu">Menu</button>
+    </div>
+    <div class="tmenu" id="thememenu">
+      <button data-theme-value="system" aria-pressed="false"><span class="ck" aria-hidden="true">&#10003;</span>System</button>
+      <button data-theme-value="dark" aria-pressed="false"><span class="ck" aria-hidden="true">&#10003;</span>Dark</button>
+      <button data-theme-value="light" aria-pressed="false"><span class="ck" aria-hidden="true">&#10003;</span>Light</button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<section class="s first">
+  <p style="margin:0 0 1rem"><a class="tlink" href="ctf.html">&larr; All CTF writeups</a></p>
+  <p class="kicker">BroncoCTF 2026 &middot; Open Source Intelligence</p>
+  <h1 style="font-size:clamp(2.1rem,4.5vw,3rem)">BroncoCTF: AO-SINT</h1>
+  <p class="lede" style="margin-top:.9rem">An evidence-first OSINT writeup using topography, architecture, map geometry, and sightlines to identify four Arcane Odyssey locations from four screenshots.</p>
+  <p class="meta" style="margin-top:1rem">Jul 11, 2026 &middot; difficulty hard (my own rating) &middot; challenge author <code class="mono">blunderous_wonders</code></p>
+  <p style="margin-top:.6rem;font-weight:600;color:var(--accent)">Team idktheflag placed 8th of 753 teams at BroncoCTF 2026.</p>
+  <div style="margin-top:.9rem;display:flex;gap:.5rem;flex-wrap:wrap">
+    <span class="tag">osint</span><span class="tag">geolocation</span><span class="tag">roblox</span><span class="tag">arcane-odyssey</span><span class="tag">map-analysis</span>
+  </div>
+</section>
+<section class="s"><h2 class="sec"><span class="h" aria-hidden="true">##</span>Challenge overview</h2><div class="prose" style="color:var(--muted);display:grid;gap:.7rem;margin-top:1rem">
+     <p>AO-SINT provided four screenshots from the Roblox game <em>Arcane Odyssey</em>: two from the Bronze Sea and two from the Nimbus Sea. The objective was to identify the island where the player character was <strong style="color:var(--ink)">actually standing</strong> in each screenshot.</p>
+     <p>Flag format: <code class="mono">bronco{location1_location2_location3_location4}</code></p>
+     <blockquote style="margin:0;padding-left:1rem;border-left:2px solid var(--line-2);color:var(--muted)">The challenge is talking about the place where the character is, not what they are looking at. This may be the same place in some cases.</blockquote>
+     <p>That distinction defined the entire solve. Several screenshots prominently displayed distant islands, unusual weather, or visual glitches. Those details were often distractions rather than reliable evidence of the character's location.</p>
+   </div></section>
+<section class="s" id="final-result"><h2 class="sec"><span class="h" aria-hidden="true">##</span>Final result</h2><ol class="clean" style="margin-top:1rem;display:grid;gap:.35rem;max-width:30rem">
+     <li class="dash"><span class="mono" style="color:var(--accent)">01</span> &nbsp;Ierochos</li><li class="dash"><span class="mono" style="color:var(--accent)">02</span> &nbsp;Port Mistral</li><li class="dash"><span class="mono" style="color:var(--accent)">03</span> &nbsp;Makrinaos</li><li class="dash"><span class="mono" style="color:var(--accent)">04</span> &nbsp;Ravenna</li>
+   </ol>
+   <details style="margin-top:1.2rem;max-width:34rem"><summary>Spoiler: show the final flag</summary><pre>bronco{ierochos_portmistral_makrinaos_ravenna}</pre></details></section>
+<section class="s"><h2 class="sec"><span class="h" aria-hidden="true">##</span>Methodology</h2><p class="prose" style="color:var(--muted);margin-top:1rem">I approached each screenshot as a geolocation problem rather than a landmark-recognition problem, and separated the evidence into two ranks.</p>
+   <div class="grid2" style="margin-top:1.2rem;align-items:start">
+     <div><h3 style="font-size:.95rem">Primary evidence</h3>
+       <ul class="clean" style="margin-top:.5rem;display:grid;gap:.3rem"><li class="dash">Terrain directly beneath the character</li><li class="dash">Elevation</li><li class="dash">Cliff and rock geometry</li><li class="dash">Architecture</li><li class="dash">Interior layout</li><li class="dash">Vegetation</li><li class="dash">Nearby landmasses</li><li class="dash">Landmark order</li><li class="dash">Relative landmark size</li><li class="dash">Map direction</li><li class="dash">In-game viewpoint reproduction</li></ul></div>
+     <div><h3 style="font-size:.95rem;color:var(--faint)">Supporting evidence</h3>
+       <p style="color:var(--muted);margin-top:.5rem;font-size:.93rem">Weather, lighting, story clues, visual effects, physics behavior, and distant landmarks. Supporting evidence could strengthen a theory, but it was never reliable enough to establish a location by itself.</p></div>
+   </div></section>
+<section class="s"><h2 class="sec"><span class="h" aria-hidden="true">##</span>Location analysis</h2>
+  <div style="margin-top:2.4rem">
+    <h3 style="font-size:1.25rem"><span class="mono" style="color:var(--accent)">01</span> &nbsp;Ierochos</h3>
+    <figure class="evidence"><img src="../../public/images/ctf/broncoctf-2026-ao-sint/location-1-ierochos.webp" alt="Arcane Odyssey character standing on a high narrow rock pillar with several distant islands visible through severe weather." loading="lazy" decoding="async" width="1600" height="717">
+    <figcaption>The foreground pillar and multi-island sightline supported Ierochos.</figcaption></figure>
+    <div class="prose" style="color:var(--muted);display:grid;gap:.7rem;margin-top:1rem">
+      <p><strong style="color:var(--ink)">Observation.</strong> The player stood at a high elevation on a narrow rocky pillar. Several islands were visible in the distance, including a large frozen landmass that appeared to be Frostmill Island. The most visually prominent island was not necessarily the answer.</p>
+      <p><strong style="color:var(--ink)">False lead.</strong> Heavy rain initially suggested Dawn Island because Dawn Island is associated with a permanent thunderstorm. That theory was weak because severe weather can occur in other parts of the game.</p>
+      <p><strong style="color:var(--ink)">Evidence.</strong> The character stood at very high elevation on a narrow, steep rock formation, multiple islands appeared along the same sightline, and the order and apparent sizes of those islands could be compared against the Bronze Sea map.</p>
+    </div>
+    <figure class="evidence"><img src="../../public/images/ctf/broncoctf-2026-ao-sint/bronze-sea-map.webp" alt="Bronze Sea map used to compare Ierochos with Cedar Arch, Elm Island, Dawn Island, and Frostmill Island." loading="lazy" decoding="async" width="1000" height="1769">
+    <figcaption>Landmark order and relative distance helped reconstruct the Bronze Sea sightline.</figcaption></figure>
+    <p style="margin-top:1rem"><span class="meta">Answer</span> <code class="mono" style="color:var(--accent)">ierochos</code></p>
+    <p class="prose" style="color:var(--muted);margin-top:.5rem"><strong style="color:var(--ink)">Key takeaway.</strong> The frozen island dominated the screenshot, but Frostmill Island was only a distant reference point. The topography beneath the character and the multi-island sightline identified Ierochos as the standing location.</p>
+  </div>
+  <div style="margin-top:2.4rem">
+    <h3 style="font-size:1.25rem"><span class="mono" style="color:var(--accent)">02</span> &nbsp;Port Mistral</h3>
+    <figure class="evidence"><img src="../../public/images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral.webp" alt="Port Mistral waterfront with timber-framed buildings, cargo, market structures, and red-brown roofs." loading="lazy" decoding="async" width="1539" height="422">
+    <figcaption>Port Mistral's merchant architecture and waterfront layout distinguished it from Redwake.</figcaption></figure>
+    <div class="prose" style="color:var(--muted);display:grid;gap:.7rem;margin-top:1rem">
+      <p><strong style="color:var(--ink)">Observation.</strong> The second screenshot showed a developed merchant settlement: timber-framed buildings with light plaster walls and red-brown roofs, barrels and cargo crates, market equipment, waterfront infrastructure, and tall vegetated stone formations.</p>
+      <p><strong style="color:var(--ink)">False lead.</strong> The architecture initially resembled Redwake, an early-game settlement in the Bronze Sea. However, this screenshot belonged to the Nimbus Sea set, which made Redwake an architectural comparison rather than a valid answer.</p>
+      <p><strong style="color:var(--ink)">Evidence.</strong> The settlement's dense harbor layout, merchant structures, docks, cargo, cranes, and red-roofed buildings closely matched Port Mistral, and the intact appearance was consistent with visiting before the storyline events that alter the settlement.</p>
+    </div>
+    
+    <p style="margin-top:1rem"><span class="meta">Answer</span> <code class="mono" style="color:var(--accent)">portmistral</code></p>
+    <p class="prose" style="color:var(--muted);margin-top:.5rem"><strong style="color:var(--ink)">Key takeaway.</strong> Architectural style alone created ambiguity because multiple settlements shared design elements. Identifying the correct sea narrowed the candidate set.</p>
+  </div>
+  <div style="margin-top:2.4rem">
+    <h3 style="font-size:1.25rem"><span class="mono" style="color:var(--accent)">03</span> &nbsp;Makrinaos</h3>
+    <figure class="evidence"><img src="../../public/images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos.webp" alt="Interior of the Dead Halls at Makrinaos with Assassin Syndicate signage, dark stone walls, and wooden construction." loading="lazy" decoding="async" width="1565" height="791">
+    <figcaption>The Nimbus Sea context and Assassin Syndicate interior supported Makrinaos.</figcaption></figure>
+    <div class="prose" style="color:var(--muted);display:grid;gap:.7rem;margin-top:1rem">
+      <p><strong style="color:var(--ink)">Observation.</strong> The third screenshot showed the interior of an Assassin Syndicate facility: a red banner, a contract board, dark stone walls, wooden construction, weapons and supplies, and a facility built inside mountainous terrain.</p>
+      <p><strong style="color:var(--ink)">False lead.</strong> The room resembled the Red Corner inside Whitesummit, making Whitesummit a strong initial candidate. However, the screenshot belonged to the Nimbus Sea set.</p>
+      <p><strong style="color:var(--ink)">Evidence.</strong> Makrinaos contains the Dead Halls, the Assassin Syndicate's Nimbus Sea base. The challenge referenced a miniboss hidden inside somewhere, which appeared to match Architect Kalliste, and the tornado references align with the Veiling Storms.</p>
+    </div>
+    
+    <p style="margin-top:1rem"><span class="meta">Answer</span> <code class="mono" style="color:var(--accent)">makrinaos</code></p>
+    <p class="prose" style="color:var(--muted);margin-top:.5rem"><strong style="color:var(--ink)">Key takeaway.</strong> The room's appearance alone could have indicated Whitesummit. The sea classification and miniboss clue were necessary to distinguish the two facilities.</p>
+  </div>
+  <div style="margin-top:2.4rem">
+    <h3 style="font-size:1.25rem"><span class="mono" style="color:var(--accent)">04</span> &nbsp;Ravenna</h3>
+    <figure class="evidence"><img src="../../public/images/ctf/broncoctf-2026-ao-sint/location-4-ravenna.webp" alt="Ravenna terrain and distant structures under red lighting, with an airborne whale visible as an unreliable physics clue." loading="lazy" decoding="async" width="1600" height="603">
+    <figcaption>The airborne whale was treated as a low-confidence physics glitch rather than geographic evidence.</figcaption></figure>
+    <div class="prose" style="color:var(--muted);display:grid;gap:.7rem;margin-top:1rem">
+      <p><strong style="color:var(--ink)">Observation.</strong> The fourth screenshot contained strong red lighting, reduced visibility, distant structures and terrain, and a whale apparently flying through the air.</p>
+      <p><strong style="color:var(--ink)">False lead.</strong> The flying whale initially suggested a hallucination associated with Akursius Keep, which is connected to Insanity effects. The theory was ultimately unreliable.</p>
+      <p><strong style="color:var(--ink)">Evidence.</strong> Flying whales can occur as a physics glitch, and lighting effects are not unique to one island, so the analysis focused on terrain beneath the character, nearby structures, general landform, and settlement geometry.</p>
+    </div>
+    
+    <p style="margin-top:1rem"><span class="meta">Answer</span> <code class="mono" style="color:var(--accent)">ravenna</code></p>
+    <p class="prose" style="color:var(--muted);margin-top:.5rem"><strong style="color:var(--ink)">Key takeaway.</strong> The whale was memorable but geographically useless. The correct answer came from the terrain and structures around the character.</p>
+  </div></section>
+<section class="s"><h2 class="sub">Sightline reconstruction</h2><p class="prose" style="color:var(--muted);margin-top:.8rem">The approximate sightline from the standing position:</p>
+   <p class="mono" style="margin-top:.7rem;color:var(--accent);font-size:.95rem">Ierochos → Cedar Arch → Elm Island → Dawn Island → Frostmill Island</p>
+   <p class="prose" style="color:var(--muted);margin-top:1rem">I later reproduced the viewpoint in-game and compared the elevation, foreground pillar, landmark order, and relative size of the visible islands. The verification screenshot is omitted to avoid publishing account-identifying information. The challenge was designed to be solvable without downloading Roblox.</p></section>
+<section class="s"><h2 class="sec"><span class="h" aria-hidden="true">##</span>Lessons learned</h2><dl style="margin-top:1rem;display:grid;gap:1rem;max-width:52rem"><div><dt style="font-weight:650"><span class="mono" style="color:var(--accent)">01</span> &nbsp;Identify the camera position, not the landmark</dt>
+     <dd style="margin:.25rem 0 0 0;color:var(--muted)">The most important question was what terrain is directly beneath the character, and from which location the visible landmarks would align in this order.</dd></div><div><dt style="font-weight:650"><span class="mono" style="color:var(--accent)">02</span> &nbsp;Topography is more reliable than weather</dt>
+     <dd style="margin:.25rem 0 0 0;color:var(--muted)">Elevation, cliff shape, rock geometry, vegetation, architecture, nearby landmasses, and sightline direction outrank weather and lighting.</dd></div><div><dt style="font-weight:650"><span class="mono" style="color:var(--accent)">03</span> &nbsp;Physics glitches are usually noise</dt>
+     <dd style="margin:.25rem 0 0 0;color:var(--muted)">Unusual game behavior can be memorable without being useful. A clue should not gain weight merely because it looks strange.</dd></div><div><dt style="font-weight:650"><span class="mono" style="color:var(--accent)">04</span> &nbsp;Separate verified components from guesses</dt>
+     <dd style="margin:.25rem 0 0 0;color:var(--muted)">Assigning each location a confidence level prevents a partially correct flag from turning into uncontrolled brute force.</dd></div></dl>
+   <p class="prose" style="color:var(--muted);margin-top:1.4rem">The full flag is behind the spoiler under <a href="#final-result">Final result</a> above.</p></section>
+</main>
+<footer class="site"><div>
+  <span>&copy; 2026 Derek Wei · Static site, no cookies, no trackers</span>
+  <span class="proto-tag">design prototype, not the live site</span>
+</div></footer>
+<script>
+(function(){
+  var KEY='dwproto-theme', root=document.documentElement;
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function read(){try{var v=localStorage.getItem(KEY);return v==='dark'||v==='light'?v:'system'}catch(e){return 'system'}}
+  var pref=read();
+  function apply(){
+    root.setAttribute('data-theme', pref==='system' ? (mq.matches?'dark':'light') : pref);
+    document.querySelectorAll('[data-theme-value]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.themeValue===pref));
+    });
+  }
+  document.querySelectorAll('[data-theme-value]').forEach(function(b){
+    b.addEventListener('click', function(){
+      pref=b.dataset.themeValue; try{localStorage.setItem(KEY,pref)}catch(e){}
+      apply(); menu.removeAttribute('data-open'); tb.setAttribute('aria-expanded','false'); tb.focus();
+    });
+  });
+  mq.addEventListener('change', function(){ if(pref==='system') apply(); });
+  var tb=document.getElementById('themebtn'), menu=document.getElementById('thememenu');
+  tb.addEventListener('click', function(){
+    var open=menu.hasAttribute('data-open');
+    if(open){menu.removeAttribute('data-open')}else{menu.setAttribute('data-open','')}
+    tb.setAttribute('aria-expanded', String(!open));
+  });
+  var nt=document.getElementById('navtog'), nm=document.getElementById('navmenu');
+  nt.addEventListener('click', function(){
+    var open=nm.hasAttribute('data-open');
+    if(open){nm.removeAttribute('data-open')}else{nm.setAttribute('data-open','')}
+    nt.setAttribute('aria-expanded', String(!open));
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key!=='Escape') return;
+    if(menu.hasAttribute('data-open')){menu.removeAttribute('data-open');tb.setAttribute('aria-expanded','false');tb.focus()}
+    if(nm.hasAttribute('data-open')){nm.removeAttribute('data-open');nt.setAttribute('aria-expanded','false');nt.focus()}
+  });
+  document.addEventListener('click', function(e){
+    if(menu.hasAttribute('data-open') && !menu.contains(e.target) && e.target!==tb){
+      menu.removeAttribute('data-open'); tb.setAttribute('aria-expanded','false');
+    }
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
