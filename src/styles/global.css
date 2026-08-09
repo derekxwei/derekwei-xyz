@@ -305,6 +305,16 @@
   transform: translateY(1px);
 }
 
+/* Large clickable evidence item: the featured AO-SINT block on the homepage.
+   The target covers an image and its heading, so it needs the same
+   pointer-down answer a button gives. The border shifts rather than the
+   background, because the image occupies almost the whole surface, and it is
+   the only signal that works on touch where there is no hover state. */
+.evidence-feature:active .evidence-frame {
+  transform: translateY(1px);
+  border-color: var(--color-accent);
+}
+
 /* Fully clickable cards only (Card.astro composes "panel group"); static
    panels and prose links are intentionally excluded. The border shift is the
    press signal on touch, where no hover state exists. */
