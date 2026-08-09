@@ -93,14 +93,9 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </div>
   </section>
 
-  <section class="py-10" aria-labelledby="summary-heading">
-    <h2
-      id="summary-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Summary
-    </h2>
-    <p class="mt-6 max-w-2xl leading-relaxed text-muted">
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="summary-heading">
+    <h2 id="summary-heading" class="section-title">Summary</h2>
+    <p class="mt-6 leading-relaxed text-muted">
       Incoming B.S. Cybersecurity Honors student focused on red-team
       fundamentals, penetration testing labs, and Capture the Flag competition,
       backed by five CompTIA certifications and hands-on security tooling. Nearly
@@ -112,13 +107,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </p>
   </section>
 
-  <section class="py-10" aria-labelledby="core-areas-heading">
-    <h2
-      id="core-areas-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Core areas
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="core-areas-heading">
+    <h2 id="core-areas-heading" class="section-title">Core areas</h2>
     <ul class="mt-6 flex flex-wrap gap-2" role="list">
       {
         CORE_AREAS.map((area) => (
@@ -130,13 +120,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </ul>
   </section>
 
-  <section class="py-10" aria-labelledby="certifications-heading">
-    <h2
-      id="certifications-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Certifications
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="certifications-heading">
+    <h2 id="certifications-heading" class="section-title">Certifications</h2>
     <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {
         CERTIFICATIONS.map((cert) => (
@@ -187,7 +172,7 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
         ))
       }
     </ul>
-    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
+    <p class="mt-3 text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
     <p class="mt-3 font-mono text-xs">
       <a class="link" href={CREDLY_PROFILE} rel="noopener noreferrer">
         View all verified credentials on Credly
@@ -214,26 +199,16 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </p>
   </section>
 
-  <section class="py-10" aria-labelledby="competitions-heading">
-    <h2
-      id="competitions-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Competition experience
-    </h2>
-    <p class="mt-6 max-w-2xl leading-relaxed text-muted">
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="competitions-heading">
+    <h2 id="competitions-heading" class="section-title">Competition experience</h2>
+    <p class="mt-6 leading-relaxed text-muted">
       Competition experience includes {competitionNames}. Detailed placements and
       results are on the <a href="/achievements/" class="link">achievements page</a>.
     </p>
   </section>
 
-  <section class="py-10" aria-labelledby="writing-heading">
-    <h2
-      id="writing-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Selected technical writing
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="writing-heading">
+    <h2 id="writing-heading" class="section-title">Selected technical writing</h2>
     <div class="panel mt-6 p-5">
       <div
         class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
@@ -243,7 +218,7 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
           BroncoCTF 2026 &middot; OSINT
         </p>
       </div>
-      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+      <p class="mt-2 text-sm leading-relaxed text-muted">
         Used topography, architecture, map geometry, and sightline reconstruction
         to identify four Arcane Odyssey locations. Team idktheflag placed 8th of
         753 teams.
@@ -254,13 +229,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </div>
   </section>
 
-  <section class="py-10" aria-labelledby="experience-heading">
-    <h2
-      id="experience-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Experience
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="experience-heading">
+    <h2 id="experience-heading" class="section-title">Experience</h2>
     <ul role="list" class="mt-6 divide-y divide-line">
       {
         EXPERIENCE.map((job) => (
@@ -286,13 +256,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </ul>
   </section>
 
-  <section class="py-10" aria-labelledby="education-heading">
-    <h2
-      id="education-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Education
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="education-heading">
+    <h2 id="education-heading" class="section-title">Education</h2>
     <ul role="list" class="mt-6 divide-y divide-line">
       {
         EDUCATION.map((entry) => (
@@ -311,13 +276,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </ul>
   </section>
 
-  <section class="py-10" aria-labelledby="scholarships-heading">
-    <h2
-      id="scholarships-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Scholarships
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="scholarships-heading">
+    <h2 id="scholarships-heading" class="section-title">Scholarships</h2>
     <ul role="list" class="mt-6 divide-y divide-line">
       {
         SCHOLARSHIPS.map((s) => (
@@ -338,13 +298,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </ul>
   </section>
 
-  <section class="py-10" aria-labelledby="skills-heading">
-    <h2
-      id="skills-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Technical skills
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="skills-heading">
+    <h2 id="skills-heading" class="section-title">Technical skills</h2>
     <dl class="mt-6 grid gap-4">
       {
         SKILL_GROUPS.map((group) => (
@@ -359,13 +314,8 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     </dl>
   </section>
 
-  <section class="py-10" aria-labelledby="leadership-heading">
-    <h2
-      id="leadership-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Leadership &amp; activities
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="leadership-heading">
+    <h2 id="leadership-heading" class="section-title">Leadership &amp; activities</h2>
     <ul role="list" class="mt-6 grid gap-4">
       {
         LEADERSHIP.map((item) => (

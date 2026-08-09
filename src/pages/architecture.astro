@@ -73,13 +73,8 @@ const deliveryDiagramAlt =
     lede="A security-focused site should be able to explain itself. This page documents the stack, deployment model, and security controls the site uses. Its behavior is verifiable through the deployed site and its documented configuration, with additional implementation detail available on request."
   />
 
-  <section class="py-10" aria-labelledby="stack-heading">
-    <h2
-      id="stack-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Stack
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="stack-heading">
+    <h2 id="stack-heading" class="section-title">Stack</h2>
     <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
       <div>
         <dt class="font-mono text-sm text-ink">Astro 5, static output</dt>
@@ -131,14 +126,9 @@ const deliveryDiagramAlt =
     </dl>
   </section>
 
-  <section class="py-10" aria-labelledby="delivery-heading">
-    <h2
-      id="delivery-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Delivery
-    </h2>
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="delivery-heading">
+    <h2 id="delivery-heading" class="section-title">Delivery</h2>
+    <p class="mt-4 text-sm leading-relaxed text-muted">
       The pipeline is deliberately short: a push to GitHub triggers a
       Cloudflare Pages build, and the static output is replicated to
       Cloudflare's edge. There is no origin server to keep patched. Version 1
@@ -146,7 +136,7 @@ const deliveryDiagramAlt =
       less to attack and far less to maintain, which makes it the safer and
       simpler first version.
     </p>
-    <figure class="mt-6">
+    <figure class="mt-6 max-w-evidence">
       <img
         src="/images/architecture/derekwei-site-architecture.svg"
         alt={deliveryDiagramAlt}
@@ -155,7 +145,7 @@ const deliveryDiagramAlt =
         loading="lazy"
         class="w-full max-w-xl"
       />
-      <figcaption class="mt-3 max-w-2xl text-xs leading-relaxed text-faint">
+      <figcaption class="mt-3 text-xs leading-relaxed text-faint">
         Delivery pipeline: local development, then a push to the private GitHub
         repository, then a Cloudflare Pages build, then the Cloudflare edge over
         HTTPS, then the visitor's browser.
@@ -163,20 +153,15 @@ const deliveryDiagramAlt =
     </figure>
   </section>
 
-  <section class="py-10" aria-labelledby="headers-heading">
-    <h2
-      id="headers-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Security headers
-    </h2>
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="headers-heading">
+    <h2 id="headers-heading" class="section-title">Security headers</h2>
+    <p class="mt-4 text-sm leading-relaxed text-muted">
       Every response carries this header set, configured in
       <code class="text-ink">public/_headers</code> and applied by Cloudflare
       Pages at the edge:
     </p>
     <div
-      class="mt-6 overflow-x-auto rounded-lg border border-line"
+      class="mt-6 max-w-evidence overflow-x-auto rounded-lg border border-line"
       tabindex="0"
       role="region"
       aria-labelledby="headers-heading"
@@ -265,14 +250,8 @@ const deliveryDiagramAlt =
     </div>
   </section>
 
-  <section class="py-10" aria-labelledby="privacy-heading">
-    <h2
-      id="privacy-heading"
-      class="font-mono text-sm uppercase tracking-[0.15em] text-faint"
-    >
-      <span class="text-accent" aria-hidden="true">##</span> Privacy &amp;
-      performance
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="privacy-heading">
+    <h2 id="privacy-heading" class="section-title">Privacy &amp; performance</h2>
     <div class="mt-4 max-w-2xl space-y-4 text-sm leading-relaxed text-muted">
       <p>
         Static HTML with no backend means there is nothing to track you with:

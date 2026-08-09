@@ -45,10 +45,8 @@ const structure = [
     lede="Offensive-security methodology from Capture the Flag competitions, written to learn in public: reasoning and approach over flag spoilers."
   />
 
-  <section class="py-10" aria-labelledby="about-ctf">
-    <h2 id="about-ctf" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
-      <span class="text-accent" aria-hidden="true">##</span> What is a CTF?
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="about-ctf">
+    <h2 id="about-ctf" class="section-title">What is a CTF?</h2>
     <div class="mt-4 max-w-2xl space-y-3 text-sm leading-relaxed text-muted">
       <p>
         A Capture the Flag (CTF) is a legal, sanctioned competition where players solve
@@ -66,13 +64,11 @@ const structure = [
     </div>
   </section>
 
-  <section class="py-10" aria-labelledby="published">
-    <h2 id="published" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
-      <span class="text-accent" aria-hidden="true">##</span> Published writeups
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="published">
+    <h2 id="published" class="section-title">Published writeups</h2>
     {
       writeups.length > 0 ? (
-        <ul class="mt-5 grid gap-4 sm:grid-cols-2" role="list">
+        <ul class="mt-5 grid max-w-evidence gap-4 sm:grid-cols-2" role="list">
           {writeups.map((entry, i) => (
             <Card
               href={`/ctf/${entry.id}/`}
@@ -121,10 +117,8 @@ const structure = [
     }
   </section>
 
-  <section class="py-10" aria-labelledby="categories">
-    <h2 id="categories" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
-      <span class="text-accent" aria-hidden="true">##</span> Categories
-    </h2>
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="categories">
+    <h2 id="categories" class="section-title">Categories</h2>
     <ul class="mt-5 grid gap-3 sm:grid-cols-2" role="list">
       {
         categories.map((cat) => (
@@ -137,11 +131,9 @@ const structure = [
     </ul>
   </section>
 
-  <section class="py-10" aria-labelledby="how-i-write">
-    <h2 id="how-i-write" class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
-      <span class="text-accent" aria-hidden="true">##</span> How I structure a writeup
-    </h2>
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="how-i-write">
+    <h2 id="how-i-write" class="section-title">How I structure a writeup</h2>
+    <p class="mt-4 text-sm leading-relaxed text-muted">
       Each writeup follows the same outline so the reasoning stays easy to follow:
     </p>
     <ol

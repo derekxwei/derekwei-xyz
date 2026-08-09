@@ -146,6 +146,30 @@
   .section-rule {
     @apply border-t border-line pt-6;
   }
+  /* The rule spans the full page frame, but the content under it must not:
+     at a 90rem shell an unconstrained list reaches 180 characters per line.
+     Section content therefore defaults to the medium tier. Wide material
+     opts out with a max-w-* utility, which wins because Tailwind utilities
+     load in a later cascade layer than these component rules. */
+  /* :where() keeps this at a single class of specificity, so the running-text
+     rule below can outrank it for paragraphs and list items while still
+     governing structural blocks like grids and lists. */
+  .section-rule > :not(:where(.section-bar, .section-title, .section-note)) {
+    max-width: var(--container-mid);
+  }
+  /* Running text is capped at the reading measure wherever it sits, however
+     deeply nested, because the medium tier above only reaches direct
+     children. Cards and image paragraphs are excluded: a card is a structural
+     surface sized by its grid, and an image paragraph is evidence that is
+     meant to use the full width. Any element can still opt out with a
+     max-w-* utility. */
+  /* Two :not() clauses rather than one, so this outranks the medium-tier rule
+     above for direct children of a section. ch is relative to the element own
+     font size, so a 14px list item and a 16px paragraph both land near 72
+     characters; a fixed rem cap would let small text run past 90. */
+  main :where(p, li, dd, figcaption):not(.panel):not(:has(> img)) {
+    max-width: min(var(--container-measure), 72ch);
+  }
   .section-bar {
     @apply flex items-baseline gap-4 font-mono text-xs uppercase tracking-[0.16em];
   }
@@ -226,8 +250,20 @@
   .prose-custom :where(pre) {
     border: 1px solid var(--color-line);
   }
-  /* Evidence images fill the reading column; diagrams keep their intrinsic
-     width. The column itself is capped in Prose.astro for readable lines. */
+  /* Reading measure applies to the words, not to the evidence. The container
+     is evidence-wide, so text children are capped here at the reading measure
+     while an image paragraph is left free to use the full width. This is the
+     audit's headline finding: AO-SINT screenshots were rendering at 768px
+     inside a 1920px viewport because prose and evidence shared one column. */
+  .prose-custom > :where(p, ul, ol, dl, h1, h2, h3, h4, h5, h6, blockquote, details, hr) {
+    max-width: var(--container-measure);
+  }
+  .prose-custom > :where(p:has(> img:only-child)),
+  .prose-custom > :where(figure),
+  .prose-custom > :where(pre),
+  .prose-custom > :where(table) {
+    max-width: none;
+  }
   .prose-custom :where(img) {
     max-width: 100%;
     height: auto;
@@ -237,11 +273,13 @@
   .prose-custom :where(p:has(> img:only-child)) {
     margin-bottom: 0.375rem;
   }
-  .prose-custom :where(p:has(> img:only-child) + p:has(> em:only-child)) {
+  .prose-custom > :where(p:has(> img:only-child) + p:has(> em:only-child)) {
     margin-top: 0;
     font-size: 0.8125rem;
     line-height: 1.5;
     color: var(--color-faint);
+    /* the caption belongs to the figure, so it tracks the evidence width */
+    max-width: none;
   }
   /* Ensure <details> spoilers actually collapse, regardless of the CSS reset. */
   .prose-custom details:not([open]) > :not(summary) {

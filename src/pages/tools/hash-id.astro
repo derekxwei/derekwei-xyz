@@ -13,7 +13,7 @@ import PageHeader from '../../components/PageHeader.astro';
     lede="Paste a hash and get the likely algorithms, inferred from its length and character set. A triage helper for CTFs - heuristic, not authoritative."
   />
 
-  <section class="py-10">
+  <section class="section-rule mt-16 sm:mt-20">
     <div class="grid gap-4">
       <div>
         <label for="hid-input" class="label">Hash</label>
@@ -35,9 +35,7 @@ import PageHeader from '../../components/PageHeader.astro';
 
     <div aria-live="polite">
       <div id="hid-results" class="mt-8" hidden>
-        <h2 class="font-mono text-sm uppercase tracking-[0.15em] text-faint">
-          <span class="text-accent" aria-hidden="true">##</span> Candidates
-        </h2>
+        <h2 class="section-title">Candidates</h2>
         <p id="hid-summary" class="mt-3 font-mono text-xs text-faint"></p>
         <ul id="hid-list" class="mt-4 grid gap-2" role="list"></ul>
       </div>

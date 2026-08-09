@@ -111,13 +111,11 @@ const grouped = order
     lede="Browser-only security utilities for CTF practice, quick analysis, and learning the fundamentals. Everything runs client-side: no backend, no data leaves the machine (CSP: connect-src 'self')."
   />
 
-  <section class="py-10">
+  <section class="section-rule mt-16 sm:mt-20">
     {
       grouped.map((section) => (
         <div class="mb-10 last:mb-0">
-          <h2 class="mb-4 font-mono text-sm uppercase tracking-[0.15em] text-faint">
-            <span class="text-accent" aria-hidden="true">##</span> {section.group}
-          </h2>
+          <h2 class="mb-4 section-title">{section.group}</h2>
           <ul class="grid gap-4 sm:grid-cols-2" role="list">
             {section.items.map((tool) => (
               <Card
@@ -131,7 +129,7 @@ const grouped = order
         </div>
       ))
     }
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+    <p class="mt-4 text-sm leading-relaxed text-muted">
       These tools are static pages: all processing happens in your browser’s
       JavaScript. There is no backend, and the site’s Content Security Policy
       (<code class="font-mono text-xs text-ink">connect-src 'self'</code>)

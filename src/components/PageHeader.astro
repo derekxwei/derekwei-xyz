@@ -9,9 +9,9 @@ interface Props {
 const { kicker, title, lede } = Astro.props;
 ---
 
-<header class="border-b border-line py-10 sm:py-14">
+<header class="pt-10 pb-2 sm:pt-14">
   {kicker && <p class="kicker">{kicker}</p>}
-  <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
-  {lede && <p class="mt-3 max-w-2xl leading-relaxed text-muted">{lede}</p>}
+  <h1 class="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
+  {lede && <p class="mt-4 text-lg leading-relaxed text-prose-body">{lede}</p>}
   <slot />
 </header>
