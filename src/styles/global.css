@@ -193,6 +193,14 @@
   .link {
     @apply text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:text-accent-2 hover:decoration-accent-2/60;
   }
+  /* A link alone in its own paragraph is a standalone action ("All projects"),
+     not a word inside a sentence, so WCAG 2.5.8 applies and it needs a 24px
+     target. Vertical padding on an inline box grows the hit area without
+     moving the text or the line it sits on. A link inside running prose is
+     exempt and is deliberately left alone. */
+  p > a:only-child {
+    padding-block: 0.3rem;
+  }
 
   /* stretched link used inside .group.relative cards */
   .card-link {
@@ -267,6 +275,39 @@
   .prose-custom :where(img) {
     max-width: 100%;
     height: auto;
+  }
+  /* Markdown evidence lives in public/, so Astro cannot measure it at build
+     time and emits no width or height. Without a reserved box the page
+     reflows as each screenshot arrives. These ratios are read from the real
+     files (webp headers and svg viewBox), so the box is correct before the
+     first byte of image data lands. Keyed by filename rather than added to
+     the markdown, so no content file is touched. */
+  .prose-custom img[src$="location-1-ierochos.webp"] {
+    aspect-ratio: 1600 / 717;
+  }
+  .prose-custom img[src$="bronze-sea-map.webp"] {
+    aspect-ratio: 1000 / 1769;
+  }
+  .prose-custom img[src$="location-2-port-mistral.webp"] {
+    aspect-ratio: 1539 / 422;
+  }
+  .prose-custom img[src$="location-3-makrinaos.webp"] {
+    aspect-ratio: 1565 / 791;
+  }
+  .prose-custom img[src$="location-4-ravenna.webp"] {
+    aspect-ratio: 1600 / 603;
+  }
+  .prose-custom img[src$="nimbus-sea-map.webp"] {
+    aspect-ratio: 1000 / 598;
+  }
+  .prose-custom img[src$="cpts-notes-pipeline.svg"] {
+    aspect-ratio: 560 / 712;
+  }
+  .prose-custom img[src$="derekwei-site-architecture.svg"] {
+    aspect-ratio: 560 / 596;
+  }
+  .prose-custom img[src$="secure-travel-network.svg"] {
+    aspect-ratio: 560 / 596;
   }
   /* Markdown evidence figures: an image paragraph followed by an italic
      caption paragraph reads as figure + subordinate caption. */
