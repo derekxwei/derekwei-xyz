@@ -150,13 +150,18 @@ const competitionSkills = [
                 )}
               </p>
               <p class="lnum sm:pt-1">
-                {cert.expires ? (
+                {cert.neverExpires ? (
+                  /* CompTIA states ITF+ does not expire. That is a fact about
+                     the credential, not a missing field, so it is stated
+                     rather than left blank. */
+                  <span class="text-muted">Never expires</span>
+                ) : cert.expires ? (
                   <>
                     <span class="text-faint sm:hidden">Expires </span>
                     {cert.expires}
                   </>
                 ) : (
-                  <span class="text-faint">No expiry listed</span>
+                  <span class="text-faint">No expiration recorded</span>
                 )}
               </p>
             </li>

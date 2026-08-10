@@ -61,6 +61,12 @@ export interface Certification {
   /** From the public Credly badge, verbatim. Omit when Credly lists none. */
   issued?: string;
   expires?: string;
+  /**
+   * True only where the issuer states the credential does not expire, as
+   * CompTIA does for ITF+. Distinct from omitting `expires`, which means no
+   * expiration is recorded here rather than that none exists.
+   */
+  neverExpires?: boolean;
   /** Public Credly badge URL. Never link Credly edit or account pages. */
   verifyUrl?: string;
 }
@@ -75,6 +81,7 @@ export const CERTIFICATIONS: readonly Certification[] = [
     short: 'CySA+',
     issuer: 'CompTIA',
     year: '2026',
+    issued: 'May 14, 2026',
     expires: 'May 14, 2029',
     verifyUrl: 'https://www.credly.com/badges/c567b6a1-ce8c-4b22-9707-a6ef7ed6b773/public_url',
   },
@@ -83,6 +90,7 @@ export const CERTIFICATIONS: readonly Certification[] = [
     short: 'PenTest+',
     issuer: 'CompTIA',
     year: '2026',
+    issued: 'April 29, 2026',
     expires: 'April 29, 2032',
     verifyUrl: 'https://www.credly.com/badges/9755d071-4b25-4765-af4d-12cdd5a6f563/public_url',
   },
@@ -90,6 +98,8 @@ export const CERTIFICATIONS: readonly Certification[] = [
     name: 'CompTIA Security+',
     short: 'Security+',
     issuer: 'CompTIA',
+    year: '2026',
+    issued: 'May 7, 2026',
     expires: 'April 29, 2032',
     verifyUrl: 'https://www.credly.com/badges/3a66db4e-f145-4eaa-a953-41d95ccfe70e/public_url',
   },
@@ -97,6 +107,8 @@ export const CERTIFICATIONS: readonly Certification[] = [
     name: 'CompTIA Network+',
     short: 'Network+',
     issuer: 'CompTIA',
+    year: '2024',
+    issued: 'April 23, 2024',
     expires: 'April 29, 2032',
     verifyUrl: 'https://www.credly.com/badges/a9116ea8-2afb-4fbb-af6e-1d5267c7c0f3/public_url',
   },
@@ -104,7 +116,9 @@ export const CERTIFICATIONS: readonly Certification[] = [
     name: 'CompTIA IT Fundamentals+',
     short: 'ITF+',
     issuer: 'CompTIA',
+    year: '2023',
     issued: 'April 26, 2023',
+    neverExpires: true,
     verifyUrl: 'https://www.credly.com/badges/c3447ccb-bffa-4505-80f8-6771fe62983e/public_url',
   },
   {
