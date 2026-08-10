@@ -131,10 +131,12 @@ export const CERTIFICATIONS: readonly Certification[] = [
     verifyUrl: 'https://www.credly.com/badges/8197c6ef-1a3f-4449-b0e0-739b5329dcd2/public_url',
   },
   {
-    name: 'Microsoft Office Specialist: Word Associate',
+    name: 'Microsoft Office Specialist: Word Associate (Microsoft 365 Apps)',
     short: 'MOS Word',
     issuer: 'Microsoft',
+    year: '2023',
     issued: 'December 8, 2023',
+    neverExpires: true,
     verifyUrl: 'https://www.credly.com/badges/03879611-277a-42a3-af16-ec92f94f51ff/public_url',
   },
 ];
