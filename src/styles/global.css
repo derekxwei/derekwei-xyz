@@ -265,7 +265,7 @@
      above for direct children of a section. ch is relative to the element own
      font size, so a 14px list item and a 16px paragraph both land near 72
      characters; a fixed rem cap would let small text run past 90. */
-  main :where(p, li, dd, figcaption):not(.panel):not(:has(> img)) {
+  main :where(p, li, dd, figcaption):not(.panel):not(.lrow):not(:has(> img)) {
     max-width: min(var(--container-measure), 72ch);
   }
   .section-bar {

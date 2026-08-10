@@ -20,6 +20,12 @@ interface Props {
   tight?: boolean;
   /** Render the heading as h3, for a subsection inside a section. */
   level?: 2 | 3;
+  /**
+   * Width tier the section occupies. The rule spans this tier, so it always
+   * matches the width of what it introduces rather than floating wider than
+   * its own content.
+   */
+  width?: 'shell' | 'evidence' | 'mid';
   class?: string;
 }
 
@@ -30,8 +36,15 @@ const {
   note,
   tight = false,
   level = 2,
+  width = 'shell',
   class: className,
 } = Astro.props;
+
+const widthClass = {
+  shell: '',
+  evidence: 'max-w-evidence',
+  mid: 'max-w-mid',
+}[width];
 
 const headingId = `${id}-heading`;
 ---
@@ -39,7 +52,7 @@ const headingId = `${id}-heading`;
 <section
   id={id}
   aria-labelledby={headingId}
-  class:list={[tight ? 'sec-head-tight' : 'sec-head', className]}
+  class:list={[tight ? 'sec-head-tight' : 'sec-head', widthClass, className]}
 >
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   {

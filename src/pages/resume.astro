@@ -1,7 +1,7 @@
 ---
 import { existsSync } from 'node:fs';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
 import {
   SITE,
   CONTACT,
@@ -20,7 +20,7 @@ import {
 } from '../consts';
 
 // Empty tiers are hidden so an earned credential leaving the roadmap does not
-// leave a blank card behind.
+// leave a blank entry behind.
 const roadmap = [
   { label: 'In progress', items: CERT_ROADMAP.inProgress as readonly string[] },
   { label: 'Next', items: CERT_ROADMAP.next as readonly string[] },
@@ -30,7 +30,18 @@ const roadmap = [
 const description =
   'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
 
-const competitionNames = COMPETITIONS.map((c) => c.name).join(', ');
+// A placement reads faster when the rank leads. This split is display only:
+// the captured rank is rendered immediately before the untouched remainder of
+// the same string, so the row still shows the recorded result verbatim. If a
+// result does not start with a placement, it renders whole with no rank.
+const splitResult = (result?: string) => {
+  if (!result) return { rank: null, rest: null };
+  const m = result.match(/^(\d+(?:st|nd|rd|th))\b/);
+  return m ? { rank: m[1], rest: result.slice(m[1].length) } : { rank: null, rest: result };
+};
+
+const placed = COMPETITIONS.filter((c) => c.result);
+const unplaced = COMPETITIONS.filter((c) => !c.result);
 
 // Only surface the download button when the file is actually present in public/.
 const resumePdf = '/Derek_Wei_Resume_Public.pdf';
@@ -38,39 +49,43 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
 ---
 
 <BaseLayout title="Resume" description={description}>
-  <PageHeader
-    kicker="~/resume"
-    title="Resume"
-    lede="Education, certifications, competition results, and experience. Formatted to print cleanly."
-  />
+  <!-- One connected masthead: who, what, how to take it away, and how to make
+       contact. Previously these were three detached blocks with a large gap. -->
+  <header class="max-w-mid pt-10 sm:pt-14">
+    <p class="kicker">~/resume</p>
+    <div
+      class="mt-2 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-12"
+    >
+      <div>
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Resume</h1>
+        <p class="mt-3 text-lg leading-relaxed text-prose-body">
+          Education, certifications, competition results, and experience.
+          Seeking cybersecurity internships.
+        </p>
+      </div>
+      <div class="print-hidden flex shrink-0 flex-wrap items-center gap-3">
+        {
+          resumePdfExists && (
+            <a href={resumePdf} class="btn btn-primary" download>
+              Download PDF
+            </a>
+          )
+        }
+        <button
+          id="print-btn"
+          class:list={['btn', resumePdfExists ? 'btn-ghost' : 'btn-primary']}
+          type="button">Print</button
+        >
+      </div>
+    </div>
 
-  <div
-    class="print-hidden flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-line py-5"
-  >
-    {
-      resumePdfExists && (
-        <a href={resumePdf} class="btn btn-primary" download>
-          Download PDF
-        </a>
-      )
-    }
-    <button id="print-btn" class:list={['btn', resumePdfExists ? 'btn-ghost' : 'btn-primary']} type="button">
-      Print / save as PDF
-    </button>
-    <p class="font-mono text-xs text-faint">
-      // print-friendly: site chrome is stripped and output renders dark-on-white
-    </p>
-  </div>
-
-  <section class="py-10" aria-label="Contact information">
-    <div class="panel p-5">
+    <!-- Contact strip: a rule, not a panel. It belongs to the masthead. -->
+    <div class="mt-7 border-t border-line pt-4">
       <ul
         role="list"
-        class="flex flex-col gap-2 font-mono text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6"
+        class="flex flex-col gap-x-6 gap-y-1.5 font-mono text-sm sm:flex-row sm:flex-wrap sm:items-center"
       >
-        <li>
-          <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-        </li>
+        <li><a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
         <li>
           <a
             class="link"
@@ -79,54 +94,81 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
             >{CONTACT.phoneDisplay}</a
           >
         </li>
-        <li>
-          <a class="link" href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a>
-        </li>
+        <li><a class="link" href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a></li>
         <li class="text-muted">{SITE.location}</li>
-        <li class="w-full text-muted sm:w-auto">{SITE.clearance}</li>
       </ul>
-      <p class="mt-4 border-t border-line pt-4 font-mono text-xs leading-relaxed text-muted">
+      <p class="mt-3 font-mono text-xs leading-relaxed text-muted">
+        {SITE.clearance}
+      </p>
+      <p class="mt-1.5 font-mono text-xs leading-relaxed text-faint">
         5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
         &middot; AWS Certified AI Practitioner &middot; CTF competitor &middot;
         preparing for the CPTS
       </p>
+      <p class="print-hidden mt-3 font-mono text-[11px] text-faint">
+        Print output strips site chrome and renders dark on white.
+      </p>
     </div>
-  </section>
+  </header>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="summary-heading">
-    <h2 id="summary-heading" class="section-title">Summary</h2>
-    <p class="mt-6 leading-relaxed text-muted">
+  <SectionHead width="mid" eyebrow="Profile" title="Summary" id="summary" tight>
+    <p class="mt-5 leading-relaxed text-prose-body">
       Incoming B.S. Cybersecurity Honors student focused on red-team
       fundamentals, penetration testing labs, and Capture the Flag competition,
-      backed by five CompTIA certifications and hands-on security tooling. Nearly
-      four years supporting cybersecurity labs and troubleshooting Windows and
-      Linux systems, now preparing for the Hack The Box Certified Penetration
-      Testing Specialist (CPTS). Blue-team literacy from CySA+ supports the
-      offensive work by connecting findings back to defense. Seeking
-      cybersecurity internships.
+      backed by five CompTIA certifications and hands-on security tooling.
+      Nearly four years supporting cybersecurity labs and troubleshooting
+      Windows and Linux systems, now preparing for the Hack The Box Certified
+      Penetration Testing Specialist (CPTS). Blue-team literacy from CySA+
+      supports the offensive work by connecting findings back to defense.
+      Seeking cybersecurity internships.
     </p>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="core-areas-heading">
-    <h2 id="core-areas-heading" class="section-title">Core areas</h2>
-    <ul class="mt-6 flex flex-wrap gap-2" role="list">
+  <SectionHead width="mid" eyebrow="Education" title="Education" id="education">
+    <ul role="list" class="ledger mt-6 max-w-mid">
       {
-        CORE_AREAS.map((area) => (
-          <li class="rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted">
-            {area}
+        EDUCATION.map((entry) => (
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <p class="lname">{entry.school}</p>
+              <p class="mt-0.5 text-sm text-muted">{entry.program}</p>
+              {entry.note && <p class="mt-1 text-sm text-faint">{entry.note}</p>}
+            </div>
+            <p class="lnum sm:pt-1 sm:text-right">{entry.detail}</p>
           </li>
         ))
       }
     </ul>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="certifications-heading">
-    <h2 id="certifications-heading" class="section-title">Certifications</h2>
-    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+  <SectionHead width="mid" eyebrow="Recognition" title="Scholarships" id="scholarships">
+    <ul role="list" class="ledger mt-6 max-w-mid">
+      {
+        SCHOLARSHIPS.map((s) => (
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto_5rem]">
+            <p class="lname">{s.name}</p>
+            <p class="lmeta sm:pt-1 sm:text-right">{s.institution}</p>
+            <p class="lnum sm:pt-1 sm:text-right">
+              {s.amount && `${s.amount} · `}
+              {s.year}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </SectionHead>
+
+  <SectionHead width="mid"
+    eyebrow="Credentials"
+    title="Certifications"
+    id="certifications"
+    note="Each credential links to its public Credly badge."
+  >
+    <ul role="list" class="ledger mt-6 max-w-mid">
       {
         CERTIFICATIONS.map((cert) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium">
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_11rem_4rem]">
+            <p class="lname">
               {cert.verifyUrl ? (
                 <a
                   class="link"
@@ -137,199 +179,191 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
                   {cert.name}
                 </a>
               ) : (
-                <span class="text-ink">{cert.name}</span>
+                <span>{cert.name}</span>
               )}
             </p>
-            <p class="mt-1 font-mono text-xs text-faint">
-              {cert.issuer}
-              {cert.year && ` · ${cert.year}`}
-            </p>
+            <p class="lmeta sm:pt-1">{cert.issuer}</p>
+            <p class="lnum sm:pt-1 sm:text-right">{cert.year ?? ''}</p>
           </li>
         ))
       }
     </ul>
 
-    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
-      CompTIA stackable certifications
-    </h3>
-    <ul role="list" class="mt-3 flex flex-wrap gap-2">
+    <h3 class="eyebrow mt-8">CompTIA stackable certifications</h3>
+    <ul role="list" class="ledger mt-3 max-w-mid">
       {
         STACKABLE_CERTIFICATIONS.map((cert) => (
-          <li class="rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs">
-            {cert.verifyUrl ? (
-              <a
-                class="link"
-                href={cert.verifyUrl}
-                rel="noopener noreferrer"
-                aria-label={`${cert.short}: verify the ${cert.name} badge on Credly`}
-              >
-                {cert.short}
-              </a>
-            ) : (
-              <span class="text-muted">{cert.short}</span>
-            )}
+          <li class="lrow py-2.5 sm:grid-cols-[minmax(0,1fr)_auto]">
+            <p class="text-sm">
+              {cert.verifyUrl ? (
+                <a
+                  class="link"
+                  href={cert.verifyUrl}
+                  rel="noopener noreferrer"
+                  aria-label={`${cert.short}: verify the ${cert.name} badge on Credly`}
+                >
+                  {cert.name}
+                </a>
+              ) : (
+                <span class="text-muted">{cert.name}</span>
+              )}
+            </p>
+            <p class="lmeta sm:pt-0.5 sm:text-right">{cert.issuer}</p>
           </li>
         ))
       }
     </ul>
     <p class="mt-3 text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
-    <p class="mt-3 font-mono text-xs">
+    <p class="mt-4 font-mono text-xs">
       <a class="link" href={CREDLY_PROFILE} rel="noopener noreferrer">
         View all verified credentials on Credly
       </a>
     </p>
 
-    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
-      Current certification roadmap
-    </h3>
-    <dl class="mt-3 grid gap-3 sm:grid-cols-3">
+    <h3 class="eyebrow mt-8">Certification roadmap</h3>
+    <ul role="list" class="ledger mt-3 max-w-mid">
       {
         roadmap.map((tier) => (
-          <div class="panel p-4">
-            <dt class="font-mono text-xs uppercase tracking-wider text-accent">{tier.label}</dt>
-            <dd class="mt-2 text-sm leading-relaxed text-muted">
-              {tier.items.join(', ')}
-            </dd>
-          </div>
+          <li class="lrow py-2.5 sm:grid-cols-[6rem_minmax(0,1fr)]">
+            <p class="font-mono text-xs uppercase tracking-wider text-accent sm:pt-0.5">
+              {tier.label}
+            </p>
+            <p class="text-sm leading-relaxed text-muted">{tier.items.join(', ')}</p>
+          </li>
         ))
       }
-    </dl>
+    </ul>
     <p class="mt-3 font-mono text-xs text-faint">
       Roadmap items are goals in progress, not earned credentials.
     </p>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="competitions-heading">
-    <h2 id="competitions-heading" class="section-title">Competition experience</h2>
-    <p class="mt-6 leading-relaxed text-muted">
-      Competition experience includes {competitionNames}. Detailed placements and
-      results are on the <a href="/achievements/" class="link">achievements page</a>.
-    </p>
-  </section>
-
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="writing-heading">
-    <h2 id="writing-heading" class="section-title">Selected technical writing</h2>
-    <div class="panel mt-6 p-5">
-      <div
-        class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-      >
-        <h3 class="font-medium text-ink">AO-SINT: evidence-first game geolocation</h3>
-        <p class="shrink-0 font-mono text-xs text-faint">
-          BroncoCTF 2026 &middot; OSINT
+  <SectionHead width="mid"
+    eyebrow="Competitions"
+    title="Competition results"
+    id="competitions"
+    note="Placements as recorded. Team results are stated as team results."
+  >
+    <ul role="list" class="ledger mt-6 max-w-mid">
+      {
+        placed.map((c) => {
+          const { rank, rest } = splitResult(c.result);
+          return (
+            <li class="lrow sm:grid-cols-[4.5rem_minmax(0,1fr)]">
+              <p class="rank sm:pt-0.5">{rank}</p>
+              <div>
+                <p class="lname">{c.name}</p>
+                <p class="mt-0.5 text-sm leading-relaxed text-muted">
+                  {rank}
+                  {rest}
+                </p>
+                {c.writeup && (
+                  <p class="mt-1.5 font-mono text-xs">
+                    <a class="link" href={c.writeup.href}>
+                      {c.writeup.label} &rarr;
+                    </a>
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ul>
+    {
+      unplaced.length > 0 && (
+        <p class="mt-4 text-sm leading-relaxed text-muted">
+          Also competed in {unplaced.map((c) => c.name).join(' and ')}.
         </p>
-      </div>
-      <p class="mt-2 text-sm leading-relaxed text-muted">
-        Used topography, architecture, map geometry, and sightline reconstruction
-        to identify four Arcane Odyssey locations. Team idktheflag placed 8th of
-        753 teams.
+      )
+    }
+  </SectionHead>
+
+  <SectionHead width="mid" eyebrow="Writing" title="Selected technical writing" id="writing">
+    <!-- The one published writeup gets an evidence treatment, not a card. -->
+    <div class="mt-6 max-w-mid border-l-2 border-accent pl-5">
+      <p class="eyebrow">BroncoCTF 2026 &middot; OSINT</p>
+      <h3 class="mt-1.5 text-xl font-semibold tracking-tight">
+        <a class="link no-underline hover:underline" href="/ctf/broncoctf-2026-ao-sint/"
+          >AO-SINT: evidence-first game geolocation</a
+        >
+      </h3>
+      <p class="mt-2 leading-relaxed text-prose-body">
+        Used topography, architecture, map geometry, and sightline
+        reconstruction to identify four Arcane Odyssey locations.
       </p>
-      <p class="mt-3 font-mono text-xs">
-        <a class="link" href="/ctf/broncoctf-2026-ao-sint/">Read the AO-SINT writeup &rarr;</a>
+      <p class="mt-2 font-mono text-xs text-muted">
+        Team idktheflag placed 8th of 753 teams.
+      </p>
+      <p class="mt-4">
+        <a class="btn btn-ghost" href="/ctf/broncoctf-2026-ao-sint/">Read the writeup</a>
       </p>
     </div>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="experience-heading">
-    <h2 id="experience-heading" class="section-title">Experience</h2>
-    <ul role="list" class="mt-6 divide-y divide-line">
+  <SectionHead width="mid" eyebrow="Experience" title="Relevant experience" id="experience">
+    <!-- Dated timeline: the date column stays put so roles scan vertically. -->
+    <ol role="list" class="ledger mt-6 max-w-mid">
       {
         EXPERIENCE.map((job) => (
-          <li class="py-6 first:pt-0 last:pb-0">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <div>
-                <h3 class="font-medium text-ink">{job.role}</h3>
-                <p class="text-sm text-muted">{job.org}</p>
-              </div>
-              <p class="shrink-0 font-mono text-xs text-faint">{job.period}</p>
+          <li class="lrow py-6 sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div class="sm:col-start-1">
+              <h3 class="text-lg font-semibold tracking-tight text-ink">{job.role}</h3>
+              <p class="mt-0.5 text-muted">{job.org}</p>
             </div>
+            <p class="lnum sm:col-start-2 sm:row-start-1 sm:pt-2 sm:text-right">
+              {job.period}
+            </p>
             <ul
               role="list"
-              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+              class="mt-3 space-y-1.5 text-sm leading-relaxed text-muted sm:col-span-2"
             >
               {job.bullets.map((bullet) => (
-                <li>{bullet}</li>
+                <li class="relative pl-4 before:absolute before:left-0 before:top-[0.7em] before:h-px before:w-2 before:bg-accent">
+                  {bullet}
+                </li>
               ))}
             </ul>
           </li>
         ))
       }
-    </ul>
-  </section>
+    </ol>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="education-heading">
-    <h2 id="education-heading" class="section-title">Education</h2>
-    <ul role="list" class="mt-6 divide-y divide-line">
-      {
-        EDUCATION.map((entry) => (
-          <li class="py-4 first:pt-0 last:pb-0">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <div>
-                <p class="font-medium text-ink">{entry.school}</p>
-                <p class="text-sm text-muted">{entry.program}</p>
-              </div>
-              <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
-            </div>
-            {entry.note && <p class="mt-2 text-sm text-muted">{entry.note}</p>}
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="scholarships-heading">
-    <h2 id="scholarships-heading" class="section-title">Scholarships</h2>
-    <ul role="list" class="mt-6 divide-y divide-line">
-      {
-        SCHOLARSHIPS.map((s) => (
-          <li class="py-4 first:pt-0 last:pb-0">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <div>
-                <p class="font-medium text-ink">{s.name}</p>
-                <p class="text-sm text-muted">{s.institution}</p>
-              </div>
-              <p class="shrink-0 font-mono text-xs text-faint">
-                {s.amount && `${s.amount} · `}
-                {s.year}
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="skills-heading">
-    <h2 id="skills-heading" class="section-title">Technical skills</h2>
-    <dl class="mt-6 grid gap-4">
+  <SectionHead width="mid" eyebrow="Capabilities" title="Technical skills" id="skills">
+    <!-- A structured inventory, not a pill wall. No ratings or proficiency
+         labels: the credentials and competition results carry that weight. -->
+    <dl class="ledger mt-6 max-w-mid">
+      <div class="lrow sm:grid-cols-[11rem_minmax(0,1fr)]">
+        <dt class="eyebrow sm:pt-1">Focus areas</dt>
+        <dd class="text-sm leading-relaxed text-muted">{CORE_AREAS.join(', ')}</dd>
+      </div>
       {
         SKILL_GROUPS.map((group) => (
-          <div class="flex flex-col gap-1 sm:flex-row sm:gap-4">
-            <dt class="shrink-0 font-mono text-xs uppercase tracking-wider text-faint sm:w-52 sm:pt-0.5">
-              {group.label}
-            </dt>
+          <div class="lrow sm:grid-cols-[11rem_minmax(0,1fr)]">
+            <dt class="eyebrow sm:pt-1">{group.label}</dt>
             <dd class="text-sm leading-relaxed text-muted">{group.items}</dd>
           </div>
         ))
       }
     </dl>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="leadership-heading">
-    <h2 id="leadership-heading" class="section-title">Leadership &amp; activities</h2>
-    <ul role="list" class="mt-6 grid gap-4">
+  <SectionHead width="mid" eyebrow="Leadership" title="Leadership and activities" id="leadership">
+    <ul role="list" class="ledger mt-6 max-w-mid">
       {
         LEADERSHIP.map((item) => (
-          <li class="flex flex-col gap-1">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <p class="text-sm font-medium text-ink">{item.role}</p>
-              <p class="shrink-0 font-mono text-xs text-faint">{item.period}</p>
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <p class="lname">{item.role}</p>
+              <p class="mt-0.5 text-sm leading-relaxed text-muted">{item.detail}</p>
             </div>
-            <p class="text-sm leading-relaxed text-muted">{item.detail}</p>
+            <p class="lnum sm:pt-1 sm:text-right">{item.period}</p>
           </li>
         ))
       }
     </ul>
-  </section>
+  </SectionHead>
 </BaseLayout>
 
 <script>
