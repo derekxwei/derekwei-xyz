@@ -138,6 +138,104 @@
     @apply font-mono text-xs uppercase tracking-[0.2em] text-accent;
   }
 
+  /* ---- primary navigation ----------------------------------------------
+     The active destination is marked by a rule, not only by colour: an
+     underline on the desktop bar and a left bar in the mobile disclosure.
+     Colour reinforces it, but the shape carries it on its own. */
+  .nav-link {
+    @apply relative block rounded-md px-2.5 py-3 font-mono text-[13px] transition-colors
+      lg:flex lg:items-center lg:rounded-none lg:px-3 lg:py-3.5;
+  }
+  .nav-link:hover {
+    @apply bg-panel lg:bg-transparent;
+  }
+  .nav-link-active {
+    @apply font-semibold text-accent;
+  }
+  .nav-link-active::after {
+    content: "";
+    position: absolute;
+    background: var(--color-accent);
+  }
+  /* mobile: a bar down the left edge of the row */
+  .nav-link-active::after {
+    left: 0;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    width: 2px;
+    border-radius: 1px;
+  }
+  @media (min-width: 1024px) {
+    /* desktop: an underline sitting on the header's bottom rule */
+    .nav-link-active::after {
+      left: 0.75rem;
+      right: 0.75rem;
+      top: auto;
+      bottom: -1px;
+      width: auto;
+      height: 2px;
+      border-radius: 0;
+    }
+  }
+
+  /* ---- editorial section heads -----------------------------------------
+     Internal pages get a named category rather than a number, because their
+     sections are a set, not a sequence. The homepage keeps its 01 to 05
+     numbering, where the order is the point. */
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-faint;
+  }
+  .sec-head {
+    @apply mt-16 border-t border-line pt-5 sm:mt-20;
+  }
+  .sec-head-tight {
+    @apply mt-12 border-t border-line pt-5;
+  }
+  .sec-h {
+    @apply mt-2 text-2xl font-semibold tracking-tight text-ink sm:text-[1.75rem];
+  }
+  .sec-sub {
+    @apply mt-2 leading-relaxed text-muted;
+  }
+
+  /* ---- ledger ------------------------------------------------------------
+     The record format this site actually runs on: every claim is a row with
+     an issuer, a date, and somewhere to verify it. Rows are separated by
+     hairlines rather than boxed, so a page of credentials reads as one
+     register instead of a wall of identical cards. Column templates are set
+     per list with grid utilities; these are the shared bones. */
+  .ledger {
+    @apply border-t border-line;
+  }
+  .lrow {
+    @apply grid gap-x-6 gap-y-0.5 border-b border-line py-3.5;
+  }
+  .lrow-link {
+    @apply transition-colors;
+  }
+  .lrow-link:hover .lname {
+    @apply text-accent;
+  }
+  .lname {
+    @apply font-medium leading-snug text-ink transition-colors;
+  }
+  .lmeta {
+    @apply font-mono text-xs leading-relaxed text-faint;
+  }
+  .lnum {
+    @apply font-mono text-xs text-muted;
+    font-variant-numeric: tabular-nums;
+  }
+  /* placement figure: the rank leads, the field size is context */
+  .rank {
+    @apply font-mono text-base font-semibold text-ink;
+    font-variant-numeric: tabular-nums;
+  }
+  .rank-of {
+    @apply font-mono text-xs text-faint;
+    font-variant-numeric: tabular-nums;
+  }
+
   /* Section system. A rule spanning the full usable content width, then an
      optional monospace number and category, then the title in the interface
      typeface at roughly twice the body size. This replaces the "## LABEL"

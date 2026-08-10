@@ -1,0 +1,58 @@
+---
+// Named editorial section head for internal pages: a rule across the page's
+// width tier, a monospace category, then the heading.
+//
+// The homepage numbers its sections 01 to 05 because that order is a reading
+// sequence. Internal pages get a category name instead, because Certifications
+// and Competitions are a set rather than a sequence, and numbering them would
+// imply a rank that does not exist.
+
+interface Props {
+  /** Monospace category label, e.g. "Credentials". Omit for a quiet section. */
+  eyebrow?: string;
+  /** Section heading. */
+  title: string;
+  /** Anchor and aria-labelledby target. */
+  id: string;
+  /** Optional sentence under the heading. */
+  note?: string;
+  /** Reduce the space above, for a section that follows closely related content. */
+  tight?: boolean;
+  /** Render the heading as h3, for a subsection inside a section. */
+  level?: 2 | 3;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  id,
+  note,
+  tight = false,
+  level = 2,
+  class: className,
+} = Astro.props;
+
+const headingId = `${id}-heading`;
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={[tight ? 'sec-head-tight' : 'sec-head', className]}
+>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  {
+    level === 3 ? (
+      <h3 id={headingId} class="sec-h">
+        {title}
+      </h3>
+    ) : (
+      <h2 id={headingId} class="sec-h">
+        {title}
+      </h2>
+    )
+  }
+  {note && <p class="sec-sub">{note}</p>}
+  <slot />
+</section>
