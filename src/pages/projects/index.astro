@@ -1,8 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import Card from '../../components/Card.astro';
+import SectionHead from '../../components/SectionHead.astro';
 
 const projects = (
   await getCollection('projects', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
@@ -15,46 +14,96 @@ const fmt = (d: Date) =>
     day: 'numeric',
     timeZone: 'UTC',
   });
+
+const statusLabel = (s: string) => (s === 'in-progress' ? 'in progress' : s);
+
+// The most recent shipped entry leads. Everything else is a record row, so the
+// list does not force eight unrelated projects into identical card heights.
+const lead = projects.find((p) => p.data.status === 'shipped') ?? projects[0];
+const rest = projects.filter((p) => p.id !== lead?.id);
 ---
 
 <BaseLayout
   title="Projects"
   description="Security projects by Derek Wei: practical tooling and infrastructure built to learn by doing, documented honestly with real status for each entry."
 >
-  <PageHeader
-    kicker="~/projects"
-    title="Projects"
-    lede="Practical security tooling and infrastructure I build to learn by doing. Each entry documents what it is, how it's built, and where it actually stands - shipped, in progress, or planned."
-  />
+  <header class="max-w-mid pt-10 sm:pt-14">
+    <p class="kicker">~/projects</p>
+    <h1 class="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">Projects</h1>
+    <p class="mt-4 text-lg leading-relaxed text-prose-body">
+      Practical security tooling and infrastructure I build to learn by doing.
+      Each entry documents what it is, how it's built, and where it actually
+      stands: shipped, in progress, or planned.
+    </p>
+  </header>
 
-  <section class="py-10">
-    <h2 class="sr-only">Project list</h2>
-    {
-      projects.length > 0 ? (
-        <ul class="grid gap-4 sm:grid-cols-2" role="list">
-          {projects.map((project) => (
-            <Card
-              href={`/projects/${project.id}/`}
-              title={project.data.title}
-              description={project.data.description}
-              meta={fmt(project.data.date)}
-              tags={project.data.tags}
-              status={project.data.status}
-            />
-          ))}
-        </ul>
-      ) : (
-        <div class="panel p-6">
-          <p class="leading-relaxed text-muted">
-            No projects are published here yet - entries land as they're documented. In the
-            meantime, the{' '}
-            <a href="/architecture/" class="link">
-              architecture page
-            </a>{' '}
-            covers how this site itself is built and secured.
-          </p>
-        </div>
-      )
-    }
-  </section>
+  {
+    projects.length > 0 ? (
+      <>
+        {lead && (
+          <SectionHead
+            width="mid"
+            eyebrow="Selected"
+            title="Lead project"
+            id="lead-project"
+            tight
+          >
+            <article class="mt-6 max-w-mid border-l-2 border-accent pl-5">
+              <p class="eyebrow">
+                {statusLabel(lead.data.status)} &middot; {fmt(lead.data.date)}
+              </p>
+              <h3 class="mt-1.5 text-2xl font-semibold tracking-tight">
+                <a class="link no-underline hover:underline" href={`/projects/${lead.id}/`}>
+                  {lead.data.title}
+                </a>
+              </h3>
+              <p class="mt-2.5 leading-relaxed text-prose-body">{lead.data.description}</p>
+              <p class="mt-2 lmeta">{lead.data.tags.join(' / ')}</p>
+              <p class="mt-4">
+                <a class="btn btn-ghost" href={`/projects/${lead.id}/`}>
+                  Open project
+                </a>
+              </p>
+            </article>
+          </SectionHead>
+        )}
+
+        <SectionHead width="mid" eyebrow="Index" title="All projects" id="all-projects">
+          <ul role="list" class="ledger mt-6 max-w-mid">
+            {rest.map((project) => (
+              <li class="lrow lrow-link py-5 sm:grid-cols-[minmax(0,1fr)_7rem_7rem]">
+                <div>
+                  <h3 class="lname text-base">
+                    <a class="link no-underline hover:underline" href={`/projects/${project.id}/`}>
+                      {project.data.title}
+                    </a>
+                  </h3>
+                  <p class="mt-1 text-sm leading-relaxed text-muted">
+                    {project.data.description}
+                  </p>
+                  <p class="lmeta mt-1.5">{project.data.tags.join(' / ')}</p>
+                </div>
+                <p class="lnum sm:pt-1">{statusLabel(project.data.status)}</p>
+                <p class="lnum sm:pt-1 sm:text-right">{fmt(project.data.date)}</p>
+              </li>
+            ))}
+          </ul>
+        </SectionHead>
+      </>
+    ) : (
+      <section class="mt-12 max-w-measure" aria-labelledby="no-projects">
+        <h2 id="no-projects" class="sr-only">
+          No projects published yet
+        </h2>
+        <p class="leading-relaxed text-muted">
+          No projects are published here yet, entries land as they're
+          documented. In the meantime, the{' '}
+          <a href="/architecture/" class="link">
+            architecture page
+          </a>{' '}
+          covers how this site itself is built and secured.
+        </p>
+      </section>
+    )
+  }
 </BaseLayout>
