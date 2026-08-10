@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
 import {
   CERTIFICATIONS,
   STACKABLE_CERTIFICATIONS,
@@ -23,80 +23,161 @@ const ncl = COMPETITIONS[0];
 const otherResults = COMPETITIONS.slice(1).filter((c) => c.result);
 const noResult = COMPETITIONS.slice(1).filter((c) => !c.result);
 
-// Podium finishes worth surfacing as headline awards, drawn from real results.
-const awards = [
-  '1st of 1,692 teams, National Cyber League High School division (Spring 2026)',
-  '1st place, THEM?!CTF (Team idktheflag, 2026)',
-];
+// Display-only split so the placement can lead its row. The captured rank is
+// rendered immediately before the untouched remainder of the same recorded
+// string, so the row still reads exactly as stored in consts.ts.
+const splitResult = (result?: string) => {
+  if (!result) return { rank: null, rest: null };
+  const m = result.match(/^(\d+(?:st|nd|rd|th))\b/);
+  return m ? { rank: m[1], rest: result.slice(m[1].length) } : { rank: null, rest: result };
+};
 
 const internships = EXPERIENCE.filter((job) => /intern/i.test(job.role));
 
 // Empty tiers are hidden so an earned credential leaving the roadmap does not
-// leave a blank card behind.
+// leave a blank entry behind.
 const roadmap = [
   { label: 'In progress', items: CERT_ROADMAP.inProgress as readonly string[] },
   { label: 'Next', items: CERT_ROADMAP.next as readonly string[] },
   { label: 'Planned', items: CERT_ROADMAP.planned as readonly string[] },
 ].filter((tier) => tier.items.length > 0);
+
+const competitionSkills = [
+  {
+    skill: 'Web application exploitation',
+    detail:
+      'Finding and exploiting flaws such as injection, authentication bypass, and broken access control in deliberately vulnerable web challenges.',
+  },
+  {
+    skill: 'Reverse engineering',
+    detail:
+      'Reading and understanding compiled binaries to recover program logic and locate the intended path to the flag.',
+  },
+  {
+    skill: 'Cryptography',
+    detail:
+      'Recognizing weak or misused cryptographic schemes and recovering plaintext or keys from them.',
+  },
+  {
+    skill: 'Digital forensics',
+    detail:
+      'Recovering artifacts from disk images, memory captures, and carved files to reconstruct what happened.',
+  },
+  {
+    skill: 'Network traffic analysis',
+    detail:
+      'Inspecting packet captures to reconstruct sessions and extract data hidden in the traffic.',
+  },
+  {
+    skill: 'Open Source Intelligence (OSINT)',
+    detail:
+      'Pivoting across public sources to assemble the information a challenge depends on.',
+  },
+  {
+    skill: 'Password auditing',
+    detail:
+      'Cracking and analyzing password hashes to understand where credential weaknesses come from.',
+  },
+  {
+    skill: 'Scripting and automation',
+    detail:
+      'Writing Python and Bash to automate repetitive steps and solve challenges at scale.',
+  },
+];
 ---
 
 <BaseLayout title="Achievements" description={description}>
-  <PageHeader
-    kicker="~/achievements"
-    title="Achievements"
-    lede="Certifications, competition results, leadership, and experience in one place. Placements are verifiable and stated only where they are."
-  />
+  <header class="max-w-mid pt-10 sm:pt-14">
+    <p class="kicker">~/achievements</p>
+    <h1 class="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">Achievements</h1>
+    <p class="mt-4 text-lg leading-relaxed text-prose-body">
+      Certifications, competition results, leadership, and experience in one
+      place. Placements are verifiable and stated only where they are.
+    </p>
+  </header>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="certifications">
-    <h2 id="certifications" class="section-title">Certifications</h2>
-    <ul role="list" class="mt-6 grid max-w-evidence gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        CERTIFICATIONS.map((cert) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium">
-              {cert.verifyUrl ? (
-                <a
-                  class="link"
-                  href={cert.verifyUrl}
-                  rel="noopener noreferrer"
-                  aria-label={`${cert.name}: verify badge on Credly`}
-                >
-                  {cert.name}
-                </a>
-              ) : (
-                <span class="text-ink">{cert.name}</span>
-              )}
-            </p>
-            <p class="mt-1 font-mono text-xs text-faint">
-              {cert.issuer}
-              {cert.year && ` · ${cert.year}`}
-            </p>
-            {(cert.issued || cert.expires) && (
-              <p class="mt-1 font-mono text-xs text-faint">
-                {cert.issued && `Issued ${cert.issued}`}
-                {cert.issued && cert.expires && ' · '}
-                {cert.expires && `Expires ${cert.expires}`}
+  <!-- Credential register. Every row carries its issuer, its dates, and the
+       credential name itself as the verification link, so there is no second
+       Verify button competing with it. -->
+  <SectionHead
+    width="mid"
+    eyebrow="Credentials"
+    title="Certifications"
+    id="certifications"
+    note="Each credential name links to its public Credly badge."
+    tight
+  >
+    <div class="mt-6 max-w-mid">
+      <div
+        class="hidden border-b border-line pb-2 sm:grid sm:grid-cols-[minmax(0,1fr)_9.5rem_8.5rem_8.5rem] sm:gap-x-6"
+        aria-hidden="true"
+      >
+        <span class="eyebrow">Credential</span>
+        <span class="eyebrow">Issuer</span>
+        <span class="eyebrow">Issued</span>
+        <span class="eyebrow">Expires</span>
+      </div>
+      <ul role="list" class="ledger border-t-0">
+        {
+          CERTIFICATIONS.map((cert) => (
+            <li class="lrow sm:grid-cols-[minmax(0,1fr)_9.5rem_8.5rem_8.5rem]">
+              <p class="lname">
+                {cert.verifyUrl ? (
+                  <a
+                    class="link"
+                    href={cert.verifyUrl}
+                    rel="noopener noreferrer"
+                    aria-label={`${cert.name}: verify badge on Credly`}
+                  >
+                    {cert.name}
+                  </a>
+                ) : (
+                  <span>{cert.name}</span>
+                )}
               </p>
-            )}
-          </li>
-        ))
-      }
-    </ul>
+              <p class="lmeta sm:pt-1">
+                <span class="sm:hidden">Issuer: </span>
+                {cert.issuer}
+              </p>
+              <p class="lnum sm:pt-1">
+                {cert.issued ? (
+                  <>
+                    <span class="text-faint sm:hidden">Issued </span>
+                    {cert.issued}
+                  </>
+                ) : (
+                  <span class="text-faint">{cert.year ?? ''}</span>
+                )}
+              </p>
+              <p class="lnum sm:pt-1">
+                {cert.expires ? (
+                  <>
+                    <span class="text-faint sm:hidden">Expires </span>
+                    {cert.expires}
+                  </>
+                ) : (
+                  <span class="text-faint">No expiry listed</span>
+                )}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
 
-    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
-      CompTIA stackable certifications
-    </h3>
-    <ul role="list" class="mt-3 grid max-w-evidence gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <h3 class="eyebrow mt-9">CompTIA stackable certifications</h3>
+    <p class="mt-2 max-w-measure text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
+    <ul role="list" class="ledger mt-4 max-w-mid">
       {
         STACKABLE_CERTIFICATIONS.map((cert) => (
-          <li class="rounded-md border border-line bg-panel-2 p-4">
+          <li class="lrow py-2.5 sm:grid-cols-[minmax(0,1fr)_9.5rem_8.5rem]">
             <p class="text-sm">
               {cert.verifyUrl ? (
                 <a
                   class="link"
                   href={cert.verifyUrl}
                   rel="noopener noreferrer"
-                  aria-label={`${cert.name}: verify badge on Credly`}
+                  aria-label={`${cert.short}: verify the ${cert.name} badge on Credly`}
                 >
                   {cert.name}
                 </a>
@@ -104,118 +185,85 @@ const roadmap = [
                 <span class="text-muted">{cert.name}</span>
               )}
             </p>
-            <p class="mt-1 font-mono text-xs text-faint">
-              {cert.issuer}
-              {cert.expires && ` · Expires ${cert.expires}`}
-            </p>
+            <p class="lmeta sm:pt-0.5">{cert.issuer}</p>
+            <p class="lnum sm:pt-0.5">{cert.expires ? `Expires ${cert.expires}` : ''}</p>
           </li>
         ))
       }
     </ul>
-    <p class="mt-3 text-sm leading-relaxed text-muted">{STACKABLE_NOTE}</p>
     <p class="mt-4 font-mono text-xs">
       <a class="link" href={CREDLY_PROFILE} rel="noopener noreferrer">
         View all verified credentials on Credly
       </a>
     </p>
 
-    <h3 class="mt-8 font-mono text-xs uppercase tracking-[0.15em] text-faint">
-      Current certification roadmap
-    </h3>
-    <dl class="mt-3 grid gap-3 sm:grid-cols-3">
+    <h3 class="eyebrow mt-9">Certification roadmap</h3>
+    <ul role="list" class="ledger mt-3 max-w-mid">
       {
         roadmap.map((tier) => (
-          <div class="panel p-4">
-            <dt class="font-mono text-xs uppercase tracking-wider text-accent">{tier.label}</dt>
-            <dd class="mt-2 text-sm leading-relaxed text-muted">{tier.items.join(', ')}</dd>
-          </div>
-        ))
-      }
-    </dl>
-    <p class="mt-3 font-mono text-xs text-faint">
-      Roadmap items are goals in progress, not earned credentials.
-    </p>
-  </section>
-
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="awards">
-    <h2 id="awards" class="section-title">Awards &amp; recognition</h2>
-    <ul
-      role="list"
-      class="mt-6 max-w-2xl list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
-    >
-      {awards.map((award) => <li>{award}</li>)}
-      <li>
-        {NJHS_AWARD.name}, {NJHS_AWARD.year}
-        {' · '}
-        <a
-          class="link font-mono text-xs"
-          href={NJHS_AWARD.verifyUrl}
-          rel="noopener noreferrer"
-          aria-label="Verify badge: National Junior Honor Society award on Credly"
-        >
-          Verify badge
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="scholarships">
-    <h2 id="scholarships" class="section-title">Scholarships</h2>
-    <ul role="list" class="mt-6 grid gap-3 sm:grid-cols-2">
-      {
-        SCHOLARSHIPS.map((s) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium text-ink">{s.name}</p>
-            <p class="mt-1 text-sm text-muted">{s.institution}</p>
-            <p class="mt-1 font-mono text-xs text-faint">
-              {s.amount && `${s.amount} · `}
-              {s.year}
+          <li class="lrow py-2.5 sm:grid-cols-[6rem_minmax(0,1fr)]">
+            <p class="font-mono text-xs uppercase tracking-wider text-accent sm:pt-0.5">
+              {tier.label}
             </p>
+            <p class="text-sm leading-relaxed text-muted">{tier.items.join(', ')}</p>
           </li>
         ))
       }
     </ul>
-  </section>
+    <p class="mt-3 font-mono text-xs text-faint">
+      Roadmap items are goals in progress, not earned credentials.
+    </p>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="competition-results">
-    <h2 id="competition-results" class="section-title">Competition results</h2>
-
+  <!-- Scoreboard: the placement leads, the recorded result follows verbatim. -->
+  <SectionHead
+    width="mid"
+    eyebrow="Competitions"
+    title="Competition results"
+    id="competition-results"
+  >
     {
       ncl && (
-        <div class="panel mt-6 p-5">
-          <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-            <h3 class="font-medium text-ink">{ncl.name}</h3>
-            <p class="shrink-0 font-mono text-xs text-faint">Spring 2026</p>
+        <div class="mt-6 max-w-mid border-l-2 border-accent pl-5">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h3 class="text-xl font-semibold tracking-tight text-ink">{ncl.name}</h3>
+            <p class="lnum">Spring 2026</p>
           </div>
-          <ul
-            role="list"
-            class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
-          >
-            <li>
-              Placed 1st of 1,692 teams in the High School division and 5th of 3,638 in the
-              Standard Team division (Team Difference)
-            </li>
-            <li>Competed across {NCL_CATEGORIES}</li>
-          </ul>
+          <p class="mt-2 leading-relaxed text-prose-body">
+            Placed 1st of 1,692 teams in the High School division and 5th of
+            3,638 in the Standard Team division (Team Difference).
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Competed across {NCL_CATEGORIES}.
+          </p>
         </div>
       )
     }
 
-    <ul role="list" class="mt-4 grid gap-3 sm:grid-cols-2">
+    <ul role="list" class="ledger mt-8 max-w-mid">
       {
-        otherResults.map((comp) => (
-          <li class="panel p-4">
-            <p class="text-sm font-medium text-ink">{comp.name}</p>
-            <p class="mt-1 font-mono text-xs leading-relaxed text-faint">{comp.result}</p>
-            {comp.writeup && (
-              <p class="mt-2 font-mono text-xs">
-                <a class="link" href={comp.writeup.href}>
-                  {comp.writeup.label}
-                </a>
-              </p>
-            )}
-          </li>
-        ))
+        otherResults.map((comp) => {
+          const { rank, rest } = splitResult(comp.result);
+          return (
+            <li class="lrow sm:grid-cols-[4.5rem_minmax(0,1fr)]">
+              <p class="rank sm:pt-0.5">{rank}</p>
+              <div>
+                <p class="lname">{comp.name}</p>
+                <p class="mt-0.5 text-sm leading-relaxed text-muted">
+                  {rank}
+                  {rest}
+                </p>
+                {comp.writeup && (
+                  <p class="mt-1.5 font-mono text-xs">
+                    <a class="link" href={comp.writeup.href}>
+                      {comp.writeup.label} &rarr;
+                    </a>
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })
       }
     </ul>
     {
@@ -225,131 +273,130 @@ const roadmap = [
         </p>
       )
     }
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="skills-demonstrated">
-    <h2 id="skills-demonstrated" class="section-title">Technical skills demonstrated through competition</h2>
-    <p class="mt-4 text-sm leading-relaxed text-muted">
-      Across these competitions, challenges reinforced hands-on skills that
-      transfer directly to offensive security work:
-    </p>
-    <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+  <!-- Recognition ledger: scholarships and the NJHS award in one register. -->
+  <SectionHead
+    width="mid"
+    eyebrow="Recognition"
+    title="Scholarships and awards"
+    id="recognition"
+  >
+    <ul role="list" class="ledger mt-6 max-w-mid">
       {
-        [
-          {
-            skill: 'Web application exploitation',
-            detail:
-              'Finding and exploiting flaws such as injection, authentication bypass, and broken access control in deliberately vulnerable web challenges.',
-          },
-          {
-            skill: 'Reverse engineering',
-            detail:
-              'Reading and understanding compiled binaries to recover program logic and locate the intended path to the flag.',
-          },
-          {
-            skill: 'Cryptography',
-            detail:
-              'Recognizing weak or misused cryptographic schemes and recovering plaintext or keys from them.',
-          },
-          {
-            skill: 'Digital forensics',
-            detail:
-              'Recovering artifacts from disk images, memory captures, and carved files to reconstruct what happened.',
-          },
-          {
-            skill: 'Network traffic analysis',
-            detail:
-              'Inspecting packet captures to reconstruct sessions and extract data hidden in the traffic.',
-          },
-          {
-            skill: 'Open Source Intelligence (OSINT)',
-            detail:
-              'Pivoting across public sources to assemble the information a challenge depends on.',
-          },
-          {
-            skill: 'Password auditing',
-            detail:
-              'Cracking and analyzing password hashes to understand where credential weaknesses come from.',
-          },
-          {
-            skill: 'Scripting and automation',
-            detail:
-              'Writing Python and Bash to automate repetitive steps and solve challenges at scale.',
-          },
-        ].map((item) => (
-          <div>
-            <dt class="font-mono text-sm text-accent">{item.skill}</dt>
-            <dd class="mt-1.5 text-sm leading-relaxed text-muted">{item.detail}</dd>
+        SCHOLARSHIPS.map((s) => (
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto_5rem]">
+            <p class="lname">{s.name}</p>
+            <p class="lmeta sm:pt-1 sm:text-right">{s.institution}</p>
+            <p class="lnum sm:pt-1 sm:text-right">
+              {s.amount && `${s.amount} · `}
+              {s.year}
+            </p>
+          </li>
+        ))
+      }
+      <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto_5rem]">
+        <p class="lname">
+          <a
+            class="link"
+            href={NJHS_AWARD.verifyUrl}
+            rel="noopener noreferrer"
+            aria-label="National Junior Honor Society Outstanding Achievement Award Recipient: verify badge on Credly"
+          >
+            {NJHS_AWARD.name}
+          </a>
+        </p>
+        <p class="lmeta sm:pt-1 sm:text-right">National Junior Honor Society</p>
+        <p class="lnum sm:pt-1 sm:text-right">{NJHS_AWARD.year}</p>
+      </li>
+    </ul>
+  </SectionHead>
+
+  <SectionHead
+    width="mid"
+    eyebrow="Capabilities"
+    title="Skills demonstrated through competition"
+    id="skills-demonstrated"
+    note="Across these competitions, challenges reinforced hands-on skills that transfer directly to offensive security work."
+  >
+    <dl class="ledger mt-6 max-w-mid">
+      {
+        competitionSkills.map((item) => (
+          <div class="lrow sm:grid-cols-[14rem_minmax(0,1fr)]">
+            <dt class="font-mono text-sm text-accent sm:pt-0.5">{item.skill}</dt>
+            <dd class="text-sm leading-relaxed text-muted">{item.detail}</dd>
           </div>
         ))
       }
     </dl>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="internships">
-    <h2 id="internships" class="section-title">Internship experience</h2>
-    <ul role="list" class="mt-6 divide-y divide-line">
+  <SectionHead
+    width="mid"
+    eyebrow="Experience"
+    title="Internship experience"
+    id="internships"
+  >
+    <ol role="list" class="ledger mt-6 max-w-mid">
       {
         internships.map((job) => (
-          <li class="py-6 first:pt-0 last:pb-0">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <div>
-                <h3 class="font-medium text-ink">{job.role}</h3>
-                <p class="text-sm text-muted">{job.org}</p>
-              </div>
-              <p class="shrink-0 font-mono text-xs text-faint">{job.period}</p>
+          <li class="lrow py-6 sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div class="sm:col-start-1">
+              <h3 class="text-lg font-semibold tracking-tight text-ink">{job.role}</h3>
+              <p class="mt-0.5 text-muted">{job.org}</p>
             </div>
+            <p class="lnum sm:col-start-2 sm:row-start-1 sm:pt-2 sm:text-right">
+              {job.period}
+            </p>
             <ul
               role="list"
-              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-accent"
+              class="mt-3 space-y-1.5 text-sm leading-relaxed text-muted sm:col-span-2"
             >
               {job.bullets.map((bullet) => (
-                <li>{bullet}</li>
+                <li class="relative pl-4 before:absolute before:left-0 before:top-[0.7em] before:h-px before:w-2 before:bg-accent">
+                  {bullet}
+                </li>
               ))}
             </ul>
           </li>
         ))
       }
-    </ul>
+    </ol>
     <p class="mt-4 text-sm leading-relaxed text-muted">
       Full work history is on the <a href="/resume/" class="link">resume</a>.
     </p>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="leadership">
-    <h2 id="leadership" class="section-title">Leadership</h2>
-    <ul role="list" class="mt-6 grid gap-4">
+  <SectionHead width="mid" eyebrow="Leadership" title="Leadership" id="leadership">
+    <ul role="list" class="ledger mt-6 max-w-mid">
       {
         LEADERSHIP.map((item) => (
-          <li class="flex flex-col gap-1">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <p class="text-sm font-medium text-ink">{item.role}</p>
-              <p class="shrink-0 font-mono text-xs text-faint">{item.period}</p>
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <p class="lname">{item.role}</p>
+              <p class="mt-0.5 text-sm leading-relaxed text-muted">{item.detail}</p>
             </div>
-            <p class="text-sm leading-relaxed text-muted">{item.detail}</p>
+            <p class="lnum sm:pt-1 sm:text-right">{item.period}</p>
           </li>
         ))
       }
     </ul>
-  </section>
+  </SectionHead>
 
-  <section class="section-rule mt-16 sm:mt-20" aria-labelledby="education">
-    <h2 id="education" class="section-title">Education</h2>
-    <ul role="list" class="mt-6 divide-y divide-line">
+  <SectionHead width="mid" eyebrow="Education" title="Education" id="education">
+    <ul role="list" class="ledger mt-6 max-w-mid">
       {
         EDUCATION.map((entry) => (
-          <li class="py-4 first:pt-0 last:pb-0">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <div>
-                <p class="font-medium text-ink">{entry.school}</p>
-                <p class="text-sm text-muted">{entry.program}</p>
-              </div>
-              <p class="shrink-0 font-mono text-xs text-faint">{entry.detail}</p>
+          <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <p class="lname">{entry.school}</p>
+              <p class="mt-0.5 text-sm text-muted">{entry.program}</p>
+              {entry.note && <p class="mt-1 text-sm text-faint">{entry.note}</p>}
             </div>
-            {entry.note && <p class="mt-2 text-sm text-muted">{entry.note}</p>}
+            <p class="lnum sm:pt-1 sm:text-right">{entry.detail}</p>
           </li>
         ))
       }
     </ul>
-  </section>
+  </SectionHead>
 </BaseLayout>
