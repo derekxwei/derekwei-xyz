@@ -226,6 +226,38 @@
     @apply font-mono text-xs text-muted;
     font-variant-numeric: tabular-nums;
   }
+  /* ---- project status ----------------------------------------------------
+     Restores the semantic colours the original production badges carried:
+     accent for shipped, warn for in progress, muted otherwise. A dot plus the
+     label rather than a filled pill, so it sits inside a ledger row without
+     turning back into a badge wall. The label is always present, so colour is
+     never the only signal. All four roles clear WCAG AA on both the page and
+     panel surfaces in both themes. */
+  .status {
+    @apply inline-flex items-center gap-1.5 font-mono text-xs;
+    font-variant-numeric: tabular-nums;
+  }
+  .status::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: currentColor;
+    flex: none;
+  }
+  .status-shipped {
+    @apply text-accent;
+  }
+  .status-progress {
+    @apply text-warn;
+  }
+  .status-neutral {
+    @apply text-muted;
+  }
+  .status-quiet {
+    @apply text-faint;
+  }
+
   /* placement figure: the rank leads, the field size is context */
   .rank {
     @apply font-mono text-base font-semibold text-ink;

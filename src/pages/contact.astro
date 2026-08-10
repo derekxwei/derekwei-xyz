@@ -6,33 +6,15 @@ import { SITE, CONTACT, CREDLY_PROFILE } from '../consts';
 const mailtoHref = `mailto:${CONTACT.email}?subject=Professional%20Inquiry%20for%20Derek%20Wei`;
 
 // Three tiers, so the page answers "what do I do now" before "what else is
-// there". Email is the one primary action; call, text and LinkedIn are the
+// there". Email is the one primary action; phone and LinkedIn are the
 // alternatives; the rest are places to read more.
-const alternatives = [
-  {
-    label: 'Call',
-    value: CONTACT.phoneDisplay,
-    href: `tel:${CONTACT.phoneE164}`,
-    aria: `Call Derek Wei at ${CONTACT.phoneDisplay}, his professional Google Voice number`,
-  },
-  {
-    label: 'Text',
-    value: CONTACT.phoneDisplay,
-    href: `sms:${CONTACT.phoneE164}`,
-    aria: 'Text Derek Wei at his professional Google Voice number',
-  },
-  {
-    label: 'LinkedIn',
-    value: '/in/derekxwei',
-    href: SITE.linkedin,
-    aria: 'Connect on LinkedIn with Derek Wei',
-    external: true,
-  },
-];
-
+//
+// The number is shown once and carries two separate actions. Call and Text are
+// distinct links because tel: and sms: are distinct protocols, and folding
+// them into one link would leave the reader guessing which one fires.
 const supporting = [
   { label: 'Resume', value: 'One page, ATS readable', href: CONTACT.resumePdf },
-  { label: 'Projects', value: 'Selected technical work', href: '/projects/' },
+  { label: 'Website', value: SITE.domain, href: '/' },
   {
     label: 'Credly',
     value: 'Verify every credential',
@@ -61,76 +43,102 @@ const topics = [
     </p>
   </header>
 
-  <!-- Primary action. One thing, stated once, at the largest size on the page. -->
-  <section class="mt-10 max-w-mid border-t border-line pt-8" aria-labelledby="email-heading">
-    <h2 id="email-heading" class="eyebrow">Preferred contact</h2>
-    <p class="mt-3">
-      <a
-        href={mailtoHref}
-        class="link font-mono text-2xl tracking-tight sm:text-3xl"
-        aria-label={`Email Derek Wei at ${CONTACT.email}`}>{CONTACT.email}</a
-      >
-    </p>
-    <p class="mt-4">
-      <a href={mailtoHref} class="btn btn-primary">Email Derek</a>
-    </p>
-    <p class="mt-6 text-sm leading-relaxed text-muted">Worth writing about:</p>
-    <ul class="mt-2 grid gap-1.5 text-sm text-muted" role="list">
-      {
-        topics.map((t) => (
-          <li class="flex gap-2">
-            <span class="text-accent" aria-hidden="true">
-              -
-            </span>
-            {t}
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <!-- Two columns at desktop in a 3:2 ratio: the primary action gets the wider
+       column, the alternatives and destinations share the narrower one. Stacks
+       on mobile with the primary action first. -->
+  <div
+    class="mt-10 grid max-w-evidence gap-x-16 gap-y-12 border-t border-line pt-8 lg:grid-cols-[3fr_2fr]"
+  >
+    <section aria-labelledby="email-heading">
+      <h2 id="email-heading" class="eyebrow">Preferred contact</h2>
+      <p class="mt-3">
+        <a
+          href={mailtoHref}
+          class="link font-mono text-2xl tracking-tight sm:text-3xl"
+          aria-label={`Email Derek Wei at ${CONTACT.email}`}>{CONTACT.email}</a
+        >
+      </p>
+      <p class="mt-5">
+        <a href={mailtoHref} class="btn btn-primary">Email Derek</a>
+      </p>
+      <p class="mt-8 text-sm leading-relaxed text-muted">Worth writing about:</p>
+      <ul class="mt-2 grid gap-1.5 text-sm text-muted" role="list">
+        {
+          topics.map((t) => (
+            <li class="flex gap-2">
+              <span class="text-accent" aria-hidden="true">
+                -
+              </span>
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
 
-  <SectionHead width="mid" eyebrow="Alternatives" title="Other ways to reach me" id="other">
-    <ul role="list" class="ledger mt-6 max-w-mid">
-      {
-        alternatives.map((a) => (
-          <li class="lrow py-3 sm:grid-cols-[8rem_minmax(0,1fr)]">
-            <p class="eyebrow sm:pt-1">{a.label}</p>
+    <div class="grid gap-10">
+      <section aria-labelledby="alternatives-heading">
+        <h2 id="alternatives-heading" class="eyebrow">Alternatives</h2>
+        <ul role="list" class="ledger mt-4">
+          <!-- One phone row: the number appears once, with two clearly
+               separated actions beneath it. -->
+          <li class="lrow py-3.5 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
+            <p class="eyebrow sm:pt-1.5">Phone</p>
+            <div>
+              <p class="font-mono text-base text-ink">{CONTACT.phoneDisplay}</p>
+              <p class="mt-1 flex flex-wrap items-center gap-x-5">
+                <a
+                  class="link inline-block py-1 font-mono text-sm"
+                  href={`tel:${CONTACT.phoneE164}`}
+                  aria-label={`Call Derek Wei at ${CONTACT.phoneDisplay}, his professional Google Voice number`}
+                  >Call</a
+                >
+                <a
+                  class="link inline-block py-1 font-mono text-sm"
+                  href={`sms:${CONTACT.phoneE164}`}
+                  aria-label={`Text Derek Wei at ${CONTACT.phoneDisplay}, his professional Google Voice number`}
+                  >Text</a
+                >
+              </p>
+            </div>
+          </li>
+          <li class="lrow py-3.5 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
+            <p class="eyebrow sm:pt-1.5">LinkedIn</p>
             <p class="font-mono text-base">
               <a
                 class="link"
-                href={a.href}
-                aria-label={a.aria}
-                rel={a.external ? 'noopener noreferrer' : undefined}
+                href={SITE.linkedin}
+                rel="noopener noreferrer"
+                aria-label="Connect on LinkedIn with Derek Wei">/in/derekxwei</a
               >
-                {a.value}
-              </a>
             </p>
           </li>
-        ))
-      }
-    </ul>
-  </SectionHead>
+        </ul>
+      </section>
 
-  <SectionHead width="mid" eyebrow="Elsewhere" title="Before you write" id="elsewhere">
-    <ul role="list" class="ledger mt-6 max-w-mid">
-      {
-        supporting.map((s) => (
-          <li class="lrow py-3 sm:grid-cols-[8rem_minmax(0,1fr)]">
-            <p class="eyebrow sm:pt-1">{s.label}</p>
-            <p class="text-sm">
-              <a
-                class="link"
-                href={s.href}
-                rel={s.external ? 'noopener noreferrer' : undefined}
-              >
-                {s.value}
-              </a>
-            </p>
-          </li>
-        ))
-      }
-    </ul>
-  </SectionHead>
+      <section aria-labelledby="elsewhere-heading">
+        <h2 id="elsewhere-heading" class="eyebrow">Before you write</h2>
+        <ul role="list" class="ledger mt-4">
+          {
+            supporting.map((s) => (
+              <li class="lrow py-3 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
+                <p class="eyebrow sm:pt-1">{s.label}</p>
+                <p class="text-sm">
+                  <a
+                    class="link"
+                    href={s.href}
+                    rel={s.external ? 'noopener noreferrer' : undefined}
+                  >
+                    {s.value}
+                  </a>
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </div>
 
   <SectionHead width="mid" eyebrow="Details" title="Availability" id="details">
     <dl class="ledger mt-6 max-w-mid">

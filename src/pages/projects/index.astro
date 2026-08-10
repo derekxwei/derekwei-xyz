@@ -17,6 +17,18 @@ const fmt = (d: Date) =>
 
 const statusLabel = (s: string) => (s === 'in-progress' ? 'in progress' : s);
 
+// Same semantic mapping the original production badges used: accent for
+// shipped, warn for in progress, muted for anything else. The label is always
+// rendered, so status never depends on colour alone.
+const statusClass = (s: string) =>
+  s === 'shipped'
+    ? 'status-shipped'
+    : s === 'in-progress'
+      ? 'status-progress'
+      : s === 'archived'
+        ? 'status-quiet'
+        : 'status-neutral';
+
 // The most recent shipped entry leads. Everything else is a record row, so the
 // list does not force eight unrelated projects into identical card heights.
 const lead = projects.find((p) => p.data.status === 'shipped') ?? projects[0];
@@ -49,8 +61,11 @@ const rest = projects.filter((p) => p.id !== lead?.id);
             tight
           >
             <article class="mt-6 max-w-mid border-l-2 border-accent pl-5">
-              <p class="eyebrow">
-                {statusLabel(lead.data.status)} &middot; {fmt(lead.data.date)}
+              <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span class:list={['status', statusClass(lead.data.status)]}>
+                  {statusLabel(lead.data.status)}
+                </span>
+                <span class="eyebrow">{fmt(lead.data.date)}</span>
               </p>
               <h3 class="mt-1.5 text-2xl font-semibold tracking-tight">
                 <a class="link no-underline hover:underline" href={`/projects/${lead.id}/`}>
@@ -83,7 +98,11 @@ const rest = projects.filter((p) => p.id !== lead?.id);
                   </p>
                   <p class="lmeta mt-1.5">{project.data.tags.join(' / ')}</p>
                 </div>
-                <p class="lnum sm:pt-1">{statusLabel(project.data.status)}</p>
+                <p class="sm:pt-1">
+                  <span class:list={['status', statusClass(project.data.status)]}>
+                    {statusLabel(project.data.status)}
+                  </span>
+                </p>
                 <p class="lnum sm:pt-1 sm:text-right">{fmt(project.data.date)}</p>
               </li>
             ))}

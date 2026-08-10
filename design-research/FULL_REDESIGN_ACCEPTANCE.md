@@ -34,6 +34,21 @@ For each: is hierarchy clear, is space used intentionally, does the composition 
 - [ ] **Contact** (rebuilt: one primary action, then alternatives, then supporting)
 - [ ] **Card** (untouched, still minimal, still no nav)
 
+## Polish pass, added after the first review
+
+- [ ] **CompTIA dates corrected.** CySA+ active May 14 2026, expires May 14 2029. PenTest+ active April 29 2026, expires April 29 2032. Security+ active May 7 2026, expires April 29 2032. Network+ active April 23 2024, expires April 29 2032. ITF+ active April 26 2023.
+- [ ] **ITF+ displays "Never expires"**, not a blank or N/A.
+- [ ] **AWS dates preserved**: issued August 7 2026, expires August 7 2029.
+- [ ] **Credly links preserved**: all eleven badge URLs byte-identical, 28 references across the build.
+- [ ] **Shipped colour approved** (accent blue, dot plus label).
+- [ ] **In-progress colour approved** (amber, dot plus label).
+- [ ] **Project ledger still readable** with the status colours added.
+- [ ] **Phone appears once** on Contact.
+- [ ] **Call action works** (`tel:+12107160226`).
+- [ ] **Text action works** (`sms:+12107160226`).
+- [ ] **Contact two-column desktop composition approved** (3:2, email column wider).
+- [ ] **Contact mobile stack approved** (primary action first).
+
 ## Approve or reject, item by item
 
 - [ ] **Header and Theme placement.** Brand, nine destinations, Theme far right behind a divider. Active page underlined, not colour alone.
@@ -54,6 +69,8 @@ For each: is hierarchy clear, is space used intentionally, does the composition 
 - **The separate "Verify badge" link is gone.** The credential name is the link, per the no-duplicate-button requirement.
 - **The Resume lede changed** to a hiring-oriented sentence, and the print note moved under the contact strip. Both were requested; no claim changed.
 - **Tool pages keep their existing look.** Forcing ledger or publication styling onto an interactive utility would make it worse.
+- **Microsoft Office Specialist has no year on the Resume ledger and no expiry on Achievements.** Only an issue date is verified for it, and none was invented. Achievements states "No expiration recorded" rather than claiming it never expires.
+- **Contact swapped Projects for Website** in the supporting list, per the requested left/right split. Projects is still in the main navigation.
 
 ## Still needs your eyes
 
