@@ -296,7 +296,12 @@
      target. Vertical padding on an inline box grows the hit area without
      moving the text or the line it sits on. A link inside running prose is
      exempt and is deliberately left alone. */
-  p > a:only-child {
+  p > a:only-child,
+  li > a:only-child,
+  h2 > a:only-child,
+  h3 > a:only-child,
+  dd > a:only-child,
+  nav > a:only-child {
     padding-block: 0.3rem;
   }
 
