@@ -10,7 +10,7 @@ export const SITE = {
   url: 'https://derekwei.xyz',
   title: 'Derek Wei - Cybersecurity',
   description:
-    'Cybersecurity portfolio of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student, 5x CompTIA certified, 1st of 1,692 teams in the NCL High School division.',
+    'Cybersecurity portfolio of Derek Wei: UTSA B.S. Cybersecurity Honors student, 5x CompTIA certified, 1st of 1,692 teams in the NCL High School division.',
   email: 'derekxwei@gmail.com',
   location: 'San Antonio, Texas',
   linkedin: 'https://linkedin.com/in/derekxwei',
@@ -138,6 +138,15 @@ export const CERTIFICATIONS: readonly Certification[] = [
     issued: 'December 8, 2023',
     neverExpires: true,
     verifyUrl: 'https://www.credly.com/badges/03879611-277a-42a3-af16-ec92f94f51ff/public_url',
+  },
+  {
+    name: 'Microsoft Office Specialist: Excel Associate (Microsoft 365 Apps)',
+    short: 'MOS Excel',
+    issuer: 'Microsoft',
+    year: '2026',
+    issued: 'August 25, 2026',
+    expires: 'August 25, 2031',
+    verifyUrl: 'https://www.credly.com/badges/3e6cbff7-2a1c-4060-bbbd-4453a647b224/public_url',
   },
 ];
 
@@ -274,7 +283,7 @@ export const EDUCATION: readonly EducationEntry[] = [
     school: 'MacArthur High School / NEISD Institute of CyberSecurity and Innovation (iCSI)',
     program: 'High school diploma',
     detail: 'May 2026',
-    note: "Member of iCSI's first four-year cybersecurity graduating class",
+    note: "Member of iCSI's second four-year cybersecurity graduating class",
   },
 ];
 
@@ -367,12 +376,28 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
       'Python, Bash, Git, technical documentation, Microsoft Word (MOS certified), Microsoft Excel',
   },
   {
+    label: 'Professional skills',
+    items:
+      'Communication, technical documentation, troubleshooting, teamwork, mentoring, problem solving',
+  },
+  {
     label: 'Languages',
     items: 'English (native), Mandarin Chinese (native/bilingual)',
   },
 ];
 
 export const LEADERSHIP = [
+  {
+    role: 'Esports and Finance Officer, Roadrunner Gaming (RRG)',
+    period: 'Aug 2026 to Present',
+    detail:
+      'Manage esports managers, game rosters, and the competition calendar, and run fundraising for the club',
+  },
+  {
+    role: 'Logistics Team Member, RowdyCon',
+    period: 'Aug 2026 to Present',
+    detail: 'Plan event logistics and manage the logistics budget for the conference',
+  },
   {
     role: 'Education Mentor, NEISD iCSI',
     period: '2023 to Present',

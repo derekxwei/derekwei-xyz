@@ -28,7 +28,7 @@ const roadmap = [
 ].filter((tier) => tier.items.length > 0);
 
 const description =
-  'Resume of Derek Wei: incoming UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
+  'Resume of Derek Wei: UTSA B.S. Cybersecurity Honors student focused on penetration testing and CTF, 5x CompTIA certified, preparing for the CPTS.';
 
 // A placement reads faster when the rank leads. This split is display only:
 // the captured rank is rendered immediately before the untouched remainder of
@@ -113,14 +113,12 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
 
   <SectionHead width="mid" eyebrow="Profile" title="Summary" id="summary" tight>
     <p class="mt-5 leading-relaxed text-prose-body">
-      Incoming B.S. Cybersecurity Honors student focused on red-team
-      fundamentals, penetration testing labs, and Capture the Flag competition,
-      backed by five CompTIA certifications and hands-on security tooling.
-      Nearly four years supporting cybersecurity labs and troubleshooting
-      Windows and Linux systems, now preparing for the Hack The Box Certified
-      Penetration Testing Specialist (CPTS). Blue-team literacy from CySA+
-      supports the offensive work by connecting findings back to defense.
-      Seeking cybersecurity internships.
+      Cybersecurity student working toward offensive security: penetration
+      testing, Capture the Flag competition, and the defensive analysis that
+      connects findings back to real systems. Placed 1st of 1,692 teams in the
+      National Cyber League High School division, with nearly four years
+      supporting cybersecurity labs across Windows and Linux. Bilingual in
+      English and Mandarin Chinese. Seeking cybersecurity internships.
     </p>
   </SectionHead>
 
@@ -148,10 +146,7 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
           <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto_5rem]">
             <p class="lname">{s.name}</p>
             <p class="lmeta sm:pt-1 sm:text-right">{s.institution}</p>
-            <p class="lnum sm:pt-1 sm:text-right">
-              {s.amount && `${s.amount} · `}
-              {s.year}
-            </p>
+            <p class="lnum sm:pt-1 sm:text-right">{s.year}</p>
           </li>
         ))
       }

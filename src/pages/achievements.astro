@@ -293,10 +293,7 @@ const competitionSkills = [
           <li class="lrow sm:grid-cols-[minmax(0,1fr)_auto_5rem]">
             <p class="lname">{s.name}</p>
             <p class="lmeta sm:pt-1 sm:text-right">{s.institution}</p>
-            <p class="lnum sm:pt-1 sm:text-right">
-              {s.amount && `${s.amount} · `}
-              {s.year}
-            </p>
+            <p class="lnum sm:pt-1 sm:text-right">{s.year}</p>
           </li>
         ))
       }
