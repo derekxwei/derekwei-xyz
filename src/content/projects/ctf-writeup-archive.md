@@ -4,6 +4,7 @@ description: 'A structured archive of Capture the Flag methodology: sanitized wr
 status: in-progress
 date: 2026-07-06
 tags: [ctf, writeups, methodology]
+repo: 'https://github.com/derekxwei/derekwei-xyz'
 featured: false
 link: https://derekwei.xyz/ctf/
 ---

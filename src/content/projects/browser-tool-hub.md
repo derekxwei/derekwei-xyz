@@ -4,6 +4,7 @@ description: 'A set of client-side security utilities for encoding, hashing, pas
 status: shipped
 date: 2026-07-08
 tags: [tools, client-side, web]
+repo: 'https://github.com/derekxwei/derekwei-xyz'
 featured: false
 link: https://derekwei.xyz/tools/
 ---

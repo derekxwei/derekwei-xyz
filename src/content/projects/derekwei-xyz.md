@@ -4,6 +4,7 @@ description: 'This site: a fast, static Astro 5 build with a strict CSP, no cook
 status: shipped
 date: 2026-07-09
 tags: [astro, typescript, tailwind, cloudflare-pages]
+repo: 'https://github.com/derekxwei/derekwei-xyz'
 featured: true
 ---
 

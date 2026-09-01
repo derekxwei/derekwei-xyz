@@ -14,6 +14,7 @@ export const SITE = {
   email: 'derekxwei@gmail.com',
   location: 'San Antonio, Texas',
   linkedin: 'https://linkedin.com/in/derekxwei',
+  github: 'https://github.com/derekxwei',
   /** Exact wording, do not paraphrase. */
   clearance: 'U.S. citizen eligible to obtain a Secret security clearance.',
 } as const;
@@ -38,6 +39,8 @@ export const CONTACT = {
   projects: '/projects/',
   location: SITE.location,
   vcard: '/derek-wei.vcf',
+  github: SITE.github,
+  githubRepo: 'https://github.com/derekxwei/derekwei-xyz',
 } as const;
 
 // The ~/derekwei.xyz brand mark is the link home, so no separate Home item.
