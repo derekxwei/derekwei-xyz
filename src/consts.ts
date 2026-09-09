@@ -234,7 +234,7 @@ export const COMPETITIONS: readonly Competition[] = [
     result: '3rd of 72 players, solo, reverse engineering (2026)',
   },
   {
-    name: 'RowdyCon CTF',
+    name: 'Rowdy CyberCon CTF',
     kind: 'Capture the Flag',
     result: '3rd of 85 teams (2026)',
   },
@@ -366,12 +366,12 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
   {
     label: 'Security',
     items:
-      'Vulnerability scanning, network traffic analysis, log analysis, incident detection and response, digital forensics, penetration testing fundamentals, cryptography, OSINT (open source intelligence), password cracking, web application exploitation',
+      'Web application exploitation, OSINT (open source intelligence), digital forensics, network traffic analysis, log analysis, cryptography, password cracking, penetration testing fundamentals, vulnerability scanning, incident detection and response',
   },
   {
     label: 'Systems and tooling',
     items:
-      'Kali Linux, Windows, Linux command line, virtual machine (VM) environments, TCP/IP networking, Wireshark, Nmap, Metasploit, Burp Suite, hashcat, John the Ripper',
+      'Wireshark, Nmap, Burp Suite, Kali Linux, Metasploit, Linux command line, TCP/IP networking, virtual machine (VM) environments, Windows, hashcat, John the Ripper',
   },
   {
     label: 'Scripting and documentation',
@@ -381,7 +381,7 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
   {
     label: 'Professional skills',
     items:
-      'Communication, technical documentation, troubleshooting, teamwork, mentoring, problem solving',
+      'Communication, technical documentation, troubleshooting, problem solving, mentoring, teamwork',
   },
   {
     label: 'Languages',
@@ -397,7 +397,7 @@ export const LEADERSHIP = [
       'Manage esports managers, game rosters, and the competition calendar, and run fundraising for the club',
   },
   {
-    role: 'Logistics Team Member, RowdyCon',
+    role: 'Logistics Team Member, Rowdy CyberCon',
     period: 'Aug 2026 to Present',
     detail: 'Plan event logistics and manage the logistics budget for the conference',
   },

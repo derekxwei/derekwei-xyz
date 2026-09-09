@@ -49,7 +49,7 @@ Suggested body structure: **Overview → Design/approach → Status → Next ste
 | --- | --- | --- | --- |
 | `title` | string | yes | Usually the challenge name. |
 | `description` | string | yes | One-line summary. |
-| `event` | string | yes | e.g. `BYU CTF`, `RowdyCon`, `CTF@CIT`. |
+| `event` | string | yes | e.g. `BYU CTF`, `Rowdy CyberCon`, `CTF@CIT`. |
 | `category` | `web` \| `crypto` \| `forensics` \| `pwn` \| `rev` \| `osint` \| `network` \| `misc` | yes | |
 | `difficulty` | `easy` \| `medium` \| `hard` \| `insane` | no | |
 | `date` | date | yes | |

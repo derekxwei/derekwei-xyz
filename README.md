@@ -86,7 +86,7 @@ To add an entry:
 | ------------- | ---------------------------------------------------------------------------- | -------- | ------------------------------ |
 | `title`       | string                                                                        | yes      | Usually the challenge name.    |
 | `description` | string                                                                        | yes      |                                |
-| `event`       | string                                                                        | yes      | e.g. `BYU CTF`, `RowdyCon`.    |
+| `event`       | string                                                                        | yes      | e.g. `BYU CTF`, `Rowdy CyberCon`.    |
 | `category`    | `web` \| `crypto` \| `forensics` \| `pwn` \| `rev` \| `osint` \| `network` \| `misc` | yes |                          |
 | `difficulty`  | `easy` \| `medium` \| `hard` \| `insane`                                      | no       |                                |
 | `date`        | date                                                                          | yes      |                                |

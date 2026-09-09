@@ -60,7 +60,7 @@ const securityHeaders: SecurityHeader[] = [
 ];
 
 const deliveryDiagramAlt =
-  "Delivery pipeline diagram: local development pushes to a private GitHub repository, which triggers a Cloudflare Pages build that produces static output. The Cloudflare edge serves it over HTTPS with strict security headers to the visitor's browser, with no origin server.";
+  "Delivery pipeline diagram: local development pushes to a public GitHub repository, which triggers a Cloudflare Pages build that produces static output. The Cloudflare edge serves it over HTTPS with strict security headers to the visitor's browser, with no origin server.";
 ---
 
 <BaseLayout
@@ -148,7 +148,7 @@ const deliveryDiagramAlt =
         class="w-full max-w-xl"
       />
       <figcaption class="mt-3 text-xs leading-relaxed text-faint">
-        Delivery pipeline: local development, then a push to the private GitHub
+        Delivery pipeline: local development, then a push to the GitHub
         repository, then a Cloudflare Pages build, then the Cloudflare edge over
         HTTPS, then the visitor's browser.
       </figcaption>

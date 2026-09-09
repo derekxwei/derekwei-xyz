@@ -16,7 +16,7 @@ A suggested plan for turning derekwei.xyz from a solid skeleton into a portfolio
 
 The site's credibility comes from content only you can write. Aim for a handful of genuine entries.
 
-- [ ] **2–3 CTF writeups** from events you've actually competed in (National Cyber League, BYU CTF, RowdyCon, CTF@CIT, Squ1rrel, CyberPatriot). Pick challenges you can explain well; teach the method. Redact flags where required.
+- [ ] **2–3 CTF writeups** from events you've actually competed in (National Cyber League, BYU CTF, Rowdy CyberCon, CTF@CIT, Squ1rrel, CyberPatriot). Pick challenges you can explain well; teach the method. Redact flags where required.
 - [ ] **1–2 lab notes** from real homelab work - even "set up a VM and forwarded its logs" is a legitimate, useful note. Frequency and honesty matter more than polish.
 - [ ] Flesh out the **home security lab** project with what you've actually built so far; keep the rest as a clearly-labeled roadmap.
 - [ ] Update **/now** to reflect what you're currently doing.

@@ -46,6 +46,39 @@ const unplaced = COMPETITIONS.filter((c) => !c.result);
 // Only surface the download button when the file is actually present in public/.
 const resumePdf = '/Derek_Wei_Resume_Public.pdf';
 const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
+
+// Published writeups and shipped work, in the same order the PDF lists them.
+// Each entry links its own page; `note` carries a verifiable result where one
+// exists, and `source` the public repository where the work is readable.
+const PROJECT_ENTRIES = [
+  {
+    eyebrow: 'UIUCTF 2026 · Web exploitation',
+    title: 'Nabi AI: SSRF via a client-controllable vault address',
+    href: '/ctf/uiuctf-2026-nabi-ai/',
+    body: 'A deprecated, client-controllable baoAddr field in a Next.js Server Action turned an AI challenge into a conventional SSRF and secrets-management failure.',
+    note: null,
+    cta: 'Read the writeup',
+    source: null,
+  },
+  {
+    eyebrow: 'BroncoCTF 2026 · OSINT',
+    title: 'AO-SINT: evidence-first game geolocation',
+    href: '/ctf/broncoctf-2026-ao-sint/',
+    body: 'Used topography, architecture, map geometry, and sightline reconstruction to identify four Arcane Odyssey locations.',
+    note: 'Team idktheflag placed 8th of 753 teams.',
+    cta: 'Read the writeup',
+    source: null,
+  },
+  {
+    eyebrow: 'Open source · Astro 5 on Cloudflare Pages',
+    title: 'derekwei.xyz: static security portfolio',
+    href: '/projects/derekwei-xyz/',
+    body: 'This site: a static Astro 5 and TypeScript build with a strict Content Security Policy, no cookies or trackers, and no third-party requests.',
+    note: null,
+    cta: 'Read the project',
+    source: CONTACT.githubRepo,
+  },
+];
 ---
 
 <BaseLayout title="Resume" description={description}>
@@ -277,25 +310,35 @@ const resumePdfExists = existsSync('public/Derek_Wei_Resume_Public.pdf');
     }
   </SectionHead>
 
-  <SectionHead width="mid" eyebrow="Writing" title="Selected technical writing" id="writing">
-    <!-- The one published writeup gets an evidence treatment, not a card. -->
-    <div class="mt-6 max-w-mid border-l-2 border-accent pl-5">
-      <p class="eyebrow">BroncoCTF 2026 &middot; OSINT</p>
-      <h3 class="mt-1.5 text-xl font-semibold tracking-tight">
-        <a class="link no-underline hover:underline" href="/ctf/broncoctf-2026-ao-sint/"
-          >AO-SINT: evidence-first game geolocation</a
-        >
-      </h3>
-      <p class="mt-2 leading-relaxed text-prose-body">
-        Used topography, architecture, map geometry, and sightline
-        reconstruction to identify four Arcane Odyssey locations.
-      </p>
-      <p class="mt-2 font-mono text-xs text-muted">
-        Team idktheflag placed 8th of 753 teams.
-      </p>
-      <p class="mt-4">
-        <a class="btn btn-ghost" href="/ctf/broncoctf-2026-ao-sint/">Read the writeup</a>
-      </p>
+  <SectionHead width="mid" eyebrow="Projects" title="Projects" id="projects">
+    <!-- Published work gets an evidence treatment, not a card: each entry is
+         readable in full at its own page, so the rail points there rather than
+         summarising twice. -->
+    <div class="mt-6 grid max-w-mid gap-8">
+      {
+        PROJECT_ENTRIES.map((p) => (
+          <div class="border-l-2 border-accent pl-5">
+            <p class="eyebrow">{p.eyebrow}</p>
+            <h3 class="mt-1.5 text-xl font-semibold tracking-tight">
+              <a class="link no-underline hover:underline" href={p.href}>
+                {p.title}
+              </a>
+            </h3>
+            <p class="mt-2 leading-relaxed text-prose-body">{p.body}</p>
+            {p.note && <p class="mt-2 font-mono text-xs text-muted">{p.note}</p>}
+            <p class="mt-4 flex flex-wrap items-center gap-3">
+              <a class="btn btn-ghost" href={p.href}>
+                {p.cta}
+              </a>
+              {p.source && (
+                <a class="link font-mono text-sm" href={p.source} rel="noopener noreferrer">
+                  Source
+                </a>
+              )}
+            </p>
+          </div>
+        ))
+      }
     </div>
   </SectionHead>
 
