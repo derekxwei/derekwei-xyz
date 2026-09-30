@@ -32,7 +32,9 @@ const splitResult = (result?: string) => {
   return m ? { rank: m[1], rest: result.slice(m[1].length) } : { rank: null, rest: result };
 };
 
-const internships = EXPERIENCE.filter((job) => /intern/i.test(job.role));
+// Every professional role, not just internships: the full-time IT
+// generalist position is the strongest of them and belongs here.
+const roles = EXPERIENCE;
 
 // Empty tiers are hidden so an earned credential leaving the roadmap does not
 // leave a blank entry behind.
@@ -348,12 +350,12 @@ const competitionSkills = [
   <SectionHead
     width="mid"
     eyebrow="Experience"
-    title="Internship experience"
+    title="Professional experience"
     id="internships"
   >
     <ol role="list" class="ledger mt-6 max-w-mid">
       {
-        internships.map((job) => (
+        roles.map((job) => (
           <li class="lrow py-6 sm:grid-cols-[minmax(0,1fr)_auto]">
             <div class="sm:col-start-1">
               <h3 class="text-lg font-semibold tracking-tight text-ink">{job.role}</h3>

@@ -337,6 +337,16 @@ export interface ExperienceEntry {
 
 export const EXPERIENCE: readonly ExperienceEntry[] = [
   {
+    role: 'Information Technology Generalist',
+    org: 'VUTEX INC (full-time)',
+    period: 'Sep 2026 to Present',
+    bullets: [
+      'Perform internal cybersecurity checks and support company endpoints and users',
+      'Maintain network and infrastructure, including physical cabling and hardware across internal systems',
+      'Build and audit the company website, and develop a plan for a local large language model (LLM)',
+    ],
+  },
+  {
     role: 'Cybersecurity Summer Camp Intern',
     org: 'CyberTexas Foundation',
     period: 'Jun 2026 to Present',
