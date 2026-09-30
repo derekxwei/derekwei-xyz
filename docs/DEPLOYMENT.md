@@ -15,11 +15,11 @@ There is no server to run or patch. A push to `main` deploys production; a pull 
 
 ### 1. Push the repository to GitHub
 
-The repo lives at `https://github.com/B1ueBurD/derekwei-xyz`. If you are starting fresh:
+The repo lives at `https://github.com/derekxwei/derekwei-xyz`. If you are starting fresh:
 
 ```sh
 git init -b main
-git remote add origin https://github.com/B1ueBurD/derekwei-xyz.git
+git remote add origin https://github.com/derekxwei/derekwei-xyz.git
 git add -A
 git commit -m "Initial commit"
 git push -u origin main

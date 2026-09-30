@@ -288,11 +288,23 @@ const PROJECT_ENTRIES = [
                   {rank}
                   {rest}
                 </p>
-                {c.writeup && (
-                  <p class="mt-1.5 font-mono text-xs">
-                    <a class="link" href={c.writeup.href}>
-                      {c.writeup.label} &rarr;
-                    </a>
+                {(c.writeup || c.verifyUrl) && (
+                  <p class="mt-1.5 flex flex-wrap items-center gap-x-4 font-mono text-xs">
+                    {c.writeup && (
+                      <a class="link" href={c.writeup.href}>
+                        {c.writeup.label} &rarr;
+                      </a>
+                    )}
+                    {c.verifyUrl && (
+                      <a
+                        class="link"
+                        href={c.verifyUrl}
+                        rel="noopener noreferrer"
+                        aria-label={`${c.name}: verify badge on Credly`}
+                      >
+                        Verify badge &rarr;
+                      </a>
+                    )}
                   </p>
                 )}
               </div>

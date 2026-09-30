@@ -209,6 +209,12 @@ export interface Competition {
   result?: string;
   /** Published writeup that evidences this result, if one exists. */
   writeup?: { label: string; href: string };
+  /**
+   * Public third-party badge that evidences participation or placement, in the
+   * same way `verifyUrl` does for a certification. Always a public badge URL,
+   * never an account-facing Credly page.
+   */
+  verifyUrl?: string;
 }
 
 export const COMPETITIONS: readonly Competition[] = [
@@ -248,6 +254,14 @@ export const COMPETITIONS: readonly Competition[] = [
     name: 'CTF@CIT',
     kind: 'Capture the Flag',
     result: '25th of 759 teams (2026)',
+  },
+  {
+    name: 'UND CyberHawks National CTF',
+    kind: 'National Capture the Flag, University of North Dakota',
+    result:
+      '48th of 217 teams in qualifiers, all 10 challenges solved, 7,150 points, Team idktheflag; advanced to the national finals',
+    verifyUrl:
+      'https://www.credly.com/badges/83a69483-710c-42de-9c75-26992d660353/public_url',
   },
   { name: 'Squ1rrel CTF', kind: 'Capture the Flag' },
   { name: 'CyberPatriot', kind: 'National Youth Cyber Defense Competition' },

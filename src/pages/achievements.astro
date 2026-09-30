@@ -258,11 +258,23 @@ const competitionSkills = [
                   {rank}
                   {rest}
                 </p>
-                {comp.writeup && (
-                  <p class="mt-1.5 font-mono text-xs">
-                    <a class="link" href={comp.writeup.href}>
-                      {comp.writeup.label} &rarr;
-                    </a>
+                {(comp.writeup || comp.verifyUrl) && (
+                  <p class="mt-1.5 flex flex-wrap items-center gap-x-4 font-mono text-xs">
+                    {comp.writeup && (
+                      <a class="link" href={comp.writeup.href}>
+                        {comp.writeup.label} &rarr;
+                      </a>
+                    )}
+                    {comp.verifyUrl && (
+                      <a
+                        class="link"
+                        href={comp.verifyUrl}
+                        rel="noopener noreferrer"
+                        aria-label={`${comp.name}: verify badge on Credly`}
+                      >
+                        Verify badge &rarr;
+                      </a>
+                    )}
                   </p>
                 )}
               </div>
