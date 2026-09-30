@@ -338,11 +338,11 @@ export interface ExperienceEntry {
 export const EXPERIENCE: readonly ExperienceEntry[] = [
   {
     role: 'Information Technology Generalist',
-    org: 'VUTEX INC (full-time)',
-    period: 'Sep 2026 to Present',
+    org: 'VUTEX INC',
+    period: 'Sep 2026 to Present · Full-time',
     bullets: [
       'Perform internal cybersecurity checks and support company endpoints and users',
-      'Maintain network and infrastructure, including physical cabling and hardware across internal systems',
+      'Maintain company network and infrastructure, including physical cabling and hardware',
       'Build and audit the company website, and develop a plan for a local large language model (LLM)',
     ],
   },
@@ -390,7 +390,7 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
   {
     label: 'Security',
     items:
-      'Web application exploitation, OSINT (open source intelligence), digital forensics, network traffic analysis, log analysis, cryptography, password cracking, penetration testing fundamentals, vulnerability scanning, incident detection and response',
+      'Web application exploitation, OSINT (open source intelligence), digital forensics, network traffic analysis, log analysis, cryptography, password cracking, penetration testing fundamentals, vulnerability scanning, incident detection and response, managed security services',
   },
   {
     label: 'Systems and tooling',
