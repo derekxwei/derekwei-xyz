@@ -48,21 +48,26 @@ moving on.
 
 ## Stage 3: read the glyph panel
 
-The recovered BMP shows four rows of ten colored glyphs. In each row the last
-four glyphs repeat the first four, leaving six independent glyphs per row. A
-teammate supplied the substitution reading, which checked out consistently
-across the panel:
+The recovered BMP is a photo of a neon sign: four rows of ten hand-drawn glyphs
+in red, blue, and green.
 
-| First six glyphs | Decoded letters |
-| --- | --- |
-| `ABCDEF` | `YOUHAV` |
-| `GHBIJK` | `ETODIG` |
-| `IGGLGM` | `DEEPER` |
-| `JNOJIG` | `INSIDE` |
+![The recovered glyph panel, four rows of colored neon symbols drawn from mixed scripts.](/images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel.webp)
 
-The 24 independent positions read **YOU HAVE TO DIG DEEPER INSIDE**. The working
-Steghide passphrase is that phrase, uppercase, no spaces:
-`YOUHAVETODIGDEEPERINSIDE`.
+*The decoded panel. The 15 distinct forms are a deliberate mix of scripts, which is what makes them hard to name.*
+
+Two features make it a cipher rather than decoration. The glyphs fall into three
+color classes of five (red, blue, green), and in every row the last four glyphs
+repeat the first four, so only the first six per row are independent, giving 24
+meaningful positions.
+
+The 15 forms are pulled from several writing systems at once, which is the whole
+difficulty: some are Japanese kana (の, ん), some read as Latin letters (C, U,
+F), and others are numerals or astrological marks (8, 6, the Venus symbol ♀). A
+shape can imitate a character without being it, so the set resists a clean
+lookup. A teammate worked out the substitution, assigning each form a letter.
+Reading the 24 independent positions gives **YOU HAVE TO DIG DEEPER INSIDE**;
+uppercased with no spaces, `YOUHAVETODIGDEEPERINSIDE` is the Steghide passphrase
+for the next stage.
 
 ## Stage 4: extract and reverse the payload
 
@@ -104,4 +109,5 @@ pass of the usual tools is not proof a file is clean.
 <details>
 <summary><strong>Spoiler: show the flag</strong></summary>
 <pre><code>rowdy{Anomolous_Adventures}</code></pre>
+<img src="/images/ctf/rowdyhacks-2026-back-to-nothing/spectrogram-flag.webp" alt="Spectrogram of the reversed audio, with the flag text visible as bright bands against a dark background." />
 </details>

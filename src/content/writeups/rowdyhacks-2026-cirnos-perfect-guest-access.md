@@ -1,5 +1,5 @@
 ---
-title: 'RowdyHacks XII: Cirno’s Perfect Guest Access'
+title: "RowdyHacks XII: Cirno's Perfect Guest Access"
 description: 'A 100-point ICS/OT challenge: an exposed SCADA-LTS HMI view returned the flag through a guest-accessible component that required no login.'
 event: 'RowdyHacks XII'
 category: 'network'

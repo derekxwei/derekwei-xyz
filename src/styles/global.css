@@ -444,6 +444,18 @@
   .prose-custom img[src$="secure-travel-network.svg"] {
     aspect-ratio: 560 / 596;
   }
+  .prose-custom img[src$="glyph-panel.webp"] {
+    aspect-ratio: 1400 / 870;
+  }
+  .prose-custom img[src$="spectrogram-flag.webp"] {
+    aspect-ratio: 1400 / 197;
+  }
+  .prose-custom img[src$="aircraft.webp"] {
+    aspect-ratio: 1000 / 1783;
+  }
+  .prose-custom img[src$="lift-bridge.webp"] {
+    aspect-ratio: 1400 / 630;
+  }
   /* Markdown evidence figures: an image paragraph followed by an italic
      caption paragraph reads as figure + subordinate caption. */
   .prose-custom :where(p:has(> img:only-child)) {

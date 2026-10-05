@@ -35,7 +35,7 @@ pdftotext "$export_dir/getaway-route.pdf" -
 ## Solution
 
 The PDF is a getaway briefing: pickup at the east service entrance, then
-loading bay → service road → rendezvous, with a note that the main exit has
+loading bay to service road to rendezvous, with a note that the main exit has
 cameras and that reaching the river means a wrong turn. Under "A message from
 the crew leader," it prints the flag. The unrelated traffic was there to make
 the capture look busy.

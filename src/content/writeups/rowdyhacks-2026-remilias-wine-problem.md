@@ -1,5 +1,5 @@
 ---
-title: 'RowdyHacks XII: Remilia’s Wine Problem'
+title: "RowdyHacks XII: Remilia's Wine Problem"
 description: 'A 150-point ICS/OT challenge: read-only Modbus holding-register reads over the OT tunnel surfaced the overpressured tank value needed for the flag.'
 event: 'RowdyHacks XII'
 category: 'network'

@@ -31,7 +31,7 @@ bytes are ASCII:
 
 ```text
 request : 3636000000060103001e001f
-registers 30…: 114 111 119 100 121 ...   ->  r o w d y ...   (last: 125 = '}')
+registers 30...: 114 111 119 100 121 ...   ->  r o w d y ...   (last: 125 = '}')
 ```
 
 Decoding the low byte of each register spells the flag directly. The solve only

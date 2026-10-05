@@ -30,7 +30,7 @@ const algorithms = [
           id="hash-text"
           class="input min-h-36"
           rows="6"
-          placeholder="Type or paste text to hash…"
+          placeholder="Type or paste text to hash..."
           spellcheck="false"
           autocomplete="off"></textarea>
       </div>
@@ -43,7 +43,7 @@ const algorithms = [
             for="hash-file"
             class="btn btn-ghost cursor-pointer peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent"
           >
-            Choose file…
+            Choose file...
           </label>
           <span id="hash-file-name" class="font-mono text-sm text-muted">No file selected</span>
           <button id="hash-file-clear" type="button" class="btn btn-ghost px-2.5 py-1 text-xs" hidden>
@@ -164,7 +164,7 @@ const algorithms = [
     }
 
     computeBtn.disabled = true;
-    computeBtn.textContent = 'Hashing…';
+    computeBtn.textContent = 'Hashing...';
     try {
       const data: BufferSource = file
         ? await file.arrayBuffer()
