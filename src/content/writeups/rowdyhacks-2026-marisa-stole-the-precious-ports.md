@@ -20,7 +20,7 @@ draft: false
 
 ICS/OT · 150 points. The prompt asks where Modbus communicates after the network
 map was "stolen," and supplies a connection ZIP with an OT tunnel mapping local
-ports 1500–1503 to the organizers' gateway.
+ports 1500-1503 to the organizers' gateway.
 
 ## Approach
 
@@ -35,12 +35,12 @@ registers 30…: 114 111 119 100 121 ...   ->  r o w d y ...   (last: 125 = '}')
 ```
 
 Decoding the low byte of each register spells the flag directly. The solve only
-reads holding registers — no write function was used.
+reads holding registers. No write function was used.
 
 ## Defensive takeaway
 
 Because Modbus has no authentication, read access to the right register range
-discloses whatever the device exposes — here, an entire string sitting in holding
+discloses whatever the device exposes, here, an entire string sitting in holding
 registers. Finding the live endpoint was the whole challenge, which mirrors real
 OT reconnaissance: once a device answers, it answers fully. Segmentation and
 monitoring for Modbus scans from unexpected hosts are the practical defenses.

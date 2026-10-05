@@ -10,8 +10,8 @@ const allWriteups = await getCollection('writeups', ({ data }) =>
 
 // One-line team result shown per event, keyed by the `event` frontmatter value.
 const eventResults: Record<string, string> = {
-  'RowdyHacks XII': 'Team Difference — 1st of 62 teams, full clear (all 27 challenges).',
-  'BroncoCTF 2026': 'Team idktheflag — 8th of 753 teams.',
+  'RowdyHacks XII': 'Team Difference: 1st of 62 teams, full clear (all 27 challenges).',
+  'BroncoCTF 2026': 'Team idktheflag: 8th of 753 teams.',
 };
 
 // A stable anchor per event so the competitions list can deep-link a group.
@@ -74,11 +74,11 @@ const structure = [
     </p>
     <p class="mt-4 font-mono text-sm text-muted">
       Most recent result:{' '}
-      <span class="text-accent">RowdyHacks XII — 1st of 62 teams, full clear</span>{' '}
+      <span class="text-accent">RowdyHacks XII, 1st of 62 teams, full clear</span>{' '}
       (all 27 challenges), Team Difference.
     </p>
     <p class="mt-2 font-mono text-xs text-faint">
-      A team win first and foremost — within it, Derek contributed 3,575 of the
+      A team win first and foremost. Within it, Derek contributed 3,575 of the
       team's 5,825 points as top scorer.
     </p>
   </header>

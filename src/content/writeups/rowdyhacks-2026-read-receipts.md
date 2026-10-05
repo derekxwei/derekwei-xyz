@@ -25,7 +25,7 @@ transcript, and two encrypted message attachments.
 `encrypt.py` uses AES in CTR mode. The bug is in how the counter is managed:
 the messenger **resets its counter to 3917 on every restart** while keeping the
 same key. Both attachments were therefore encrypted under the same
-`(key, nonce)` pair — counter block `00000000000000000000000000000f4d`.
+`(key, nonce)` pair, counter block `00000000000000000000000000000f4d`.
 
 CTR mode is a stream cipher: ciphertext is plaintext XOR a keystream derived
 from the key and counter. Reuse that pair and you reuse the keystream, which
@@ -42,14 +42,14 @@ keystream   = ciphertext_supply XOR plaintext_supply
 plaintext_2 = ciphertext_plan   XOR keystream
 ```
 
-That reveals the second message — the vault plan, and the flag. The attack
+That reveals the second message, the vault plan, and the flag. The attack
 never recovers the AES key; one known plaintext under a reused nonce is enough
 to read the overlapping bytes of the other message.
 
 ## Defensive takeaway
 
 A `(key, nonce)` pair must never repeat in CTR (or GCM). Nonces should be random
-or a strictly monotonic counter persisted across restarts — never reset to a
+or a strictly monotonic counter persisted across restarts, never reset to a
 constant. This is the same class of bug as the classic two-time pad.
 
 ## Flag

@@ -25,13 +25,13 @@ no file attachment is provided.
 
 The reported solve authenticated to the SCADA-LTS dashboard with the **default
 administrator account**, then read the flag from the logged history of the
-`SDM_Front_Gate – Meiling Flag` data point. A teammate completed this; the
+`SDM_Front_Gate - Meiling Flag` data point. A teammate completed this; the
 writeup records the reported default-account exposure and where the flag lived.
 
 ## Defensive takeaway
 
 Default credentials are one of the most common and most damaging real-world ICS
-weaknesses — they turn "private dashboard" into "public dashboard" for anyone who
+weaknesses: they turn "private dashboard" into "public dashboard" for anyone who
 can reach it. The baseline controls are unglamorous and non-negotiable: change
 every default account on commissioning, disable unused ones, and alert on logins
 to built-in admin identities. Historised data points also persist values long

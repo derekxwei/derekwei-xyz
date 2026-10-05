@@ -22,8 +22,7 @@ a prompt that points at a "plan."
 
 ## Enumeration
 
-The capture carries several HTTP requests. Most are noise — a portal, a
-stylesheet, a health check, a queue — but one request stands out:
+The capture carries several HTTP requests. Most are noise (a portal, a stylesheet, a health check, a queue), but one request stands out:
 `GET /docs/getaway-route.pdf`. Exporting the HTTP objects and converting that
 PDF to text pulls the document straight out of the stream:
 
@@ -46,7 +45,7 @@ the capture look busy.
 Anything transferred over cleartext HTTP is recoverable verbatim by anyone on
 the path, documents included. This is the everyday argument for TLS everywhere
 and for treating captured traffic as a disclosure surface during incident
-response — exported objects reconstruct exactly what crossed the wire.
+response. Exported objects reconstruct exactly what crossed the wire.
 
 ## Flag
 

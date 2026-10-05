@@ -26,7 +26,7 @@ portal; the flag belongs to a case the analyst is not assigned.
 After logging in, the case page shows the analyst's assigned case RH-1042 and
 recent IDs **1039, 1040, 1042, 1044**. The page's JavaScript calls
 `/api/cases/<id>` and also defines `/api/evidence/<id>`. The gap in the
-sequence — **1043** — is the obvious thing to probe:
+sequence (**1043**) is the obvious thing to probe:
 
 ```text
 /api/cases/1041  -> 404
@@ -37,12 +37,12 @@ sequence — **1043** — is the obvious thing to probe:
 
 Case 1043 belongs to another user and is marked classified, but the API returns
 it anyway. Following its `evidence_id` to `/api/evidence/7712` returns the
-restricted evidence — containing the flag. The portal authenticated the user but
+restricted evidence, containing the flag. The portal authenticated the user but
 never checked that the user was *allowed to see this specific object*.
 
 ## Defensive takeaway
 
-This is Insecure Direct Object Reference / Broken Object-Level Authorization —
+This is Insecure Direct Object Reference / Broken Object-Level Authorization,
 consistently at the top of the OWASP API risks. Authentication is not
 authorization: every object fetch must verify the requester owns or is permitted
 that record, server-side, on every endpoint. Sequential, guessable IDs make the

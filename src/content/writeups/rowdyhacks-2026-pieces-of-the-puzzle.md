@@ -24,9 +24,9 @@ an archive was split into six pieces.
 
 The six pieces hide across two protocols:
 
-- **HTTP** — three responses for `/static/*.part` whose bodies begin
+- **HTTP**: three responses for `/static/*.part` whose bodies begin
   `PIECE 1 OF 6`, `PIECE 3 OF 6`, and `PIECE 5 OF 6`.
-- **DNS** — TXT answers for `p2.exfil.ctf.local`, `p4.exfil.ctf.local`, and
+- **DNS**: TXT answers for `p2.exfil.ctf.local`, `p4.exfil.ctf.local`, and
   `p6.exfil.ctf.local`, each a Base64-encoded body with the same numbered
   header.
 

@@ -29,7 +29,7 @@ PNG, then WAV, then ZIP.
 ## Decoding the audio
 
 The WAV has two channels that are nearly identical. Subtracting right from left
-isolates **thirteen short dual-frequency tones** — and the spectrogram of the
+isolates **thirteen short dual-frequency tones**, and the spectrogram of the
 full track even spells the hint `TWO VOICES FIND DIFFERENCE`, confirming the
 stereo-difference approach.
 
@@ -42,14 +42,14 @@ string is the ZIP password:
 7z x -so -p8386837748679 territory.zip territory.txt
 ```
 
-The WAV metadata's `archive password: baguette` is a decoy — it fails the
+The WAV metadata's `archive password: baguette` is a decoy. It fails the
 integrity check.
 
 ## Defensive takeaway
 
 Covert channels stack: trailing data, a stereo-difference signal, and DTMF are
 each invisible to a casual look at the "image." The general defense is the same
-as other polyglot tricks — canonicalize/re-encode media on ingest and treat any
+as other polyglot tricks: canonicalize/re-encode media on ingest and treat any
 bytes past the logical end of a file as suspect.
 
 ## Flag

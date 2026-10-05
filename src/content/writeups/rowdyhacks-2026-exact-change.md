@@ -35,7 +35,7 @@ by replaying the business logic:
    emitting **two base-36 characters per sale**.
 
 Reproducing that over the slip yields the service code `3O2WCO5E3W`, and the
-remaining tubes `[0, 0, 0, 1]` match the JAR's own `status` output — a good
+remaining tubes `[0, 0, 0, 1]` match the JAR's own `status` output, a good
 cross-check that the reimplementation is faithful before trusting the code.
 
 ## Solution
@@ -49,7 +49,7 @@ The service command prints the flag.
 ## Defensive takeaway
 
 Hidden commands and "secret" codes computed inside shipped bytecode are not
-security — Java bytecode decompiles cleanly, and any deterministic algorithm can
+security, Java bytecode decompiles cleanly, and any deterministic algorithm can
 be re-derived and replayed. Secrets and privileged operations have to live
 server-side behind real authorization, not behind obscurity in a client artifact.
 

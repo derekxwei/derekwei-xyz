@@ -19,14 +19,14 @@ draft: false
 
 Forensics · 200 points. A single photo, `vacation.jpg`, is provided.
 
-## Layer 1 — the EXIF hint
+## Layer 1: the EXIF hint
 
 The `ImageDescription` EXIF field is Base64. Decoding it says the image has
-extra data after the JPEG end-of-image marker (`FF D9`), beginning with `PK` —
+extra data after the JPEG end-of-image marker (`FF D9`), beginning with `PK`,
 the ZIP signature. So the JPEG is a polyglot with an archive appended to its
 tail.
 
-## Layer 2 — the appended ZIP
+## Layer 2: the appended ZIP
 
 Scanning for the ZIP signature after the final `FF D9` and carving from there
 yields an archive:
@@ -39,7 +39,7 @@ unzip -oq embedded.zip -d extracted
 It contains `photo2.jpg` and a `readme.txt` that supplies the passphrase
 `p1xel_hunt3r` for the next layer.
 
-## Layer 3 — the steghide payload
+## Layer 3: the steghide payload
 
 `photo2.jpg` carries a steghide payload unlocked by that passphrase:
 
@@ -54,7 +54,7 @@ hint was used.
 ## Defensive takeaway
 
 Data after a file's logical end marker is invisible to viewers but trivially
-carved — a reliable covert channel and exfiltration trick. Upload pipelines and
+carved, a reliable covert channel and exfiltration trick. Upload pipelines and
 DLP should re-encode or canonicalize images and reject trailing bytes, rather
 than assume a valid header means a clean file.
 

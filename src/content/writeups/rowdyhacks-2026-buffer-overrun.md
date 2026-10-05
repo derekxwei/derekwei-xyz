@@ -21,7 +21,7 @@ draft: false
 PWN · 300 points. A 32-bit ELF reads up to 200 bytes into a stack buffer and has
 a `win()` function at `0x080491b6` that sets UID/GID to 0 and launches
 `/bin/sh`. The binary has **no stack canary** and is **not position
-independent**, so `win`'s address is fixed and a plain return is enough — no
+independent**, so `win`'s address is fixed and a plain return is enough, no
 shellcode or ROP chain required.
 
 ## Finding the offset
@@ -42,8 +42,7 @@ environment, this returns into `win()`, which hands back a root shell; reading
 
 This is the canonical reason modern toolchains exist: a bounds-checked read
 (`fgets` with a size, not an over-long `read` into a small buffer) prevents the
-overflow outright, and the standard mitigations each break this exact path —
-**stack canaries** detect the overwrite, **PIE + ASLR** hide `win`'s address, and
+overflow outright, and the standard mitigations each break this exact path: **stack canaries** detect the overwrite, **PIE + ASLR** hide `win`'s address, and
 **NX** stops code-on-stack variants. Ship with `-fstack-protector-strong`, PIE,
 and RELRO, and never size a read by the attacker's input.
 

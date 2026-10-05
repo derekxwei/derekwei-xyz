@@ -38,7 +38,7 @@ needed.
 
 Knowing default service ports is the first step in both offense and defense.
 On an OT network, Modbus has no authentication or encryption, so unexpected
-traffic to tcp/502 — or Modbus reaching hosts that should never speak it — is
+traffic to tcp/502 (or Modbus reaching hosts that should never speak it) is
 a high-signal indicator worth alerting on at the segmentation boundary.
 
 ## Flag

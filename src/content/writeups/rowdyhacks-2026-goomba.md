@@ -45,7 +45,7 @@ confirms the channel order rather than guessing it.
 
 ## Defensive takeaway
 
-Never trust a file extension for routing or type decisions — validate the magic
+Never trust a file extension for routing or type decisions. Validate the magic
 bytes. The same "it claims to be an image" assumption that hides a flag here is
 how polyglot files and disguised payloads slip past naive upload filters.
 

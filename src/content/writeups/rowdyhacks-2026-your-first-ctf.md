@@ -23,7 +23,7 @@ with a small check-in website that asks what else its page loaded.
 ## Approach
 
 Viewing the page source shows the check-in page pulls in `check-in.js`. An HTML
-comment holds `rowdy{not_the_real_flag}` — a deliberate decoy to catch anyone
+comment holds `rowdy{not_the_real_flag}`, a deliberate decoy to catch anyone
 who stops at "view source." The real website flag is in the script, wrapped in
 an `atob(...)` Base64 string:
 
@@ -37,13 +37,12 @@ python3 -c "import base64; print(base64.b64decode('<string>').decode())"
 This challenge has two distinct answers. The **in-person CTFd flag** was given
 during the workshop and is what scores the 25 points. The **website flag**
 above is a separate artifact recovered from the JavaScript and is valid only on
-that site — submitting it to CTFd returns incorrect. Keeping the two straight
+that site. Submitting it to CTFd returns incorrect. Keeping the two straight
 was the real lesson of the warm-up.
 
 ## Defensive takeaway
 
-Anything shipped to the browser — comments, JavaScript strings, Base64 blobs —
-is readable by the client. Base64 is encoding, not encryption, and a decoy in
+Anything shipped to the browser (comments, JavaScript strings, Base64 blobs) is readable by the client. Base64 is encoding, not encryption, and a decoy in
 the markup does not protect a secret sitting one function call away.
 
 ## Flags

@@ -32,7 +32,7 @@ writeup records the reported guest-access exposure rather than any new access.
 
 Human-Machine Interfaces are frequently deployed with "view" access left open on
 the assumption that the OT network is already isolated. That assumption fails the
-moment the HMI is reachable — an unauthenticated view can disclose process state,
+moment the HMI is reachable, an unauthenticated view can disclose process state,
 set-points, and, as here, whatever the panel shows. HMIs should require
 authentication for every view, and OT dashboards should never be exposed to an
 untrusted network.

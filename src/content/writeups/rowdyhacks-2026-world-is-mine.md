@@ -50,8 +50,7 @@ handoff section displays the flag.
 Authentication queries must use parameterized statements; string-concatenated
 SQL in a login form is the highest-stakes place this bug can appear, because it
 is an unauthenticated path to account takeover. Distinct error messages for
-"bad quote" versus "bad password" also leak that the input reaches the query —
-error responses should be uniform.
+"bad quote" versus "bad password" also leak that the input reaches the query. Error responses should be uniform.
 
 ## Flag
 

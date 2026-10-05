@@ -21,13 +21,13 @@ draft: false
 Miscellaneous · 300 points. A website hints that another page exists, and the
 flag is several hops away.
 
-## Step 1 — the hidden page
+## Step 1: the hidden page
 
 A bounded scan for `.html` pages finds `/dakota.html`, which gives the SSH
 username `rowdy-rocks` but shows the password as `REDACTED`. The challenge also
 supplies a tunnel mapping its SSH service to a local port.
 
-## Step 2 — the SSH password (RockYou)
+## Step 2: the SSH password (RockYou)
 
 The obvious page- and title-derived passwords were rejected, so the password was
 a common one. A **single, slow, rate-limited** credential run against the first
@@ -35,7 +35,7 @@ a common one. A **single, slow, rate-limited** credential run against the first
 `rowdy-rocks`. On the host, `/home/rowdy-rocks/flag/download.txt` pointed to a
 website route, `/flag_Rnaitnatsat.zip`.
 
-## Step 3 — the ZIP password (RockYou again)
+## Step 3: the ZIP password (RockYou again)
 
 The downloaded ZIP holds one encrypted `flag.txt`. Extracting its hash and
 checking it against RockYou finds the password `scooter` (line 455) in under a

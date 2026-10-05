@@ -42,7 +42,7 @@ input[i] = ((table[i] ^ 0x5a) - 3*i) & 0xff
 Inverting the transform over the 24 table bytes reconstructs the passphrase,
 which the binary then accepts with `access granted. nice key.`
 
-A `strings` dump also shows `flag{left_over_from_v0_9}` — a decoy left over from
+A `strings` dump also shows `flag{left_over_from_v0_9}`, a decoy left over from
 an earlier build. The reliable path is the byte comparison, not the loose
 string, which is a good reminder to verify where a candidate actually comes
 from before trusting it.
@@ -50,7 +50,7 @@ from before trusting it.
 ## Defensive takeaway
 
 A secret checked entirely inside a client binary is a secret you have already
-shipped — any invertible transform can be run backwards. Real authentication
+shipped: any invertible transform can be run backwards. Real authentication
 has to happen server-side against a value the user never receives; local checks
 only raise the effort, they do not protect anything.
 

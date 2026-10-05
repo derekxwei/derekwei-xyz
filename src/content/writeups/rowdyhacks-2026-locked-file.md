@@ -16,11 +16,11 @@ draft: false
 <!-- Authorized competition practice. This is the one RowdyHacks challenge whose
      final reproduction we did not preserve; it is documented honestly as such. -->
 
-> **Status — incomplete by design.** Our team (Team Difference) was credited with
+> **Status: incomplete by design.** Our team (Team Difference) was credited with
 > this solve: a teammate cracked it on a GPU machine and submitted the flag.
 > That machine's terminal history was cleared afterward, so the exact password,
 > the exact Hashcat command, and the flag string were not saved. Everything
-> below is the known, verified approach up to the cracking step — nothing here is
+> below is the known, verified approach up to the cracking step. Nothing here is
 > guessed, and no flag is claimed. This is the only RowdyHacks XII writeup
 > without a reproducible final answer.
 
@@ -39,10 +39,10 @@ then append one digit and one symbol. That is a textbook setup for a
 
 The standard workflow for this is:
 
-1. Extract the archive's hash in Hashcat's 7-Zip format (mode **11600**) — e.g.
+1. Extract the archive's hash in Hashcat's 7-Zip format (mode **11600**), e.g.
    with the `7z2hashcat` tool.
 2. Build a wordlist from `words.txt` (plus common lists), and express the
-   `rules.txt` transformation as Hashcat rules — capitalization, a leet
+   `rules.txt` transformation as Hashcat rules: capitalization, a leet
    substitution, and a digit+symbol suffix.
 3. Run the attack on a GPU, which is what makes the 2^19-iteration KDF tractable
    in contest time.
@@ -51,9 +51,7 @@ The standard workflow for this is:
 
 ## What we have, and what we don't
 
-Our local (GPU-less) attempts ran large negative passes — the full
-supplied-dictionary leet space ending in a digit-plus-symbol, plus several
-RockYou-based passes — without a hit, which is consistent with the real password
+Our local (GPU-less) attempts ran large negative passes (the full supplied-dictionary leet space ending in a digit-plus-symbol, plus several RockYou-based passes) without a hit, which is consistent with the real password
 needing GPU throughput. The teammate's GPU run found it; the integrity-checked
 portable attack package (archive, mode-11600 hash, candidate stems and suffixes)
 was prepared, but the successful command and the recovered password/flag were
@@ -64,7 +62,7 @@ recover them. Until then, no flag is recorded here.
 
 ## Defensive takeaway
 
-The weak link is never AES here — it is the password policy. A human-memorable
+The weak link is never AES here. It is the password policy. A human-memorable
 pattern ("capitalize, one leet swap, digit, symbol") collapses the keyspace
 enough that a rule-based GPU attack is practical even against a slow KDF. The
 defense is length and randomness (a passphrase or generated secret), because a
@@ -72,4 +70,4 @@ strong KDF only buys time proportional to how unpredictable the password is.
 
 ## Flag
 
-Not available — see the status note above.
+Not available. See the status note above.

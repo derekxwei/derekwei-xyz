@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Passing Through'
-description: 'A 300-point OSINT investigation: geolocating a lift bridge in New Orleans and pulling eight facts — down to a federal case number and bag counts — from public records.'
+description: 'A 300-point OSINT investigation: geolocating a lift bridge in New Orleans and pulling eight facts, down to a federal case number and bag counts, from public records.'
 event: 'RowdyHacks XII'
 category: 'osint'
 points: 300
@@ -40,7 +40,7 @@ lists **4300 Jourdan Road, New Orleans, LA 70126**. That address appears in a
 federal case,
 [*Coex Coffee International v. Dupuy Storage & Forwarding, LLC*](https://www.govinfo.gov/content/pkg/USCOURTS-laed-2_06-cv-04798/pdf/USCOURTS-laed-2_06-cv-04798-0.pdf),
 **Civil Action No. 06-4798**. Its pages give Warehouse No. 1 at 4300 Jourdan Road
-and report **1,495** coffee bags destroyed and **4,319** sold for salvage — a
+and report **1,495** coffee bags destroyed and **4,319** sold for salvage, a
 combined **5,814**.
 
 ## The eight answers
@@ -55,8 +55,7 @@ The checker reports "All eight discoveries verified" and shows the flag.
 
 ## Defensive takeaway
 
-Every step here was a public source — a bridge notice, a company site, a federal
-court PDF — chained from a single photo into a precise facility, owner, and legal
+Every step here was a public source (a bridge notice, a company site, a federal court PDF), chained from a single photo into a precise facility, owner, and legal
 history. That chain is exactly how real OSINT and due-diligence work, and the
 OPSEC counterpart is to assume a published image can be pivoted into records far
 beyond what the picture appears to show.

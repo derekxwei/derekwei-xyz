@@ -35,7 +35,7 @@ a table in the binary. The transform (helper at `0x401955`) is:
 out[i] = ROL8( ((input[i] ^ 0x5a) + 7*i) & 0xff, 3 )
 ```
 
-Every step is reversible, so recovering the input is mechanical — undo the
+Every step is reversible, so recovering the input is mechanical: undo the
 rotate, subtract `7*i`, XOR with `0x5a`, for each of the 46 positions:
 
 ```text
@@ -50,7 +50,7 @@ and that string is the flag.
 Two familiar lessons stack here: trailing data after `IEND` is a carving target
 (validate and re-encode uploads), and a verification routine shipped inside a
 binary is reversible no matter how many add/XOR/rotate steps it uses. Input
-validation is not a secret — anything the client can check, an attacker can run
+validation is not a secret: anything the client can check, an attacker can run
 backwards.
 
 ## Flag

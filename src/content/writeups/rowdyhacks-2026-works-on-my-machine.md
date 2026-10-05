@@ -21,18 +21,18 @@ draft: false
 Reversing · 350 points. The attachment is an old terminal "verification program,"
 and the prompt asks for the transmission it expects.
 
-## Stage 1 — recovered locally
+## Stage 1: recovered locally
 
 Static analysis of the binary reconstructs the first expected transmission,
 `legacy_build_7f31_access`, and checks it against all 24 of the program's
 reconstructed byte comparisons. This value is an intermediate handshake token,
-not the final flag — sending it unlocks the second stage.
+not the final flag. Sending it unlocks the second stage.
 
-## Stage 2 — the connection-specific transform
+## Stage 2: the connection-specific transform
 
 The solve is two-stage. After the first transmission unlocks it, the service
 expects a second value that is run through a **connection-specific shuffle/XOR
-adapter** — the transform depends on the live session, which is what defeats a
+adapter**: the transform depends on the live session, which is what defeats a
 purely static, replay-once approach. A teammate completed this exchange against
 the service, and it returned the flag.
 
@@ -43,7 +43,7 @@ of the second; the final exchange and flag are from the teammate's run.
 ## Defensive takeaway
 
 A static secret baked into a client is recoverable (stage one), which is why the
-challenge adds a session-dependent transform (stage two) — the same reasoning
+challenge adds a session-dependent transform (stage two), the same reasoning
 behind using per-session nonces and server-side challenge/response instead of a
 fixed token. It also shows why a repeatable solve script matters: an
 undocumented interactive win is hard to reproduce or hand off later, the exact

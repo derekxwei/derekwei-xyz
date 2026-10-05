@@ -26,7 +26,7 @@ checker asks for the base where it is stationed, as decimal latitude/longitude.
 
 The aircraft carries a **Lone Star Gunfighters** marking, which identifies the
 **149th Fighter Wing** of the Texas Air National Guard. Its publicly documented
-home station is **Kelly Field Annex, Joint Base San Antonio–Lackland**. This
+home station is **Kelly Field Annex, Joint Base San Antonio-Lackland**. This
 unit → base chain is reproducible from open references about the wing's
 markings and basing; no private data is involved.
 
@@ -47,7 +47,7 @@ photo's exact capture point, only the station the challenge asked for.
 
 Unit insignia, tail markings, and squadron nicknames are deliberately public, but
 in aggregate they fix a base and a mission. The OPSEC lesson is that a single
-captioned photo can geolocate a facility through entirely open sources — which is
+captioned photo can geolocate a facility through entirely open sources, which is
 exactly the kind of correlation an adversary performs, and why imagery from
 sensitive sites is controlled.
 
