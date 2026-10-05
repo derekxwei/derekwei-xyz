@@ -45,7 +45,7 @@ password = anything
 The server authenticates the session and redirects to `/staff`, whose event
 handoff section displays the flag.
 
-## Defensive takeaway
+## Takeaway
 
 Authentication queries must use parameterized statements; string-concatenated
 SQL in a login form is the highest-stakes place this bug can appear, because it

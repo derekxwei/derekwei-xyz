@@ -47,7 +47,7 @@ A separately published airfield reference point (~`29.3842, -98.5812`) supports
 the same location from public mapping; neither coordinate is claimed to be the
 photo's exact capture point, only the station the challenge asked for.
 
-## Defensive takeaway
+## Takeaway
 
 Unit insignia, tail markings, and squadron nicknames are deliberately public, but
 in aggregate they fix a base and a mission. The OPSEC lesson is that a single

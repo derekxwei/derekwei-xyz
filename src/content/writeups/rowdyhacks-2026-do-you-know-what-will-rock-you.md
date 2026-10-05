@@ -50,7 +50,7 @@ unzip -P scooter -p flag_Rnaitnatsat.zip flag.txt
 Two independent secrets in the chain were both in the first few hundred lines of
 RockYou.
 
-## Defensive takeaway
+## Takeaway
 
 RockYou is the baseline every attacker starts from, and both gates here fell to
 it instantly. The controls are well known: ban known-breached passwords, require

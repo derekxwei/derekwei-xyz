@@ -60,7 +60,7 @@ lost when the terminal was cleared.
 I will update this page with the exact command and flag if the teammate can
 recover them. Until then, no flag is recorded here.
 
-## Defensive takeaway
+## Takeaway
 
 The weak link is never AES here. It is the password policy. A human-memorable
 pattern ("capitalize, one leet swap, digit, symbol") collapses the keyspace

@@ -49,9 +49,9 @@ draft: true
 
 <!-- The working path, step by step, with commands and snippets. Explain the reasoning, not just keystrokes. -->
 
-## Defensive takeaway
+## Takeaway
 
-<!-- What a defender should learn from this: the misconfiguration or bug class, and how it is prevented. -->
+<!-- The attacker's lesson: the vulnerability or bug class, why the exploit worked, and what tradecraft transfers to real engagements. A one-line note on the fix is fine where it is genuinely sharp, but lead with the offense. -->
 
 ## Tools used
 

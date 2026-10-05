@@ -39,7 +39,7 @@ registers 10-29 -> 114 111 119 100 121 123 78 49 71 72 84 79 70 77 79 68 66 85 8
 Each register's byte is ASCII, spelling the flag. Writing coil 0 **off** again
 (`...0500000000`) restored the original state and the registers returned to zero. The solver does this in a `finally` block so the device is left as it was found.
 
-## Defensive takeaway
+## Takeaway
 
 This is the one that should worry a defender: a single unauthenticated coil write
 changed the process and produced new output. Modbus function 5 (write single

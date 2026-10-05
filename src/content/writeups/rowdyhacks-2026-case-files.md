@@ -40,7 +40,7 @@ it anyway. Following its `evidence_id` to `/api/evidence/7712` returns the
 restricted evidence, containing the flag. The portal authenticated the user but
 never checked that the user was *allowed to see this specific object*.
 
-## Defensive takeaway
+## Takeaway
 
 This is Insecure Direct Object Reference / Broken Object-Level Authorization,
 consistently at the top of the OWASP API risks. Authentication is not

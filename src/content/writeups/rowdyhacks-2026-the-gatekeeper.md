@@ -47,7 +47,7 @@ an earlier build. The reliable path is the byte comparison, not the loose
 string, which is a good reminder to verify where a candidate actually comes
 from before trusting it.
 
-## Defensive takeaway
+## Takeaway
 
 A secret checked entirely inside a client binary is a secret you have already
 shipped: any invertible transform can be run backwards. Real authentication

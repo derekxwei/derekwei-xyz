@@ -45,7 +45,7 @@ The successful channel request returned SSH message type 99 (`CHANNEL_SUCCESS`),
 confirming execution. I'm describing the method at a conceptual level rather
 than publishing a weaponized chain.
 
-## Defensive takeaway
+## Takeaway
 
 This is a textbook reason to patch promptly: a single unauthenticated request
 yielded full command execution. Mitigations, in order: upgrade Erlang/OTP to a

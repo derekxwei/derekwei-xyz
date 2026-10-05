@@ -15,8 +15,8 @@ draft: false
 ---
 
 <!-- Authorized competition practice. The flag is behind a spoiler toggle.
-     The glyph-panel reading and the exact accepted flag were supplied by a
-     teammate; the intermediate artifacts below were independently verified. -->
+     The glyph-panel reading and the exact accepted flag are the team's;
+     the intermediate artifacts below were independently verified. -->
 
 ## Challenge
 
@@ -65,10 +65,29 @@ difficulty: some read as Japanese kana, some as Latin letters, some as numerals,
 and others as symbols with no obvious single source. A shape can imitate a
 character without being it, so the set resists a clean lookup.
 
-A teammate worked out the substitution, one letter per form. Grouped by color,
-the red glyphs decode to Y, H, T, G, R; the blue to O, A, E, I, S; and the green
-to U, V, D, P, N. Reading the 24 independent positions in order gives the
-panel's message:
+We worked out the full substitution, one letter per form. The panel glyphs are
+hand-drawn, so the table gives the closest printable shape for each; the photo
+above is the real reference.
+
+| Color | Glyph | Letter |
+| --- | --- | --- |
+| Red | `8` | Y |
+| Red | four-like mark | H |
+| Red | crossed stroke | T |
+| Red | `6` | G |
+| Red | circle-and-cross | R |
+| Blue | `∩` | O |
+| Blue | `C` | A |
+| Blue | looped stroke | E |
+| Blue | `U` | I |
+| Blue | `F` | S |
+| Green | hooked stroke | U |
+| Green | `乙` | V |
+| Green | `λ` | D |
+| Green | `の` | P |
+| Green | `ん` | N |
+
+Reading the 24 independent positions in order gives the panel's message:
 
 ```text
 Y O U H A V
@@ -109,7 +128,7 @@ submission confirms the flag has no trailing `!`. The author also confirmed that
 brute-forcing the Steghide password was not the intended route. The glyph panel
 was.
 
-## Defensive takeaway
+## Takeaway
 
 Depth, not any single clever trick, is the lesson: five independent encodings (fragmentation, a custom byte transform, visual substitution, Steghide/AES, and an audio spectrogram), each trivial alone, compound into something that resists
 automated carving. For defenders, it is a reminder that "nothing here" after one

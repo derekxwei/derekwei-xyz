@@ -39,7 +39,7 @@ corresponding byte of the raw SHA-256 digest of ASCII `7391`, repeating the
 digest as a keystream. That produces the flag. The three steps are independent
 and each one hands the next its input.
 
-## Defensive takeaway
+## Takeaway
 
 The challenge name is the point: XOR with a short, derivable key is not
 encryption. Two of the three "locks" collapse because their keyspace is tiny, a

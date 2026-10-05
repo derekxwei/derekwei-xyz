@@ -40,7 +40,7 @@ The repeatable end-to-end solver a teammate used was not preserved in our shared
 workspace, so this writeup documents the verified first stage and the known shape
 of the second; the final exchange and flag are from the teammate's run.
 
-## Defensive takeaway
+## Takeaway
 
 A static secret baked into a client is recoverable (stage one), which is why the
 challenge adds a session-dependent transform (stage two), the same reasoning

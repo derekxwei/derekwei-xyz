@@ -43,7 +43,7 @@ zsteg -E b1,rgb,lsb,xy Goomba.jpg | strings -n 5 | head -1
 `zsteg -a Goomba.jpg` independently flags the same bit stream as text, which
 confirms the channel order rather than guessing it.
 
-## Defensive takeaway
+## Takeaway
 
 Never trust a file extension for routing or type decisions. Validate the magic
 bytes. The same "it claims to be an image" assumption that hides a flag here is

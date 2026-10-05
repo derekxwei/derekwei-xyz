@@ -51,7 +51,7 @@ cat payload.txt   # -> FLAG: flag{flexible_array_member}
 Every clue needed for the next layer lived inside the previous one; no platform
 hint was used.
 
-## Defensive takeaway
+## Takeaway
 
 Data after a file's logical end marker is invisible to viewers but trivially
 carved, a reliable covert channel and exfiltration trick. Upload pipelines and

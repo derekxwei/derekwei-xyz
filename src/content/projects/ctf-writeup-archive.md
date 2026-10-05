@@ -18,10 +18,10 @@ same outline and keeps the dead ends in.
 - **Red-team learning methodology.** Enumerate, form a hypothesis, test it, and record
   what worked and what did not.
 - **Consistent structure.** Challenge, event, category, difficulty, goal, initial
-  observations, enumeration, failed attempts, breakthrough, solution summary, defensive
-  takeaway, tools used, and lessons learned.
-- **Defensive takeaways.** Where an offensive finding maps to a real-world defense, the
-  writeup says so.
+  observations, enumeration, failed attempts, breakthrough, solution summary, takeaway,
+  tools used, and lessons learned.
+- **Offense-first takeaways.** Each writeup closes with the technique, why the exploit
+  worked, and what carries over to real engagements.
 
 ## Boundaries
 

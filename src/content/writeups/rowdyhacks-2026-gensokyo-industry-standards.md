@@ -34,7 +34,7 @@ That line identifies **502/tcp** as the Modbus Application Protocol. Dropping
 `502` into the required format produces the flag. No attachment or hint was
 needed.
 
-## Defensive takeaway
+## Takeaway
 
 Knowing default service ports is the first step in both offense and defense.
 On an OT network, Modbus has no authentication or encryption, so unexpected

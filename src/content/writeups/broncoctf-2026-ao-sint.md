@@ -294,7 +294,7 @@ Standing terrain → Elevation → Visible landmarks → Landmark order
     → In-game verification → Final location
 ```
 
-## Defensive and analytical takeaway
+## Takeaway
 
 Although AO-SINT was a game-based geolocation challenge, the underlying process resembles broader intelligence analysis:
 

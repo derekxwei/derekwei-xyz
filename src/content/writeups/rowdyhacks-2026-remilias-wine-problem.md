@@ -38,7 +38,7 @@ candidate for the overpressure reading, and the checker accepted that number in
 the required format. Everything here is read-only. No Modbus write function was
 issued.
 
-## Defensive takeaway
+## Takeaway
 
 Modbus has no authentication or encryption: anything that can reach tcp/502 (or a
 tunnel to it) can read every register, and the "overpressure" value is just as

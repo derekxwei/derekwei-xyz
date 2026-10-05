@@ -40,7 +40,7 @@ above is a separate artifact recovered from the JavaScript and is valid only on
 that site. Submitting it to CTFd returns incorrect. Keeping the two straight
 was the real lesson of the warm-up.
 
-## Defensive takeaway
+## Takeaway
 
 Anything shipped to the browser (comments, JavaScript strings, Base64 blobs) is readable by the client. Base64 is encoding, not encryption, and a decoy in
 the markup does not protect a secret sitting one function call away.

@@ -42,7 +42,7 @@ Sample text. The realization that moved things forward, and what led to it.
 
 Sample text. The working path step by step, with the commands and snippets a reader could follow.
 
-## Defensive takeaway
+## Takeaway
 
 Sample text. The misconfiguration or bug class behind the challenge, and how a defender prevents it.
 

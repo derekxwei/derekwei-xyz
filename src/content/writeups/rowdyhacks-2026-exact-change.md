@@ -46,7 +46,7 @@ java -jar exact-change.jar service shift-v39.txt 3O2WCO5E3W
 
 The service command prints the flag.
 
-## Defensive takeaway
+## Takeaway
 
 Hidden commands and "secret" codes computed inside shipped bytecode are not
 security, Java bytecode decompiles cleanly, and any deterministic algorithm can

@@ -40,7 +40,7 @@ cameras and that reaching the river means a wrong turn. Under "A message from
 the crew leader," it prints the flag. The unrelated traffic was there to make
 the capture look busy.
 
-## Defensive takeaway
+## Takeaway
 
 Anything transferred over cleartext HTTP is recoverable verbatim by anyone on
 the path, documents included. This is the everyday argument for TLS everywhere

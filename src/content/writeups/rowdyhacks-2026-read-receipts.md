@@ -46,7 +46,7 @@ That reveals the second message, the vault plan, and the flag. The attack
 never recovers the AES key; one known plaintext under a reused nonce is enough
 to read the overlapping bytes of the other message.
 
-## Defensive takeaway
+## Takeaway
 
 A `(key, nonce)` pair must never repeat in CTR (or GCM). Nonces should be random
 or a strictly monotonic counter persisted across restarts, never reset to a

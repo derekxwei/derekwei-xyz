@@ -57,7 +57,7 @@ Dupuy Storage & Forwarding, LLC · 4300 Jourdan Road, New Orleans, LA 70126 ·
 
 The checker reports "All eight discoveries verified" and shows the flag.
 
-## Defensive takeaway
+## Takeaway
 
 Every step here was a public source (a bridge notice, a company site, a federal court PDF), chained from a single photo into a precise facility, owner, and legal
 history. That chain is exactly how real OSINT and due-diligence work, and the

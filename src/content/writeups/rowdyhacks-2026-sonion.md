@@ -45,7 +45,7 @@ input[i] = (ROR8(table[i], 3) - 7*i) ^ 0x5a
 Feeding the recovered string back in, the checker responds `receipt accepted`,
 and that string is the flag.
 
-## Defensive takeaway
+## Takeaway
 
 Two familiar lessons stack here: trailing data after `IEND` is a carving target
 (validate and re-encode uploads), and a verification routine shipped inside a

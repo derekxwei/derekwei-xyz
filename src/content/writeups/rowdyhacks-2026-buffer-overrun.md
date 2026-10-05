@@ -38,13 +38,15 @@ Delivered to the original `/opt/challenge/vuln` in the challenge's isolated SSH
 environment, this returns into `win()`, which hands back a root shell; reading
 `/root/flag.txt` prints the flag.
 
-## Defensive takeaway
+## Takeaway
 
-This is the canonical reason modern toolchains exist: a bounds-checked read
-(`fgets` with a size, not an over-long `read` into a small buffer) prevents the
-overflow outright, and the standard mitigations each break this exact path: **stack canaries** detect the overwrite, **PIE + ASLR** hide `win`'s address, and
-**NX** stops code-on-stack variants. Ship with `-fstack-protector-strong`, PIE,
-and RELRO, and never size a read by the attacker's input.
+This is the friendliest possible overflow. There is no canary to leak or work
+around, and no PIE, so `win` sits at a fixed address and the entire exploit is a
+44-byte pad plus one return value, with no shellcode and no ROP. The missing
+mitigations are exactly what made it a one-liner, which is the lesson in reverse
+for a hardened target: **stack canaries**, **PIE + ASLR**, and **NX** each delete
+one of the steps relied on here, and a size-bounded read removes the bug
+entirely.
 
 ## Flag
 

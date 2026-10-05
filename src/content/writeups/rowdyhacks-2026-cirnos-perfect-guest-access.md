@@ -28,14 +28,14 @@ SCADA-LTS. Its **Fairy-HMI** component rendered the flag directly, with no
 authentication required to reach that view. A teammate completed this one; the
 writeup records the reported guest-access exposure rather than any new access.
 
-## Defensive takeaway
+## Takeaway
 
-Human-Machine Interfaces are frequently deployed with "view" access left open on
-the assumption that the OT network is already isolated. That assumption fails the
-moment the HMI is reachable, an unauthenticated view can disclose process state,
-set-points, and, as here, whatever the panel shows. HMIs should require
-authentication for every view, and OT dashboards should never be exposed to an
-untrusted network.
+A reachable HMI is free reconnaissance. The common assumption that the OT network
+is already isolated leaves view access unauthenticated, so the moment you can
+route to the panel it hands over process state, set-points, and, here, the flag,
+with no credentials and no alerts. On a real engagement that exposed view is
+often the fastest way to map a plant before touching a single control.
+Authentication on every view would have closed it.
 
 ## Flag
 

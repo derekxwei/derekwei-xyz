@@ -45,7 +45,7 @@ string is the ZIP password:
 The WAV metadata's `archive password: baguette` is a decoy. It fails the
 integrity check.
 
-## Defensive takeaway
+## Takeaway
 
 Covert channels stack: trailing data, a stereo-difference signal, and DTMF are
 each invisible to a casual look at the "image." The general defense is the same

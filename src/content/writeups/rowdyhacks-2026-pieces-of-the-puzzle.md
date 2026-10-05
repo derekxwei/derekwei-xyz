@@ -43,7 +43,7 @@ ZIP. It opens with the challenge-provided password `ctf`:
 7z x -so -pctf secret.zip flag.txt
 ```
 
-## Defensive takeaway
+## Takeaway
 
 DNS TXT records are a classic covert channel: they leave the network through
 resolvers that are rarely inspected as closely as HTTP. Splitting a payload
