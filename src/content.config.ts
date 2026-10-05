@@ -1,5 +1,8 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+// Astro 7 deprecated re-exporting `z` from 'astro:content' (removed in Astro 8);
+// the supported path is 'astro/zod'. Same Zod API, just the current import.
+import { z } from 'astro/zod';
 
 // Files starting with "_" (templates) are excluded by the glob pattern.
 const projects = defineCollection({
@@ -11,8 +14,8 @@ const projects = defineCollection({
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
-    repo: z.string().url().optional(),
-    link: z.string().url().optional(),
+    repo: z.url().optional(),
+    link: z.url().optional(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
