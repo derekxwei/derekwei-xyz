@@ -4,14 +4,41 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import { COMPETITIONS } from '../../consts';
 
-const writeups = (
-  await getCollection('writeups', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
-).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allWriteups = await getCollection('writeups', ({ data }) =>
+  import.meta.env.PROD ? !data.draft : true
+);
 
-// Team results shown as secondary context on writeup cards, keyed by entry id.
-const teamResults: Record<string, string> = {
-  'broncoctf-2026-ao-sint': 'Team idktheflag placed 8th of 753 teams.',
+// One-line team result shown per event, keyed by the `event` frontmatter value.
+const eventResults: Record<string, string> = {
+  'RowdyHacks XII': 'Team Difference — 1st of 62 teams, full clear (all 27 challenges).',
+  'BroncoCTF 2026': 'Team idktheflag — 8th of 753 teams.',
 };
+
+// A stable anchor per event so the competitions list can deep-link a group.
+const eventAnchor = (event: string) =>
+  event
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+// Group writeups by event. Within a group, lead with the highest point value
+// (RowdyHacks scored by points), then by most recent. Groups themselves are
+// ordered by their most recent writeup, so the latest event leads the page.
+const groups = [...new Set(allWriteups.map((w) => w.data.event))]
+  .map((event) => {
+    const entries = allWriteups
+      .filter((w) => w.data.event === event)
+      .sort(
+        (a, b) =>
+          (b.data.points ?? 0) - (a.data.points ?? 0) ||
+          b.data.date.valueOf() - a.data.date.valueOf()
+      );
+    const latest = Math.max(...entries.map((e) => e.data.date.valueOf()));
+    return { event, entries, latest, result: eventResults[event] };
+  })
+  .sort((a, b) => b.latest - a.latest);
+
+const totalWriteups = allWriteups.length;
 
 const categories = [
   { name: 'Web', note: 'web application exploitation' },
@@ -36,7 +63,7 @@ const structure = [
 
 <BaseLayout
   title="CTF Writeups"
-  description="Capture the Flag writeups by Derek Wei: offensive-security methodology from National Cyber League, BYU CTF, Rowdy CyberCon, and other authorized competitions."
+  description="Capture the Flag writeups by Derek Wei: offensive-security methodology from RowdyHacks XII (1st place), National Cyber League, BYU CTF, and other authorized competitions."
 >
   <header class="max-w-mid pt-10 sm:pt-14">
     <p class="kicker">~/ctf</p>
@@ -44,6 +71,11 @@ const structure = [
     <p class="mt-4 text-lg leading-relaxed text-prose-body">
       Offensive-security methodology from Capture the Flag competitions,
       written to learn in public: reasoning and approach over flag spoilers.
+    </p>
+    <p class="mt-4 font-mono text-sm text-muted">
+      Most recent result:{' '}
+      <span class="text-accent">RowdyHacks XII — 1st of 62 teams, full clear</span>{' '}
+      (all 27 challenges), Team Difference.
     </p>
   </header>
 
@@ -72,44 +104,57 @@ const structure = [
     id="published"
   >
     {
-      writeups.length > 0 ? (
-        /* A publication index: each entry states its event, category, date and
-           result, then the read action. Not a card gallery. */
-        <ol role="list" class="ledger mt-6 max-w-evidence">
-          {writeups.map((entry) => (
-            <li class="lrow py-7 sm:grid-cols-[minmax(0,1fr)_11rem]">
-              <div>
-                <p class="eyebrow">
-                  {entry.data.event} &middot; {entry.data.category}
-                  {entry.data.difficulty && ` · ${entry.data.difficulty}`}
-                </p>
-                <h3 class="mt-1.5 text-xl font-semibold tracking-tight">
-                  <a class="link no-underline hover:underline" href={`/ctf/${entry.id}/`}>
-                    {entry.data.title}
-                  </a>
-                </h3>
-                <p class="mt-2 leading-relaxed text-prose-body">{entry.data.description}</p>
-                {teamResults[entry.id] && (
-                  <p class="mt-2 font-mono text-xs text-muted">{teamResults[entry.id]}</p>
+      totalWriteups > 0 ? (
+        /* A publication index grouped by event: each event states its team
+           result, then lists its writeups (highest point value first). */
+        <div class="mt-6 space-y-14">
+          {groups.map((group) => (
+            <section id={eventAnchor(group.event)} aria-label={group.event} class="scroll-mt-24">
+              <div class="border-l-2 border-accent/60 pl-4">
+                <h3 class="text-2xl font-semibold tracking-tight">{group.event}</h3>
+                {group.result && (
+                  <p class="mt-1 font-mono text-sm text-accent">{group.result}</p>
                 )}
-                <p class="lmeta mt-2">{entry.data.tags.slice(0, 4).join(' / ')}</p>
-                <p class="mt-4">
-                  <a class="btn btn-ghost" href={`/ctf/${entry.id}/`}>
-                    Read the writeup
-                  </a>
+                <p class="mt-1 font-mono text-xs text-faint">
+                  {group.entries.length} writeup{group.entries.length === 1 ? '' : 's'}
                 </p>
               </div>
-              <p class="lnum sm:pt-1 sm:text-right">
-                {entry.data.date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                  timeZone: 'UTC',
-                })}
-              </p>
-            </li>
+              <ol role="list" class="ledger mt-5 max-w-evidence">
+                {group.entries.map((entry) => (
+                  <li class="lrow py-7 sm:grid-cols-[minmax(0,1fr)_11rem]">
+                    <div>
+                      <p class="eyebrow">
+                        {entry.data.category}
+                        {entry.data.points != null && ` · ${entry.data.points} pts`}
+                        {entry.data.difficulty && ` · ${entry.data.difficulty}`}
+                      </p>
+                      <h4 class="mt-1.5 text-xl font-semibold tracking-tight">
+                        <a class="link no-underline hover:underline" href={`/ctf/${entry.id}/`}>
+                          {entry.data.title}
+                        </a>
+                      </h4>
+                      <p class="mt-2 leading-relaxed text-prose-body">{entry.data.description}</p>
+                      <p class="lmeta mt-2">{entry.data.tags.slice(0, 4).join(' / ')}</p>
+                      <p class="mt-4">
+                        <a class="btn btn-ghost" href={`/ctf/${entry.id}/`}>
+                          Read the writeup
+                        </a>
+                      </p>
+                    </div>
+                    <p class="lnum sm:pt-1 sm:text-right">
+                      {entry.data.date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        timeZone: 'UTC',
+                      })}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </section>
           ))}
-        </ol>
+        </div>
       ) : (
         <div class="panel mt-5 p-6">
           <p class="text-sm leading-relaxed text-muted">

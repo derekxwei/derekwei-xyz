@@ -26,6 +26,9 @@ const writeups = defineCollection({
     event: z.string(),
     category: z.enum(['web', 'crypto', 'forensics', 'pwn', 'rev', 'osint', 'network', 'misc']),
     difficulty: z.enum(['easy', 'medium', 'hard', 'insane']).optional(),
+    // Point value as stated by the event. Used only when the event scored by
+    // points rather than difficulty labels (e.g. RowdyHacks); omit otherwise.
+    points: z.number().int().positive().optional(),
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),

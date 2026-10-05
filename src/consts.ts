@@ -225,6 +225,13 @@ export const COMPETITIONS: readonly Competition[] = [
       '1st of 1,692 teams, High School division; 5th of 3,638, Standard Team division (Team Difference, Spring 2026)',
   },
   {
+    name: 'RowdyHacks XII',
+    kind: 'Capture the Flag',
+    result:
+      '1st of 62 teams, full clear (all 27 challenges), Team Difference (2026)',
+    writeup: { label: 'Read the RowdyHacks writeups', href: '/ctf/#rowdyhacks-xii' },
+  },
+  {
     name: 'THEM?!CTF',
     kind: 'Capture the Flag',
     result: '1st place, Team idktheflag (2026)',
