@@ -2,53 +2,18 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHead from '../../components/SectionHead.astro';
-import { COMPETITIONS } from '../../consts';
+import { CTF_EVENTS } from '../../consts';
 
-const allWriteups = await getCollection('writeups', ({ data }) =>
+const writeups = await getCollection('writeups', ({ data }) =>
   import.meta.env.PROD ? !data.draft : true
 );
+const countFor = (name: string) => writeups.filter((w) => w.data.event === name).length;
 
-// One-line team result shown per event, keyed by the `event` frontmatter value.
-const eventResults: Record<string, string> = {
-  'RowdyHacks XII': 'Team Difference: 1st of 62 teams, full clear (all 27 challenges).',
-  'BroncoCTF 2026': 'Team idktheflag: 8th of 753 teams.',
-};
-
-// A stable anchor per event so the competitions list can deep-link a group.
-const eventAnchor = (event: string) =>
-  event
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-
-// Group writeups by event. Within a group, lead with the highest point value
-// (RowdyHacks scored by points), then by most recent. Groups themselves are
-// ordered by their most recent writeup, so the latest event leads the page.
-const groups = [...new Set(allWriteups.map((w) => w.data.event))]
-  .map((event) => {
-    const entries = allWriteups
-      .filter((w) => w.data.event === event)
-      .sort(
-        (a, b) =>
-          (b.data.points ?? 0) - (a.data.points ?? 0) ||
-          b.data.date.valueOf() - a.data.date.valueOf()
-      );
-    const latest = Math.max(...entries.map((e) => e.data.date.valueOf()));
-    return { event, entries, latest, result: eventResults[event] };
-  })
-  .sort((a, b) => b.latest - a.latest);
-
-const totalWriteups = allWriteups.length;
-
-const categories = [
-  { name: 'Web', note: 'web application exploitation' },
-  { name: 'Cryptography', note: 'ciphers, hashing, and key mistakes' },
-  { name: 'Forensics', note: 'disk, memory, and traffic analysis' },
-  { name: 'Reverse engineering', note: 'reading and understanding binaries' },
-  { name: 'Binary exploitation (pwn)', note: 'memory-corruption and control-flow bugs' },
-  { name: 'OSINT', note: 'open source intelligence gathering' },
-  { name: 'Miscellaneous', note: 'scripting, recon, and everything else' },
-];
+// Events with at least one published writeup, newest first. Each links to its
+// own page; the long per-challenge list lives there, not on this index.
+const events = CTF_EVENTS.map((e) => ({ ...e, count: countFor(e.name) }))
+  .filter((e) => e.count > 0)
+  .sort((a, b) => b.date.localeCompare(a.date));
 
 const structure = [
   'Challenge, event, category, and difficulty',
@@ -63,7 +28,7 @@ const structure = [
 
 <BaseLayout
   title="CTF Writeups"
-  description="Capture the Flag writeups by Derek Wei: offensive-security methodology from RowdyHacks XII (1st place), National Cyber League, BYU CTF, and other authorized competitions."
+  description="Capture the Flag writeups by Derek Wei: offensive-security methodology from RowdyHacks XII (1st place), BroncoCTF, UIUCTF, and other authorized competitions."
 >
   <header class="max-w-mid pt-10 sm:pt-14">
     <p class="kicker">~/ctf</p>
@@ -71,17 +36,42 @@ const structure = [
     <p class="mt-4 text-lg leading-relaxed text-prose-body">
       Offensive-security methodology from Capture the Flag competitions,
       written to learn in public: reasoning and approach over flag spoilers.
-    </p>
-    <p class="mt-4 font-mono text-sm text-muted">
-      Most recent result:{' '}
-      <span class="text-accent">RowdyHacks XII, 1st of 62 teams, full clear</span>{' '}
-      (all 27 challenges), Team Difference.
-    </p>
-    <p class="mt-2 font-mono text-xs text-faint">
-      A team win first and foremost. Within it, Derek contributed 3,575 of the
-      team's 5,825 points as top scorer.
+      Each competition has its own page with results, context, and writeups by
+      category.
     </p>
   </header>
+
+  <SectionHead
+    width="evidence"
+    eyebrow="Index"
+    title="Competitions"
+    id="competitions"
+    note="Pick an event for its results, format, team, and per-challenge writeups."
+  >
+    <ul role="list" class="mt-6 grid gap-4 sm:grid-cols-2 max-w-evidence">
+      {
+        events.map((ev) => (
+          <li>
+            <a
+              href={`/ctf/${ev.slug}/`}
+              class="group flex h-full flex-col rounded-lg border border-line bg-panel p-5 transition-colors hover:border-accent"
+            >
+              <p class="eyebrow">{ev.dateDisplay}</p>
+              <h3 class="mt-1 text-xl font-semibold tracking-tight transition-colors group-hover:text-accent">
+                {ev.name}
+              </h3>
+              <p class="mt-0.5 font-mono text-xs text-faint">{ev.host}</p>
+              {ev.result && <p class="mt-2 font-mono text-sm text-accent">{ev.result}</p>}
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{ev.summary}</p>
+              <p class="mt-4 font-mono text-xs text-faint">
+                {ev.count} writeup{ev.count === 1 ? '' : 's'} &rarr;
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </SectionHead>
 
   <SectionHead width="mid" eyebrow="Background" title="What is a CTF?" id="about-ctf" tight>
     <div class="mt-4 space-y-3 leading-relaxed text-muted">
@@ -99,109 +89,6 @@ const structure = [
         offensive finding has a clear defensive lesson, the writeup calls it out.
       </p>
     </div>
-  </SectionHead>
-
-  <SectionHead
-    width="evidence"
-    eyebrow="Publications"
-    title="Published writeups"
-    id="published"
-  >
-    {
-      totalWriteups > 0 ? (
-        /* A publication index grouped by event: each event states its team
-           result, then lists its writeups (highest point value first). */
-        <div class="mt-6 space-y-14">
-          {groups.map((group) => (
-            <section id={eventAnchor(group.event)} aria-label={group.event} class="scroll-mt-24">
-              <div class="border-l-2 border-accent/60 pl-4">
-                <h3 class="text-2xl font-semibold tracking-tight">{group.event}</h3>
-                {group.result && (
-                  <p class="mt-1 font-mono text-sm text-accent">{group.result}</p>
-                )}
-                <p class="mt-1 font-mono text-xs text-faint">
-                  {group.entries.length} writeup{group.entries.length === 1 ? '' : 's'}
-                </p>
-              </div>
-              <ol role="list" class="ledger mt-5 max-w-evidence">
-                {group.entries.map((entry) => (
-                  <li class="lrow py-7 sm:grid-cols-[minmax(0,1fr)_11rem]">
-                    <div>
-                      <p class="eyebrow">
-                        {entry.data.category}
-                        {entry.data.points != null && ` · ${entry.data.points} pts`}
-                        {entry.data.difficulty && ` · ${entry.data.difficulty}`}
-                      </p>
-                      <h4 class="mt-1.5 text-xl font-semibold tracking-tight">
-                        <a class="link no-underline hover:underline" href={`/ctf/${entry.id}/`}>
-                          {entry.data.title}
-                        </a>
-                      </h4>
-                      <p class="mt-2 leading-relaxed text-prose-body">{entry.data.description}</p>
-                      <p class="lmeta mt-2">{entry.data.tags.slice(0, 4).join(' / ')}</p>
-                      <p class="mt-4">
-                        <a class="btn btn-ghost" href={`/ctf/${entry.id}/`}>
-                          Read the writeup
-                        </a>
-                      </p>
-                    </div>
-                    <p class="lnum sm:pt-1 sm:text-right">
-                      {entry.data.date.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        timeZone: 'UTC',
-                      })}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ))}
-        </div>
-      ) : (
-        <div class="panel mt-5 p-6">
-          <p class="text-sm leading-relaxed text-muted">
-            Writeups are being prepared and sanitized before publishing. The goal is to
-            document methodology and reasoning, dead ends included, not just flags. They will
-            appear here as they are finished.
-          </p>
-          <p
-            id="competed-events"
-            class="mt-6 font-mono text-xs uppercase tracking-wider text-faint"
-          >
-            Events I have competed in
-          </p>
-          <ul
-            role="list"
-            aria-labelledby="competed-events"
-            class="mt-2 grid gap-1.5 sm:grid-cols-2"
-          >
-            {COMPETITIONS.map((c) => (
-              <li class="font-mono text-sm text-muted">
-                <span class="text-accent" aria-hidden="true">
-                  -
-                </span>{' '}
-                {c.name} <span class="text-faint"> ({c.kind})</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
-  </SectionHead>
-
-  <SectionHead width="mid" eyebrow="Scope" title="Categories" id="categories">
-    <dl class="ledger mt-6 max-w-mid">
-      {
-        categories.map((cat) => (
-          <div class="lrow py-2.5 sm:grid-cols-[14rem_minmax(0,1fr)]">
-            <dt class="font-mono text-sm text-accent sm:pt-0.5">{cat.name}</dt>
-            <dd class="text-sm leading-relaxed text-muted">{cat.note}</dd>
-          </div>
-        ))
-      }
-    </dl>
   </SectionHead>
 
   <SectionHead

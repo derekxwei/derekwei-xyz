@@ -5,50 +5,220 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import Badge from '../../components/Badge.astro';
 import Prose from '../../components/Prose.astro';
+import { CTF_EVENTS, type CtfEvent } from '../../consts';
 
+type Writeup = CollectionEntry<'writeups'>;
+
+// This route serves two kinds of page at the same /ctf/<slug> depth: individual
+// writeups (slug = the writeup id) and per-event pages (slug = the event slug).
+// Event slugs never collide with writeup ids, so one route generates both.
 export async function getStaticPaths() {
-  const entries = await getCollection('writeups', ({ data }) =>
+  const writeups = await getCollection('writeups', ({ data }) =>
     import.meta.env.PROD ? !data.draft : true
   );
-  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const writeupPaths = writeups.map((entry) => ({
+    params: { slug: entry.id },
+    props: { kind: 'writeup' as const, entry },
+  }));
+  const eventPaths = CTF_EVENTS.map((event) => ({
+    params: { slug: event.slug },
+    props: {
+      kind: 'event' as const,
+      event,
+      writeups: writeups
+        .filter((w) => w.data.event === event.name)
+        .sort(
+          (a, b) =>
+            (b.data.points ?? 0) - (a.data.points ?? 0) ||
+            b.data.date.valueOf() - a.data.date.valueOf()
+        ),
+    },
+  }));
+  return [...writeupPaths, ...eventPaths];
 }
 
-interface Props {
-  entry: CollectionEntry<'writeups'>;
-}
+type Props =
+  | { kind: 'writeup'; entry: Writeup }
+  | { kind: 'event'; event: CtfEvent; writeups: Writeup[] };
 
-const { entry } = Astro.props;
-const { Content } = await render(entry);
+const props = Astro.props as Props;
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+// Writeup branch: render the MDX and find its parent event for the breadcrumb.
+let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
+let writeupEvent: CtfEvent | undefined;
+if (props.kind === 'writeup') {
+  Content = (await render(props.entry)).Content;
+  writeupEvent = CTF_EVENTS.find((e) => e.name === props.entry.data.event);
+}
+
+// Event branch: group writeups by category and build the meta rows.
+const CATEGORY_LABEL: Record<string, string> = {
+  web: 'Web',
+  crypto: 'Cryptography',
+  forensics: 'Forensics',
+  pwn: 'Binary exploitation (pwn)',
+  rev: 'Reverse engineering',
+  osint: 'OSINT',
+  network: 'ICS/OT & network',
+  misc: 'Miscellaneous',
+};
+
+let categoryGroups: { cat: string; label: string; items: Writeup[] }[] = [];
+let startOpen = false;
+let meta: { term: string; detail: string }[] = [];
+if (props.kind === 'event') {
+  const byCat = new Map<string, Writeup[]>();
+  for (const w of props.writeups) {
+    const arr = byCat.get(w.data.category) ?? [];
+    arr.push(w);
+    byCat.set(w.data.category, arr);
+  }
+  categoryGroups = [...byCat.entries()]
+    .map(([cat, items]) => ({ cat, label: CATEGORY_LABEL[cat] ?? cat, items }))
+    .sort((a, b) => b.items.length - a.items.length || a.label.localeCompare(b.label));
+  // Small events open by default; a big board (RowdyHacks) starts collapsed.
+  startOpen = props.writeups.length <= 3;
+
+  const ev = props.event;
+  meta = [
+    { term: 'Host', detail: ev.host },
+    { term: 'When', detail: ev.dateDisplay },
+    { term: 'Format', detail: ev.format },
+  ];
+  if (ev.result) meta.push({ term: 'Result', detail: ev.result });
+  if (ev.team) {
+    meta.push({
+      term: 'Team',
+      detail: ev.members?.length ? `${ev.team} (${ev.members.join(', ')})` : ev.team,
+    });
+  }
+}
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} ogType="article">
-  <nav class="pt-8" aria-label="Breadcrumb">
-    <a href="/ctf/" class="link font-mono text-sm">← All CTF writeups</a>
-  </nav>
+{
+  props.kind === 'writeup' ? (
+    <BaseLayout
+      title={props.entry.data.title}
+      description={props.entry.data.description}
+      ogType="article"
+    >
+      <nav class="pt-8" aria-label="Breadcrumb">
+        <a
+          href={writeupEvent ? `/ctf/${writeupEvent.slug}/` : '/ctf/'}
+          class="link font-mono text-sm"
+        >
+          &larr; {writeupEvent ? writeupEvent.name : 'All CTF writeups'}
+        </a>
+      </nav>
 
-  <PageHeader
-    kicker={`~/ctf/${entry.id}`}
-    title={entry.data.title}
-    lede={entry.data.description}
-  >
-    <p class="mt-4 font-mono text-xs text-faint">
-      {entry.data.event}
-      <span aria-hidden="true"> &middot; </span>
-      <time datetime={entry.data.date.toISOString().slice(0, 10)}>
-        {fmt(entry.data.date)}
-      </time>
-    </p>
-    <div class="mt-3 flex flex-wrap items-center gap-2">
-      <Badge label={entry.data.category} tone="accent" />
-      {entry.data.difficulty && <Badge label={entry.data.difficulty} />}
-      {entry.data.tags.slice(0, 5).map((tag) => <Badge label={tag} />)}
-    </div>
-  </PageHeader>
+      <PageHeader
+        kicker={`~/ctf/${props.entry.id}`}
+        title={props.entry.data.title}
+        lede={props.entry.data.description}
+      >
+        <p class="mt-4 font-mono text-xs text-faint">
+          {writeupEvent ? (
+            <a class="link" href={`/ctf/${writeupEvent.slug}/`}>
+              {props.entry.data.event}
+            </a>
+          ) : (
+            props.entry.data.event
+          )}
+          <span aria-hidden="true"> &middot; </span>
+          <time datetime={props.entry.data.date.toISOString().slice(0, 10)}>
+            {fmt(props.entry.data.date)}
+          </time>
+        </p>
+        <div class="mt-3 flex flex-wrap items-center gap-2">
+          <Badge label={props.entry.data.category} tone="accent" />
+          {props.entry.data.difficulty && <Badge label={props.entry.data.difficulty} />}
+          {props.entry.data.points != null && <Badge label={`${props.entry.data.points} pts`} />}
+          {props.entry.data.tags.slice(0, 5).map((tag) => (
+            <Badge label={tag} />
+          ))}
+        </div>
+      </PageHeader>
 
-  <section class="py-10">
-    <Prose><Content /></Prose>
-  </section>
-</BaseLayout>
+      <section class="py-10">
+        <Prose>{Content && <Content />}</Prose>
+      </section>
+    </BaseLayout>
+  ) : (
+    <BaseLayout title={`${props.event.name}: CTF writeups`} description={props.event.summary}>
+      <nav class="pt-8" aria-label="Breadcrumb">
+        <a href="/ctf/" class="link font-mono text-sm">
+          &larr; All competitions
+        </a>
+      </nav>
+
+      <PageHeader
+        kicker={`~/ctf/${props.event.slug}`}
+        title={props.event.name}
+        lede={props.event.summary}
+      >
+        {props.event.result && (
+          <p class="mt-4 font-mono text-sm text-accent">{props.event.result}</p>
+        )}
+      </PageHeader>
+
+      <section class="py-8">
+        <dl class="ledger max-w-mid">
+          {meta.map((row) => (
+            <div class="lrow py-2.5 sm:grid-cols-[10rem_minmax(0,1fr)]">
+              <dt class="font-mono text-sm text-accent sm:pt-0.5">{row.term}</dt>
+              <dd class="text-sm leading-relaxed text-prose-body">{row.detail}</dd>
+            </div>
+          ))}
+        </dl>
+        {props.event.contribution && (
+          <p class="mt-4 max-w-mid text-sm leading-relaxed text-muted">
+            {props.event.contribution}
+          </p>
+        )}
+      </section>
+
+      <section class="pb-12">
+        <h2 class="text-lg font-semibold tracking-tight">
+          Writeups
+          <span class="ml-2 font-mono text-sm text-faint">{props.writeups.length} total</span>
+        </h2>
+        <p class="mt-1 font-mono text-xs text-faint">
+          Grouped by category. Select a category to expand.
+        </p>
+        <div class="mt-5 max-w-evidence space-y-3">
+          {categoryGroups.map((group) => (
+            <details open={startOpen} class="overflow-hidden rounded-lg border border-line bg-panel-2">
+              <summary class="cursor-pointer select-none px-4 py-3 font-mono text-sm text-accent transition-colors hover:bg-panel">
+                {group.label}
+                <span class="text-faint">
+                  {' '}
+                  &middot; {group.items.length} writeup{group.items.length === 1 ? '' : 's'}
+                </span>
+              </summary>
+              <ol role="list" class="border-t border-line">
+                {group.items.map((w) => (
+                  <li class="border-b border-line px-4 py-4 last:border-b-0">
+                    <div class="flex items-baseline justify-between gap-3">
+                      <h3 class="text-base font-semibold tracking-tight">
+                        <a class="link no-underline hover:underline" href={`/ctf/${w.id}/`}>
+                          {w.data.title.replace(/^.*?:\s*/, '')}
+                        </a>
+                      </h3>
+                      {w.data.points != null && (
+                        <span class="shrink-0 font-mono text-xs text-faint">{w.data.points} pts</span>
+                      )}
+                    </div>
+                    <p class="mt-1 text-sm leading-relaxed text-muted">{w.data.description}</p>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          ))}
+        </div>
+      </section>
+    </BaseLayout>
+  )
+}

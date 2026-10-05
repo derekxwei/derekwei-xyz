@@ -229,7 +229,7 @@ export const COMPETITIONS: readonly Competition[] = [
     kind: 'Capture the Flag',
     result:
       '1st of 62 teams, full clear (all 27 challenges), Team Difference (2026)',
-    writeup: { label: 'Read the RowdyHacks writeups', href: '/ctf/#rowdyhacks-xii' },
+    writeup: { label: 'Read the RowdyHacks writeups', href: '/ctf/rowdyhacks-xii/' },
   },
   {
     name: 'THEM?!CTF',
@@ -272,6 +272,74 @@ export const COMPETITIONS: readonly Competition[] = [
   },
   { name: 'Squ1rrel CTF', kind: 'Capture the Flag' },
   { name: 'CyberPatriot', kind: 'National Youth Cyber Defense Competition' },
+];
+
+export interface CtfEvent {
+  /** URL slug: the event page is served at /ctf/<slug>/. */
+  slug: string;
+  /** Must exactly match the `event` field on this event's writeups. */
+  name: string;
+  host: string;
+  /** Human-readable date, e.g. "October 3-4, 2026". */
+  dateDisplay: string;
+  /** ISO date, used only to sort events newest-first. */
+  date: string;
+  /** "In person, ..." or "Online". */
+  format: string;
+  /** Verifiable placement and points. Omit when none is recorded. */
+  result?: string;
+  team?: string;
+  /** Teammates to credit by name. */
+  members?: readonly string[];
+  /** Optional note on the individual contribution, e.g. a personal score. */
+  contribution?: string;
+  /** One or two sentences describing the event. */
+  summary: string;
+}
+
+/**
+ * CTF events that have published writeups. Each is rendered as its own page at
+ * /ctf/<slug>/ listing that event's writeups by category. Facts are
+ * verifiable; placements mirror the resume and the frozen scoreboards.
+ */
+export const CTF_EVENTS: readonly CtfEvent[] = [
+  {
+    slug: 'rowdyhacks-xii',
+    name: 'RowdyHacks XII',
+    host: 'The University of Texas at San Antonio (UTSA)',
+    dateDisplay: 'October 3-4, 2026',
+    date: '2026-10-04',
+    format: 'In person, San Antonio, TX',
+    result: '1st of 62 teams, full clear (all 27 challenges), 5,825 points',
+    team: 'Difference',
+    members: ['Derek Wei', 'Ahaan Wanvari'],
+    contribution:
+      "A team result first and foremost. Within it, Derek was the team's top scorer, with 3,575 of the team's 5,825 points.",
+    summary:
+      "RowdyHacks is UTSA's annual student hackathon. Its Capture the Flag spanned eight categories: web, cryptography, forensics, reverse engineering, binary exploitation, OSINT, ICS/OT, and miscellaneous.",
+  },
+  {
+    slug: 'broncoctf-2026',
+    name: 'BroncoCTF 2026',
+    host: 'Santa Clara University',
+    dateDisplay: 'July 2026',
+    date: '2026-07-11',
+    format: 'Online',
+    result: '8th of 753 teams, 3,777 points',
+    team: 'idktheflag',
+    summary:
+      "BroncoCTF is Santa Clara University's jeopardy-style Capture the Flag, with challenges across web, cryptography, forensics, and OSINT.",
+  },
+  {
+    slug: 'uiuctf-2026',
+    name: 'UIUCTF 2026',
+    host: 'SIGPwny, University of Illinois Urbana-Champaign',
+    dateDisplay: 'July 2026',
+    date: '2026-07-09',
+    format: 'Online',
+    summary:
+      "UIUCTF is the University of Illinois Urbana-Champaign's Capture the Flag, run by the SIGPwny security club and known for challenging web, cryptography, and reverse-engineering problems.",
+  },
 ];
 
 /** Categories competed in at NCL, straight from the resume. */

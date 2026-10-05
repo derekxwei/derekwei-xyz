@@ -60,14 +60,25 @@ color classes of five (red, blue, green), and in every row the last four glyphs
 repeat the first four, so only the first six per row are independent, giving 24
 meaningful positions.
 
-The 15 forms are pulled from several writing systems at once, which is the whole
-difficulty: some are Japanese kana (の, ん), some read as Latin letters (C, U,
-F), and others are numerals or astrological marks (8, 6, the Venus symbol ♀). A
-shape can imitate a character without being it, so the set resists a clean
-lookup. A teammate worked out the substitution, assigning each form a letter.
-Reading the 24 independent positions gives **YOU HAVE TO DIG DEEPER INSIDE**;
-uppercased with no spaces, `YOUHAVETODIGDEEPERINSIDE` is the Steghide passphrase
-for the next stage.
+The 15 forms are pulled from several scripts at once, which is the whole
+difficulty: some read as Japanese kana, some as Latin letters, some as numerals,
+and others as symbols with no obvious single source. A shape can imitate a
+character without being it, so the set resists a clean lookup.
+
+A teammate worked out the substitution, one letter per form. Grouped by color,
+the red glyphs decode to Y, H, T, G, R; the blue to O, A, E, I, S; and the green
+to U, V, D, P, N. Reading the 24 independent positions in order gives the
+panel's message:
+
+```text
+Y O U H A V
+E T O D I G
+D E E P E R
+I N S I D E
+```
+
+That is **YOU HAVE TO DIG DEEPER INSIDE**. Uppercased with no spaces,
+`YOUHAVETODIGDEEPERINSIDE` is the Steghide passphrase for the next stage.
 
 ## Stage 4: extract and reverse the payload
 
