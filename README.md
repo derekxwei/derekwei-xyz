@@ -2,7 +2,7 @@
 
 Personal cybersecurity portfolio of Derek Wei - [derekwei.xyz](https://derekwei.xyz).
 
-Built with **Astro 5**, **TypeScript** (strict), **Tailwind CSS 4**, and **MDX**, deployed as a fully static site on **Cloudflare Pages**. No client-side framework, no external resources, and a strict Content-Security-Policy served at the edge.
+Built with **Astro 7**, **TypeScript** (strict), **Tailwind CSS 4**, and **MDX**, deployed as a fully static site on **Cloudflare Pages**. No client-side framework, no external resources, and a strict Content-Security-Policy served at the edge.
 
 ## Quickstart
 

@@ -42,7 +42,7 @@ never checked that the user was *allowed to see this specific object*.
 
 ## Takeaway
 
-A skipped case ID plus a predictable `/api/evidence` path is Insecure Direct Object Reference, consistently at the top of the OWASP API risks: the portal authenticated the user but never checked they were allowed to see that specific object. Object-level authorization on every endpoint is the fix, not unguessable IDs, and sequential-ID enumeration in access logs is a clean thing to detect.
+A skipped case ID plus a predictable `/api/evidence` path is an IDOR-style instance of Broken Object Level Authorization (BOLA), OWASP API1:2023 and the top entry in the API Security Top 10: the portal authenticated the user but never checked they were allowed to see that specific object. Object-level authorization on every endpoint is the fix, not unguessable IDs, and sequential-ID enumeration in access logs is a clean thing to detect.
 
 ## Flag
 

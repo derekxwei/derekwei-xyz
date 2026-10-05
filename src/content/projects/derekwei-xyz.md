@@ -1,6 +1,6 @@
 ---
 title: 'derekwei.xyz (this site)'
-description: 'This site: a fast, static Astro 5 build with a strict CSP, no cookies or trackers, and no third-party requests, deployed on Cloudflare Pages.'
+description: 'This site: a fast, static Astro build with a strict CSP, no cookies or trackers, and no third-party requests, deployed on Cloudflare Pages.'
 status: shipped
 date: 2026-07-09
 tags: [astro, typescript, tailwind, cloudflare-pages]
@@ -20,7 +20,7 @@ the attack surface in version 1.
 
 ## Approach
 
-- **Astro 5** with fully static output; pages are plain HTML with scripts only where a
+- **Astro** with fully static output; pages are plain HTML with scripts only where a
   page genuinely needs them.
 - **TypeScript** in strict mode, including the inline scripts Astro compiles and bundles.
 - **Tailwind CSS 4** with a small set of design tokens for the dark blueprint palette.

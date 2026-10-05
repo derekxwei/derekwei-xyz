@@ -36,7 +36,7 @@ needed.
 
 ## Takeaway
 
-Default service ports are reconnaissance, step one for both sides. Modbus lives on tcp/502, so it is the first thing to probe on an OT network and the first thing to watch, because the protocol has no authentication and any host that can reach the port can speak to a PLC. A segmented OT network plus an alert on tcp/502 from anything but the engineering workstation turns "knows the port" back into a non-event.
+Default service ports are reconnaissance, step one for both sides. Modbus lives on tcp/502, so it is the first thing to probe on an OT network and the first thing to watch, because traditional Modbus/TCP carries no native authentication and any host that can reach the port can speak to a PLC. A segmented OT network plus an alert on tcp/502 from anything but the engineering workstation turns "knows the port" back into a non-event.
 
 ## Flag
 

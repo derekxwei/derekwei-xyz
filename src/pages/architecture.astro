@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import pkg from '../../package.json';
+
+// Read from package.json rather than hard-coded, so a framework upgrade
+// cannot leave this page quietly claiming the wrong major version.
+const astroMajor = pkg.dependencies.astro.replace(/[^0-9.]/g, '').split('.')[0];
 
 interface SecurityHeader {
   name: string;
@@ -65,7 +70,7 @@ const deliveryDiagramAlt =
 
 <BaseLayout
   title="Architecture"
-  description="How derekwei.xyz works: Astro 5 static output, zero client JavaScript by default, strict security headers, and delivery from Cloudflare Pages' global edge."
+  description="How derekwei.xyz works: Astro static output, zero client JavaScript by default, strict security headers, and delivery from Cloudflare Pages' global edge."
 >
   <PageHeader
     kicker="~/architecture"
@@ -78,7 +83,7 @@ const deliveryDiagramAlt =
     <h2 id="stack-heading" class="section-title">Stack</h2>
     <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
       <div>
-        <dt class="font-mono text-sm text-ink">Astro 5, static output</dt>
+        <dt class="font-mono text-sm text-ink">Astro {astroMajor}, static output</dt>
         <dd class="mt-2 text-sm leading-relaxed text-muted">
           Every page is prerendered to plain HTML at build time. There is no
           server, no runtime, no rendering on request - the deploy artifact is
@@ -159,9 +164,10 @@ const deliveryDiagramAlt =
     <p class="eyebrow">Hardening</p>
     <h2 id="headers-heading" class="section-title">Security headers</h2>
     <p class="mt-4 text-sm leading-relaxed text-muted">
-      Every response carries this header set, configured in
+      Static site responses carry this header set, configured in
       <code class="text-ink">public/_headers</code> and applied by Cloudflare
-      Pages at the edge:
+      Pages at the edge. Redirects are evaluated before headers, so they are
+      the one response type it does not cover:
     </p>
     <div
       class="mt-6 max-w-evidence overflow-x-auto rounded-lg border border-line"
@@ -241,8 +247,10 @@ const deliveryDiagramAlt =
         <code class="text-ink">frame-ancestors 'none'</code> (with
         <code class="text-ink">X-Frame-Options: DENY</code> as the legacy
         fallback) means no other site can embed this one in a frame, and HSTS
-        with <code class="text-ink">preload</code> keeps every visit on HTTPS
-        from the very first request.
+        pins every later visit to HTTPS for a year. The header also carries
+        <code class="text-ink">preload</code>, which makes the domain eligible for
+        the browser preload lists; it is not on them today, so a brand new
+        browser's very first request is not yet covered.
       </p>
       <p>
         One honest caveat: these headers are applied by Cloudflare Pages at
@@ -260,7 +268,9 @@ const deliveryDiagramAlt =
       <p>
         Static HTML with no backend means there is nothing to track you with:
         no cookies, no analytics, no trackers, and no requests to any
-        third-party origin. Reading this site tells no one anything.
+        third-party origin. The site performs no application-level tracking
+          whatsoever. The honest limit: reaching it is still an HTTP request
+          to Cloudflare's edge, which terminates TLS and serves the file.
       </p>
       <p>
         It is also why the site is fast. Build assets under

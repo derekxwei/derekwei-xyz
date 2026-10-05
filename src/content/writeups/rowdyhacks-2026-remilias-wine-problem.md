@@ -40,7 +40,7 @@ issued.
 
 ## Takeaway
 
-Modbus has no authentication or encryption, so anything that can reach the port, or a tunnel to it, reads every register, and the overpressure value is as exposed as any other. Finding the live endpoint was the whole solve, which mirrors real OT recon. The controls are network-level: segmentation, an OT firewall or data diode, and an alert on Modbus from anything but the authorized master.
+Traditional Modbus/TCP provides no native authentication or encryption, so anything that can reach the port, or a tunnel to it, can issue unauthenticated reads against whatever register ranges the device exposes, and the overpressure value is as exposed as any other. Finding the live endpoint was the whole solve, which mirrors real OT recon. The controls are network-level: segmentation, an OT firewall or data diode, and an alert on Modbus from anything but the authorized master.
 
 ## Flag
 

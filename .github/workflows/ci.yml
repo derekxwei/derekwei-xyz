@@ -1,0 +1,60 @@
+name: CI
+
+# Ties "typechecks and builds cleanly" to a specific commit SHA, so the claim
+# is independent evidence rather than something asserted from a local session.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # ci, not install: fails if package.json and the lockfile disagree,
+      # which is exactly the drift that let the Astro version go stale.
+      - name: Install from lockfile
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      # The site is a static artifact, so the page count is a cheap tripwire
+      # for a collection silently failing to load.
+      - name: Report built pages
+        run: |
+          count=$(find dist -name '*.html' | wc -l)
+          echo "built $count HTML pages"
+          test "$count" -gt 0
+
+      - name: Check for stale framework version claims
+        run: |
+          major=$(node -p "require('./package.json').dependencies.astro.replace(/[^0-9.]/g,'').split('.')[0]")
+          echo "package.json declares Astro major $major"
+          # Any other major version named in site copy is stale by definition.
+          if grep -rnE "Astro [0-9]+" --include='*.astro' --include='*.md' src/ \
+               | grep -vE "Astro $major\b" ; then
+            echo "::error::site copy names an Astro major version other than $major"
+            exit 1
+          fi
+          echo "no stale Astro version claims in src/"
