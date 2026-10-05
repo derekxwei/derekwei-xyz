@@ -490,9 +490,9 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
 
 export const LEADERSHIP = [
   {
-    role: 'Finance Officer, Cyber Jedi (UTSA)',
+    role: 'Finance Officer, Cyber Jedis',
     period: 'Aug 2026 to Present',
-    detail: "Manage the cybersecurity club's budget and fundraising",
+    detail: 'Manage the budget and fundraising for the UTSA cybersecurity club',
   },
   {
     role: 'Esports and Finance Officer, Roadrunner Gaming (RRG)',
