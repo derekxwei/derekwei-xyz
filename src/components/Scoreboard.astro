@@ -1,0 +1,240 @@
+---
+import {
+  ROWDYHACKS_SCOREBOARD,
+  ROWDYHACKS_CHALLENGES,
+  ROWDYHACKS_DISTRIBUTION,
+} from '../consts';
+
+const s = ROWDYHACKS_SCOREBOARD;
+const challenges = ROWDYHACKS_CHALLENGES;
+const d = ROWDYHACKS_DISTRIBUTION;
+
+const pct = (n: number, of: number) => Math.round((n / of) * 1000) / 10;
+const solveRate = pct(s.solves, s.totalSubmissions);
+const margin = d.winningScore - d.runnerUpScore;
+
+// The point of the table is rarity, so lead with it. Anything only one team
+// cleared is the strongest single signal on the page.
+const rarest = challenges.filter((c) => c.solves === 1);
+
+const headline = [
+  { n: s.teams.toString(), label: 'teams competing' },
+  { n: s.challenges.toString(), label: 'challenges on the board' },
+  { n: s.solves.toLocaleString('en-US'), label: 'correct submissions' },
+  { n: `${solveRate}%`, label: `of ${s.totalSubmissions.toLocaleString('en-US')} submissions were correct` },
+];
+
+// Histogram columns. Heights are static classes because the Content Security
+// Policy blocks style attributes; the tallest bucket defines full height.
+const peak = Math.max(...d.buckets);
+const brackets = d.buckets.map((count, i) => ({
+  count,
+  lo: i * d.bracketSize,
+  hi: (i + 1) * d.bracketSize - 1,
+  isWinner: d.winningScore >= i * d.bracketSize && d.winningScore < (i + 1) * d.bracketSize,
+}));
+---
+
+<section class="pb-12" aria-labelledby="scoreboard-heading">
+  <h2 id="scoreboard-heading" class="text-lg font-semibold tracking-tight">
+    Scoreboard
+    <span class="ml-2 font-mono text-sm text-faint">all {s.challenges} challenges</span>
+  </h2>
+  <p class="mt-1 max-w-mid font-mono text-xs leading-relaxed text-faint">
+    {s.credit} Two checks hold: solve counts sum to {s.solves}, matching the
+    organizers' stated correct-submission total, and the scored challenges sum
+    to {s.teamScore.toLocaleString('en-US')}, matching the team's score.
+  </p>
+
+  <dl class="mt-5 grid max-w-evidence grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
+    {
+      headline.map((h) => (
+        <div>
+          <dt class="font-mono text-2xl text-accent">{h.n}</dt>
+          <dd class="mt-1 text-xs leading-relaxed text-muted">{h.label}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  {
+    rarest.length > 0 && (
+      <p class="mt-6 max-w-mid text-sm leading-relaxed text-prose-body">
+        {rarest.length === 1 ? 'One challenge was' : `${rarest.length} challenges were`}{' '}
+        solved by a single team out of {s.teams}:{' '}
+        {rarest.map((c, i) => (
+          <>
+            {i > 0 && (i === rarest.length - 1 ? ' and ' : ', ')}
+            <a class="link" href={`/ctf/${c.slug}/`}>
+              {c.name}
+            </a>
+          </>
+        ))}
+        . Team Difference solved both.
+      </p>
+    )
+  }
+
+  <h3 class="mt-10 font-mono text-sm text-accent">Where the field finished</h3>
+  <p class="mt-1 max-w-mid text-sm leading-relaxed text-muted">
+    Scores across all {s.teams} teams as the public scoreboard stood at the
+    freeze, in {d.bracketSize}-point brackets.
+    The median team finished on {d.medianScore}, and {d.teamsOnOneChallenge} teams
+    finished on a single 25-point solve. The bar on the far right is Team
+    Difference, {margin} points clear of second place.
+  </p>
+
+  <div class="mt-5 max-w-evidence overflow-x-auto rounded-lg border border-line p-4" tabindex="0">
+    <div class="hist" role="img"
+      aria-label={`Histogram of final scores for ${s.teams} teams in ${d.bracketSize}-point brackets. The largest group, ${peak} teams, scored under ${d.bracketSize}. Team Difference is alone in the highest bracket on ${d.winningScore}.`}>
+      {
+        brackets.map((b) => (
+          <span class={`col${b.isWinner ? ' win' : ''}`}>
+            <i class={`hb-${b.count}`} />
+          </span>
+        ))
+      }
+    </div>
+    <div class="mt-2 flex justify-between font-mono text-[0.65rem] text-faint">
+      <span>0</span>
+      <span>{Math.round((d.buckets.length * d.bracketSize) / 2)}</span>
+      <span>{d.buckets.length * d.bracketSize}</span>
+    </div>
+    <p class="mt-1 font-mono text-[0.65rem] text-faint">points scored</p>
+  </div>
+
+  <h3 class="mt-10 font-mono text-sm text-accent">How rare each solve was</h3>
+
+  <div class="mt-5 max-w-evidence overflow-x-auto rounded-lg border border-line" tabindex="0">
+    <table class="w-full border-collapse text-left text-sm">
+      <caption class="sr-only">
+        Every RowdyHacks XII challenge, rarest solve first, with the number of
+        teams out of {s.teams} that solved it.
+      </caption>
+      <thead>
+        <tr class="border-b border-line bg-panel-2">
+          <th scope="col" class="px-3 py-2.5 font-mono text-xs font-normal text-faint">Challenge</th>
+          <th scope="col" class="px-3 py-2.5 font-mono text-xs font-normal text-faint">Category</th>
+          <th scope="col" class="px-3 py-2.5 text-right font-mono text-xs font-normal text-faint">Points</th>
+          <th scope="col" class="px-3 py-2.5 text-right font-mono text-xs font-normal text-faint">Solved by</th>
+          <th scope="col" class="w-40 px-3 py-2.5 font-mono text-xs font-normal text-faint">
+            Share of {s.teams} teams
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          challenges.map((c) => (
+            <tr class="border-b border-line last:border-b-0">
+              <td class="px-3 py-2">
+                <a class="link no-underline hover:underline" href={`/ctf/${c.slug}/`}>
+                  {c.name}
+                </a>
+              </td>
+              <td class="px-3 py-2 font-mono text-xs text-muted">{c.category}</td>
+              <td class="px-3 py-2 text-right font-mono text-xs text-muted">
+                {c.points ?? '--'}
+              </td>
+              <td class="px-3 py-2 text-right font-mono text-xs text-ink">
+                {c.solves}
+              </td>
+              <td class="px-3 py-2">
+                <span class={`bar sv-${c.solves}`} aria-hidden="true"><i /></span>
+                <span class="sr-only">
+                  {c.solves} of {s.teams} teams
+                </span>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4 max-w-mid text-xs leading-relaxed text-faint">
+    Points shown are the scored values totalling {s.teamScore.toLocaleString('en-US')},
+    the team's recorded score. Find me !! carries no point value: it was a
+    meet-the-author challenge credited after the board froze, so it changed the
+    challenge count rather than the score.
+  </p>
+</section>
+
+<style>
+  /* Widths are static classes, not inline styles: the Content Security Policy
+     sets style-src 'self', which blocks style attributes. One rule per distinct
+     solve count, each the share of the 62 competing teams. */
+  .bar {
+    display: block;
+    height: 0.5rem;
+    width: 100%;
+    border-radius: 999px;
+    background: var(--color-panel-2, rgb(255 255 255 / 0.06));
+    overflow: hidden;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--color-accent);
+  }
+  .sv-1 > i { width: 1.61%; }
+  .sv-3 > i { width: 4.84%; }
+  .sv-4 > i { width: 6.45%; }
+  .sv-5 > i { width: 8.06%; }
+  .sv-6 > i { width: 9.68%; }
+  .sv-7 > i { width: 11.29%; }
+  .sv-8 > i { width: 12.9%; }
+  .sv-10 > i { width: 16.13%; }
+  .sv-11 > i { width: 17.74%; }
+  .sv-12 > i { width: 19.35%; }
+  .sv-13 > i { width: 20.97%; }
+  .sv-17 > i { width: 27.42%; }
+  .sv-22 > i { width: 35.48%; }
+  .sv-23 > i { width: 37.1%; }
+  .sv-24 > i { width: 38.71%; }
+  .sv-25 > i { width: 40.32%; }
+  .sv-28 > i { width: 45.16%; }
+  .sv-35 > i { width: 56.45%; }
+  .sv-42 > i { width: 67.74%; }
+  .sv-45 > i { width: 72.58%; }
+
+  /* Score-distribution histogram. Same constraint: static height classes, one
+     per distinct bucket count, as a share of the tallest bucket. */
+  .hist {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 7rem;
+    min-width: 20rem;
+  }
+  .hist .col {
+    display: flex;
+    flex: 1 1 0;
+    align-items: flex-end;
+    height: 100%;
+    min-width: 6px;
+  }
+  .hist .col > i {
+    display: block;
+    width: 100%;
+    border-radius: 2px 2px 0 0;
+    background: var(--color-accent);
+    opacity: 0.55;
+    min-height: 1px;
+  }
+  .hist .col.win > i {
+    opacity: 1;
+  }
+  .hb-0 { height: 0; }
+  .hb-1 { height: 4.76%; }
+  .hb-2 { height: 9.52%; }
+  .hb-3 { height: 14.29%; }
+  .hb-4 { height: 19.05%; }
+  .hb-5 { height: 23.81%; }
+  .hb-7 { height: 33.33%; }
+  .hb-21 { height: 100%; }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .hist .col > i { opacity: 1; }
+  }
+</style>

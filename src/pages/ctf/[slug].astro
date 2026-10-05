@@ -6,6 +6,7 @@ import PageHeader from '../../components/PageHeader.astro';
 import Badge from '../../components/Badge.astro';
 import Prose from '../../components/Prose.astro';
 import { CTF_EVENTS, type CtfEvent } from '../../consts';
+import Scoreboard from '../../components/Scoreboard.astro';
 
 type Writeup = CollectionEntry<'writeups'>;
 
@@ -179,6 +180,8 @@ if (props.kind === 'event') {
           </p>
         )}
       </section>
+
+      {props.event.slug === 'rowdyhacks-xii' && <Scoreboard />}
 
       <section class="pb-12">
         <h2 class="text-lg font-semibold tracking-tight">

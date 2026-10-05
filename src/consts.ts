@@ -202,6 +202,85 @@ export const CERT_ROADMAP = {
   planned: [],
 } as const;
 
+/**
+ * RowdyHacks XII scoreboard, as published by the organizers after the event.
+ *
+ * Provenance: solve counts are read from the organizers' published charts. Two
+ * independent checks hold. They sum to 474, matching the organizers' stated
+ * correct-submission total, and the 27 scored challenges sum to 5,825, matching
+ * Team Difference's recorded score. "Find me !!" carries no point value because
+ * it sits outside that scored total; see its writeup.
+ */
+export const ROWDYHACKS_SCOREBOARD = {
+  teams: 62,
+  challenges: 28,
+  solves: 474,
+  failedSubmissions: 1922,
+  totalSubmissions: 2396,
+  teamScore: 5825,
+  credit:
+    'Challenge statistics published by the RowdyHacks XII organizers after the event closed.',
+} as const;
+
+/**
+ * Final RowdyHacks XII scoreboard shape, from the frozen public scoreboard.
+ * Individual team names other than Derek's are deliberately not reproduced:
+ * the distribution is the informative part, the roster is not ours to publish.
+ */
+export const ROWDYHACKS_DISTRIBUTION = {
+  /** Teams per 211-point bracket, bracket 0 starting at zero. */
+  bracketSize: 211,
+  buckets: [21, 7, 3, 5, 2, 4, 1, 0, 5, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 3, 0, 2, 0, 1, 0, 0, 0, 1] as const,
+  winningScore: 5825,
+  runnerUpScore: 4975,
+  medianScore: 645,
+  /** Teams finishing on a single 25-point solve. */
+  teamsOnOneChallenge: 9,
+} as const;
+
+export interface ChallengeStat {
+  name: string;
+  /** Writeup slug under /ctf/. Every challenge on the board has one. */
+  slug: string;
+  category: string;
+  /** Omitted for the one challenge outside the scored total. */
+  points?: number;
+  /** Teams of 62 that solved it. */
+  solves: number;
+}
+
+/** All 28 challenges, rarest first. */
+export const ROWDYHACKS_CHALLENGES: readonly ChallengeStat[] = [
+  { name: 'Back to Nothing', slug: 'rowdyhacks-2026-back-to-nothing', category: 'forensics', points: 600, solves: 1 },
+  { name: 'Locked File', slug: 'rowdyhacks-2026-locked-file', category: 'crypto', points: 250, solves: 1 },
+  { name: 'Find me !!', slug: 'rowdyhacks-2026-find-me', category: 'misc', solves: 3 },
+  { name: 'Do You Know What Will Rock You?', slug: 'rowdyhacks-2026-do-you-know-what-will-rock-you', category: 'misc', points: 300, solves: 4 },
+  { name: 'beam me in', slug: 'rowdyhacks-2026-beam-me-in', category: 'pwn', points: 250, solves: 5 },
+  { name: 'Dutiful Maid Troubles', slug: 'rowdyhacks-2026-dutiful-maid-troubles', category: 'network', points: 200, solves: 6 },
+  { name: 'Buffer Overrun', slug: 'rowdyhacks-2026-buffer-overrun', category: 'pwn', points: 300, solves: 7 },
+  { name: 'Marisa Stole the Precious Ports!', slug: 'rowdyhacks-2026-marisa-stole-the-precious-ports', category: 'network', points: 150, solves: 7 },
+  { name: 'Passing Through', slug: 'rowdyhacks-2026-passing-through', category: 'osint', points: 300, solves: 8 },
+  { name: 'A Small Toolkit', slug: 'rowdyhacks-2026-a-small-toolkit', category: 'crypto', points: 250, solves: 10 },
+  { name: 'Case Files', slug: 'rowdyhacks-2026-case-files', category: 'web', points: 250, solves: 10 },
+  { name: "Remilia's Wine Problem", slug: 'rowdyhacks-2026-remilias-wine-problem', category: 'network', points: 150, solves: 10 },
+  { name: 'exact change', slug: 'rowdyhacks-2026-exact-change', category: 'rev', points: 250, solves: 11 },
+  { name: 'Sleepy Gate Guardian', slug: 'rowdyhacks-2026-sleepy-gate-guardian', category: 'network', points: 100, solves: 11 },
+  { name: 'Works on My Machine', slug: 'rowdyhacks-2026-works-on-my-machine', category: 'rev', points: 350, solves: 12 },
+  { name: 'sonion', slug: 'rowdyhacks-2026-sonion', category: 'forensics', points: 250, solves: 13 },
+  { name: "Cirno's Perfect Guest Access", slug: 'rowdyhacks-2026-cirnos-perfect-guest-access', category: 'network', points: 100, solves: 17 },
+  { name: 'teto territory', slug: 'rowdyhacks-2026-teto-territory', category: 'misc', points: 250, solves: 22 },
+  { name: 'Pieces of the Puzzle', slug: 'rowdyhacks-2026-pieces-of-the-puzzle', category: 'forensics', points: 250, solves: 23 },
+  { name: 'Military OSINT', slug: 'rowdyhacks-2026-military-osint', category: 'osint', points: 150, solves: 24 },
+  { name: 'The Gatekeeper', slug: 'rowdyhacks-2026-the-gatekeeper', category: 'rev', points: 200, solves: 24 },
+  { name: 'read receipts', slug: 'rowdyhacks-2026-read-receipts', category: 'crypto', points: 200, solves: 25 },
+  { name: 'world is mine', slug: 'rowdyhacks-2026-world-is-mine', category: 'web', points: 150, solves: 25 },
+  { name: 'Hidden in Plain Sight', slug: 'rowdyhacks-2026-hidden-in-plain-sight', category: 'forensics', points: 200, solves: 28 },
+  { name: 'WRONG TURN', slug: 'rowdyhacks-2026-wrong-turn', category: 'forensics', points: 200, solves: 35 },
+  { name: 'Goomba', slug: 'rowdyhacks-2026-goomba', category: 'forensics', points: 100, solves: 42 },
+  { name: 'Gensokyo Industry Standards', slug: 'rowdyhacks-2026-gensokyo-industry-standards', category: 'network', points: 50, solves: 45 },
+  { name: 'YOUR FIRST CTF!!!', slug: 'rowdyhacks-2026-your-first-ctf', category: 'misc', points: 25, solves: 45 },
+];
+
 export interface Competition {
   name: string;
   kind: string;
@@ -228,7 +307,7 @@ export const COMPETITIONS: readonly Competition[] = [
     name: 'RowdyHacks XII',
     kind: 'Capture the Flag',
     result:
-      '1st of 62 teams, full clear (all 27 challenges), Team Difference (2026)',
+      '1st of 62 teams, all 28 challenges solved, 5,825 points, Team Difference (2026)',
     writeup: { label: 'Read the RowdyHacks writeups', href: '/ctf/rowdyhacks-xii/' },
   },
   {
@@ -310,7 +389,7 @@ export const CTF_EVENTS: readonly CtfEvent[] = [
     dateDisplay: 'October 3-4, 2026',
     date: '2026-10-04',
     format: 'In person, San Antonio, TX',
-    result: '1st of 62 teams, full clear (all 27 challenges), 5,825 points',
+    result: '1st of 62 teams, all 28 challenges solved, 5,825 points',
     team: 'Difference',
     members: ['Derek Wei', 'Ahaan Wanvari'],
     contribution:
