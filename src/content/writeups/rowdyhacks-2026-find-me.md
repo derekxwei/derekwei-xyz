@@ -34,10 +34,10 @@ confirmed the encounter and credited the solve retroactively.
 
 ## Scoring note
 
-This one sits outside the scored total, and the timing is why. The public
-scoreboard froze with Team Difference on 5,825 points, which is exactly the sum
-of the 27 scored challenges we had solved. Credit for this one came after that
-freeze, so it changed the challenge count rather than the score. Two further
+This one is worth 100 points, and it sits outside the recorded total because
+of when it landed. The public scoreboard froze with Team Difference on 5,825,
+exactly the sum of the 27 challenges solved by that point. Credit for this one
+came after the freeze, so the 100 is not inside that figure. Two further
 challenges were released in a late wave around the same point.
 
 The organizers' own post-event statistics are the reference for the totals

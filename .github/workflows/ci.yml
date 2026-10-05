@@ -13,7 +13,10 @@ permissions:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Superseded pull-request runs are disposable, but every push to main must
+  # finish: a cancelled job reports the run as failed and leaves that commit
+  # without the verdict this pipeline exists to produce.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:

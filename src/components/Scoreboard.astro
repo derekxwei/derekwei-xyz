@@ -12,6 +12,10 @@ const d = ROWDYHACKS_DISTRIBUTION;
 const pct = (n: number, of: number) => Math.round((n / of) * 1000) / 10;
 const solveRate = pct(s.solves, s.totalSubmissions);
 const margin = d.winningScore - d.runnerUpScore;
+// Every challenge carries points, but Find me !! was credited after the
+// board froze, so the team's recorded score covers the other 27.
+const boardTotal = challenges.reduce((n, c) => n + (c.points ?? 0), 0);
+const lateCredit = challenges.find((c) => c.slug === 'rowdyhacks-2026-find-me');
 
 // The point of the table is rarity, so lead with it. Anything only one team
 // cleared is the strongest single signal on the page.
@@ -42,8 +46,9 @@ const brackets = d.buckets.map((count, i) => ({
   </h2>
   <p class="mt-1 max-w-mid font-mono text-xs leading-relaxed text-faint">
     {s.credit} Two checks hold: solve counts sum to {s.solves}, matching the
-    organizers' stated correct-submission total, and the scored challenges sum
-    to {s.teamScore.toLocaleString('en-US')}, matching the team's score.
+    organizers' stated correct-submission total, and the 27 challenges on the
+    board at the freeze sum to {s.teamScore.toLocaleString('en-US')}, matching
+    the team's recorded score.
   </p>
 
   <dl class="mt-5 grid max-w-evidence grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
@@ -152,10 +157,11 @@ const brackets = d.buckets.map((count, i) => ({
   </div>
 
   <p class="mt-4 max-w-mid text-xs leading-relaxed text-faint">
-    Points shown are the scored values totalling {s.teamScore.toLocaleString('en-US')},
-    the team's recorded score. Find me !! carries no point value: it was a
-    meet-the-author challenge credited after the board froze, so it changed the
-    challenge count rather than the score.
+    The {s.challenges} challenges are worth {boardTotal.toLocaleString('en-US')}
+    points in total. The team's recorded score is
+    {s.teamScore.toLocaleString('en-US')}, the 27 solved before the board froze.
+    The remaining {lateCredit?.points} belong to Find me !!, a meet-the-author
+    challenge credited afterwards.
   </p>
 </section>
 

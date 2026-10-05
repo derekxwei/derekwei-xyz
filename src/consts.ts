@@ -208,8 +208,8 @@ export const CERT_ROADMAP = {
  * Provenance: solve counts are read from the organizers' published charts. Two
  * independent checks hold. They sum to 474, matching the organizers' stated
  * correct-submission total, and the 27 scored challenges sum to 5,825, matching
- * Team Difference's recorded score. "Find me !!" carries no point value because
- * it sits outside that scored total; see its writeup.
+ * Team Difference's recorded score. "Find me !!" is a 100-point challenge that
+ * was credited after the board froze, so it is not inside that 5,825.
  */
 export const ROWDYHACKS_SCOREBOARD = {
   teams: 62,
@@ -253,7 +253,7 @@ export interface ChallengeStat {
 export const ROWDYHACKS_CHALLENGES: readonly ChallengeStat[] = [
   { name: 'Back to Nothing', slug: 'rowdyhacks-2026-back-to-nothing', category: 'forensics', points: 600, solves: 1 },
   { name: 'Locked File', slug: 'rowdyhacks-2026-locked-file', category: 'crypto', points: 250, solves: 1 },
-  { name: 'Find me !!', slug: 'rowdyhacks-2026-find-me', category: 'misc', solves: 3 },
+  { name: 'Find me !!', slug: 'rowdyhacks-2026-find-me', category: 'misc', points: 100, solves: 3 },
   { name: 'Do You Know What Will Rock You?', slug: 'rowdyhacks-2026-do-you-know-what-will-rock-you', category: 'misc', points: 300, solves: 4 },
   { name: 'beam me in', slug: 'rowdyhacks-2026-beam-me-in', category: 'pwn', points: 250, solves: 5 },
   { name: 'Dutiful Maid Troubles', slug: 'rowdyhacks-2026-dutiful-maid-troubles', category: 'network', points: 200, solves: 6 },
