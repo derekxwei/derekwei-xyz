@@ -243,7 +243,7 @@ export interface ChallengeStat {
   /** Writeup slug under /ctf/. Every challenge on the board has one. */
   slug: string;
   category: string;
-  /** Omitted for the one challenge outside the scored total. */
+  /** Every challenge on the board carries one. */
   points?: number;
   /** Teams of 62 that solved it. */
   solves: number;
@@ -544,7 +544,7 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
   {
     label: 'Security',
     items:
-      'Web application exploitation, OSINT (open source intelligence), digital forensics, network traffic analysis, log analysis, cryptography, password cracking, penetration testing fundamentals, vulnerability scanning, incident detection and response, managed security services',
+      'Web application exploitation, OSINT (open source intelligence), digital forensics, network traffic analysis, log analysis, cryptography, password cracking, penetration testing fundamentals, vulnerability scanning, incident detection and response',
   },
   {
     label: 'Systems and tooling',

@@ -116,10 +116,11 @@ const deliveryDiagramAlt =
       <div>
         <dt class="font-mono text-sm text-ink">Zero client JS by default</dt>
         <dd class="mt-2 text-sm leading-relaxed text-muted">
-          Pages ship no JavaScript. The only scripts on the whole site are the
-          mobile nav toggle and the interactive
-          <a href="/tools/" class="link">tools</a> pages, bundled by Astro into
-          external files.
+          No framework runtime and no hydration. Three small same-origin
+          scripts load on every page: a pre-paint theme bootstrap, the theme
+          menu, and the mobile nav toggle. The resume adds a print button, and
+          the interactive <a href="/tools/" class="link">tools</a> pages add
+          their own. Everything else is static HTML.
         </dd>
       </div>
       <div>

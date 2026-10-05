@@ -55,8 +55,8 @@ const brackets = d.buckets.map((count, i) => ({
     {
       headline.map((h) => (
         <div>
-          <dt class="font-mono text-2xl text-accent">{h.n}</dt>
-          <dd class="mt-1 text-xs leading-relaxed text-muted">{h.label}</dd>
+          <dt class="text-xs leading-relaxed text-muted">{h.label}</dt>
+          <dd class="mt-1 font-mono text-2xl text-accent">{h.n}</dd>
         </div>
       ))
     }
@@ -131,11 +131,11 @@ const brackets = d.buckets.map((count, i) => ({
         {
           challenges.map((c) => (
             <tr class="border-b border-line last:border-b-0">
-              <td class="px-3 py-2">
+              <th scope="row" class="px-3 py-2 font-normal">
                 <a class="link no-underline hover:underline" href={`/ctf/${c.slug}/`}>
                   {c.name}
                 </a>
-              </td>
+              </th>
               <td class="px-3 py-2 font-mono text-xs text-muted">{c.category}</td>
               <td class="px-3 py-2 text-right font-mono text-xs text-muted">
                 {c.points ?? '--'}
@@ -181,7 +181,7 @@ const brackets = d.buckets.map((count, i) => ({
     display: block;
     height: 100%;
     border-radius: 999px;
-    background: var(--color-accent);
+    background: var(--color-muted);
   }
   .sv-1 > i { width: 1.61%; }
   .sv-3 > i { width: 4.84%; }
@@ -224,12 +224,15 @@ const brackets = d.buckets.map((count, i) => ({
     display: block;
     width: 100%;
     border-radius: 2px 2px 0 0;
-    background: var(--color-accent);
-    opacity: 0.55;
-    min-height: 1px;
+    background: var(--color-muted);
+    min-height: 2px;
   }
+  /* The winning bracket is marked by hue AND an outline, so it survives both a
+     monochrome reading and prefers-reduced-transparency. */
   .hist .col.win > i {
-    opacity: 1;
+    background: var(--color-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
   }
   .hb-0 { height: 0; }
   .hb-1 { height: 4.76%; }
@@ -239,8 +242,4 @@ const brackets = d.buckets.map((count, i) => ({
   .hb-5 { height: 23.81%; }
   .hb-7 { height: 33.33%; }
   .hb-21 { height: 100%; }
-
-  @media (prefers-reduced-transparency: reduce) {
-    .hist .col > i { opacity: 1; }
-  }
 </style>

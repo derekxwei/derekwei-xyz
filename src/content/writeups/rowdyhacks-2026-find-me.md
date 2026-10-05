@@ -3,6 +3,7 @@ title: 'RowdyHacks XII: Find me !!'
 description: 'The one challenge on the board with no technical component: locate and speak to the challenge author during the hackathon. Credited retroactively, and outside the scored point total.'
 event: 'RowdyHacks XII'
 category: 'misc'
+points: 100
 date: 2026-10-03
 tags:
   - meta
