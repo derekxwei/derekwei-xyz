@@ -531,3 +531,82 @@ li.panel.group:active {
     text-decoration: none !important;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Prism syntax highlighting (class-based, CSP-clean).
+ * markdown.syntaxHighlight is 'prism' in astro.config.mjs, so code
+ * blocks ship `.token.*` classes instead of Shiki's inline styles,
+ * which the strict style-src 'self' CSP would block. Token colors are
+ * theme-aware and legible on --color-panel-2 (the prose code background)
+ * in both themes. Unlayered so they win over Tailwind Typography's base
+ * code color without a specificity battle.
+ * ------------------------------------------------------------------ */
+:root {
+  --code-comment: #7486a0;
+  --code-punct: #aebfd4;
+  --code-kw: #7dd3fc;
+  --code-str: #9ece6a;
+  --code-fn: #e0af68;
+  --code-num: #ff9e64;
+  --code-var: #f7768e;
+}
+:root[data-theme='light'] {
+  --code-comment: #5d6b82;
+  --code-punct: #3c4a63;
+  --code-kw: #0b5bb5;
+  --code-str: #1f7a34;
+  --code-fn: #8a5a00;
+  --code-num: #b2560a;
+  --code-var: #b4254b;
+}
+.prose-custom .token.comment,
+.prose-custom .token.prolog,
+.prose-custom .token.cdata {
+  color: var(--code-comment);
+  font-style: italic;
+}
+.prose-custom .token.doctype,
+.prose-custom .token.punctuation,
+.prose-custom .token.operator,
+.prose-custom .token.entity {
+  color: var(--code-punct);
+}
+.prose-custom .token.keyword,
+.prose-custom .token.atrule,
+.prose-custom .token.rule,
+.prose-custom .token.selector,
+.prose-custom .token.important {
+  color: var(--code-kw);
+}
+.prose-custom .token.boolean,
+.prose-custom .token.number,
+.prose-custom .token.constant,
+.prose-custom .token.symbol {
+  color: var(--code-num);
+}
+.prose-custom .token.string,
+.prose-custom .token.char,
+.prose-custom .token.attr-value,
+.prose-custom .token.inserted,
+.prose-custom .token.url {
+  color: var(--code-str);
+}
+.prose-custom .token.function,
+.prose-custom .token.class-name {
+  color: var(--code-fn);
+}
+.prose-custom .token.variable,
+.prose-custom .token.attr-name,
+.prose-custom .token.tag,
+.prose-custom .token.property,
+.prose-custom .token.regex,
+.prose-custom .token.deleted {
+  color: var(--code-var);
+}
+.prose-custom .token.important,
+.prose-custom .token.bold {
+  font-weight: 600;
+}
+.prose-custom .token.italic {
+  font-style: italic;
+}

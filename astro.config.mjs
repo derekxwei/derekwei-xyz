@@ -6,6 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://derekwei.xyz',
+  markdown: {
+    // Prism emits class-based tokens (.token.keyword, …) styled from external
+    // CSS, unlike Shiki's inline styles. The strict CSP (style-src 'self', no
+    // 'unsafe-inline') blocks inline styles, so Prism keeps code highlighted
+    // while staying CSP-clean. Token colors live in src/styles/global.css.
+    syntaxHighlight: 'prism',
+  },
   integrations: [
     mdx(),
     // /card is publicly accessible but intentionally unlisted: it is excluded
