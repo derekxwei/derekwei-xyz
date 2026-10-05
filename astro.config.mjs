@@ -7,11 +7,14 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://derekwei.xyz',
   markdown: {
-    // Prism emits class-based tokens (.token.keyword, …) styled from external
+    // Prism emits class-based tokens (.token.keyword, ...) styled from external
     // CSS, unlike Shiki's inline styles. The strict CSP (style-src 'self', no
     // 'unsafe-inline') blocks inline styles, so Prism keeps code highlighted
     // while staying CSP-clean. Token colors live in src/styles/global.css.
     syntaxHighlight: 'prism',
+    // Disable smartypants: it rewrites straight quotes and dashes into curly
+    // typography, which reads as machine-generated. Keep copy as written.
+    smartypants: false,
   },
   integrations: [
     mdx(),
