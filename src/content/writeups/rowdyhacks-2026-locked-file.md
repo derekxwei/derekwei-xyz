@@ -62,11 +62,7 @@ recover them. Until then, no flag is recorded here.
 
 ## Takeaway
 
-The weak link is never AES here. It is the password policy. A human-memorable
-pattern ("capitalize, one leet swap, digit, symbol") collapses the keyspace
-enough that a rule-based GPU attack is practical even against a slow KDF. The
-defense is length and randomness (a passphrase or generated secret), because a
-strong KDF only buys time proportional to how unpredictable the password is.
+The weak link is never AES, it is the password policy. A human-memorable pattern (capitalize, one leet swap, then a digit and a symbol) collapses the keyspace enough that a rule-based GPU attack is practical even against a 2^19-iteration KDF. Length and randomness are the fix, because a slow KDF only buys time in proportion to how unpredictable the secret is.
 
 ## Flag
 

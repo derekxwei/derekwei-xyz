@@ -36,10 +36,7 @@ needed.
 
 ## Takeaway
 
-Knowing default service ports is the first step in both offense and defense.
-On an OT network, Modbus has no authentication or encryption, so unexpected
-traffic to tcp/502 (or Modbus reaching hosts that should never speak it) is
-a high-signal indicator worth alerting on at the segmentation boundary.
+Default service ports are reconnaissance, step one for both sides. Modbus lives on tcp/502, so it is the first thing to probe on an OT network and the first thing to watch, because the protocol has no authentication and any host that can reach the port can speak to a PLC. A segmented OT network plus an alert on tcp/502 from anything but the engineering workstation turns "knows the port" back into a non-event.
 
 ## Flag
 

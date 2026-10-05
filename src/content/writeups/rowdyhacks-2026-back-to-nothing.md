@@ -130,9 +130,7 @@ was.
 
 ## Takeaway
 
-Depth, not any single clever trick, is the lesson: five independent encodings (fragmentation, a custom byte transform, visual substitution, Steghide/AES, and an audio spectrogram), each trivial alone, compound into something that resists
-automated carving. For defenders, it is a reminder that "nothing here" after one
-pass of the usual tools is not proof a file is clean.
+Depth, not any single trick, is the lesson: five trivial encodings (fragmentation, a byte transform, a visual cipher, Steghide/AES, and an audio spectrogram) compound into something that resists automated carving. For a forensic analyst the takeaway is the inverse: "nothing here" after one pass of the usual tools is not evidence a file is clean.
 
 ## Flag
 

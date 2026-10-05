@@ -45,9 +45,7 @@ confirms the channel order rather than guessing it.
 
 ## Takeaway
 
-Never trust a file extension for routing or type decisions. Validate the magic
-bytes. The same "it claims to be an image" assumption that hides a flag here is
-how polyglot files and disguised payloads slip past naive upload filters.
+The file lied about its type, and that is the whole move: validate magic bytes, never the extension, because polyglots and disguised payloads ride that exact assumption past naive filters. The flag sat in the RGB least-significant bits, a cheap covert channel. Defensively, re-encoding or canonicalizing an uploaded image destroys an LSB payload outright, and a type/extension mismatch is a clean thing to alert on.
 
 ## Flag
 

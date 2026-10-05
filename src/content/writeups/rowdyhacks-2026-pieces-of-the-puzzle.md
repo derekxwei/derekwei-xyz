@@ -45,11 +45,7 @@ ZIP. It opens with the challenge-provided password `ctf`:
 
 ## Takeaway
 
-DNS TXT records are a classic covert channel: they leave the network through
-resolvers that are rarely inspected as closely as HTTP. Splitting a payload
-across two protocols also defeats single-stream detection. Monitoring for
-unusual TXT query volume and long Base64-looking labels is the practical
-counter.
+Splitting a payload across HTTP and DNS TXT records is deliberate tradecraft: it beats single-stream detection and rides DNS, which leaves through resolvers that are rarely inspected as closely as web traffic. For a defender that is the signal to hunt, unusual TXT volume and long base64-looking labels, and to correlate across protocols instead of per-flow.
 
 ## Flag
 

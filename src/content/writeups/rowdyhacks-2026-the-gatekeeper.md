@@ -49,10 +49,7 @@ from before trusting it.
 
 ## Takeaway
 
-A secret checked entirely inside a client binary is a secret you have already
-shipped: any invertible transform can be run backwards. Real authentication
-has to happen server-side against a value the user never receives; local checks
-only raise the effort, they do not protect anything.
+A secret checked entirely inside a client is already shipped: every invertible transform, here add, XOR, and compare against a table, runs backwards, so the passphrase falls out byte by byte. The only real control is to move the check server-side against a value the user never receives. A local check raises effort but protects nothing, and a decoy string left in the binary protects less.
 
 ## Flag
 

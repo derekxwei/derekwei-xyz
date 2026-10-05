@@ -49,11 +49,7 @@ photo's exact capture point, only the station the challenge asked for.
 
 ## Takeaway
 
-Unit insignia, tail markings, and squadron nicknames are deliberately public, but
-in aggregate they fix a base and a mission. The OPSEC lesson is that a single
-captioned photo can geolocate a facility through entirely open sources, which is
-exactly the kind of correlation an adversary performs, and why imagery from
-sensitive sites is controlled.
+Unit insignia, tail markings, and squadron nicknames are deliberately public, but in aggregate they fix a base and a mission, and a single captioned photo geolocates a facility entirely from open sources, the exact correlation an adversary runs. The OPSEC counter is to control imagery from sensitive sites and to assume any visible marking is collectable.
 
 ## Flag
 

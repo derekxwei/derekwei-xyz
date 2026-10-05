@@ -47,10 +47,7 @@ handoff section displays the flag.
 
 ## Takeaway
 
-Authentication queries must use parameterized statements; string-concatenated
-SQL in a login form is the highest-stakes place this bug can appear, because it
-is an unauthenticated path to account takeover. Distinct error messages for
-"bad quote" versus "bad password" also leak that the input reaches the query. Error responses should be uniform.
+Unauthenticated SQL injection in a login field is the highest-stakes place the bug can appear, because it is a direct path to account takeover, and the different errors for a bad quote versus a bad password leaked that the input reached the query. Parameterized statements remove it, uniform error responses kill the oracle, and injection patterns in request logs are a clean detection.
 
 ## Flag
 

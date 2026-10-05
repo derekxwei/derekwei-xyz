@@ -42,8 +42,7 @@ was the real lesson of the warm-up.
 
 ## Takeaway
 
-Anything shipped to the browser (comments, JavaScript strings, Base64 blobs) is readable by the client. Base64 is encoding, not encryption, and a decoy in
-the markup does not protect a secret sitting one function call away.
+Everything shipped to the browser is readable, so a base64 string in the page JavaScript is encoding, not a secret, and the decoy comment protected nothing. The lesson scales straight to real apps: the client is public, so anything that must stay secret stays server-side.
 
 ## Flags
 

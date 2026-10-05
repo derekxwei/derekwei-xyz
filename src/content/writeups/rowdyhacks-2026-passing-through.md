@@ -59,10 +59,7 @@ The checker reports "All eight discoveries verified" and shows the flag.
 
 ## Takeaway
 
-Every step here was a public source (a bridge notice, a company site, a federal court PDF), chained from a single photo into a precise facility, owner, and legal
-history. That chain is exactly how real OSINT and due-diligence work, and the
-OPSEC counterpart is to assume a published image can be pivoted into records far
-beyond what the picture appears to show.
+Each step was a public source, a bridge notice, a company page, a federal court PDF, chained from one photo into a precise facility, its owner, and its legal history, which is exactly how OSINT and due diligence work. The OPSEC counterpart is to assume a published image can be pivoted into records far beyond what the picture appears to show.
 
 ## Flag
 

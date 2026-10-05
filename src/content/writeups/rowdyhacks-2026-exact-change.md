@@ -48,10 +48,7 @@ The service command prints the flag.
 
 ## Takeaway
 
-Hidden commands and "secret" codes computed inside shipped bytecode are not
-security, Java bytecode decompiles cleanly, and any deterministic algorithm can
-be re-derived and replayed. Secrets and privileged operations have to live
-server-side behind real authorization, not behind obscurity in a client artifact.
+Hidden commands and computed "secret" codes inside shipped bytecode are not security: Java decompiles cleanly and any deterministic algorithm can be re-derived and replayed, which is how the service code came out. Secrets and privileged operations belong server-side behind real authorization, never behind obscurity in a client artifact.
 
 ## Flag
 

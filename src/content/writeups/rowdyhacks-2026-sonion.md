@@ -47,11 +47,7 @@ and that string is the flag.
 
 ## Takeaway
 
-Two familiar lessons stack here: trailing data after `IEND` is a carving target
-(validate and re-encode uploads), and a verification routine shipped inside a
-binary is reversible no matter how many add/XOR/rotate steps it uses. Input
-validation is not a secret: anything the client can check, an attacker can run
-backwards.
+Two familiar primitives stack: data after the PNG's IEND is carvable, and a verification routine shipped inside a binary is reversible no matter how many XOR and rotate steps it uses. Validate and re-encode uploads to kill the carve, and never treat a client-side check as a secret, since anything the client computes an attacker computes backwards.
 
 ## Flag
 

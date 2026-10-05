@@ -52,11 +52,7 @@ RockYou.
 
 ## Takeaway
 
-RockYou is the baseline every attacker starts from, and both gates here fell to
-it instantly. The controls are well known: ban known-breached passwords, require
-length over complexity, rate-limit and lock out SSH (or disable password auth for
-keys), and add MFA. A password that appears in a public wordlist provides no
-protection at all, no matter what it is wrapped in.
+RockYou is where every attacker starts, and both gates here, an SSH login and a ZIP, fell to its first few hundred lines. The defenses are well known and compound: ban breached passwords, favor length over complexity, rate-limit and lock out SSH (or drop password auth for keys) and add MFA, and alert on the burst of failures that precedes the hit.
 
 ## Flag
 

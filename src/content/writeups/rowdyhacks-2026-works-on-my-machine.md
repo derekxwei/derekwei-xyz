@@ -42,12 +42,7 @@ of the second; the final exchange and flag are from the teammate's run.
 
 ## Takeaway
 
-A static secret baked into a client is recoverable (stage one), which is why the
-challenge adds a session-dependent transform (stage two), the same reasoning
-behind using per-session nonces and server-side challenge/response instead of a
-fixed token. It also shows why a repeatable solve script matters: an
-undocumented interactive win is hard to reproduce or hand off later, the exact
-problem this challenge left us with.
+A static token baked into a client is recoverable, which is exactly why the second stage ran it through a session-specific transform, the same reason real protocols use per-session challenge and response instead of a fixed secret. The operational note cuts both ways: an undocumented interactive win is hard to reproduce or hand off, so repeatable tooling matters as much to an operator as an audit trail does to a defender.
 
 ## Flag
 

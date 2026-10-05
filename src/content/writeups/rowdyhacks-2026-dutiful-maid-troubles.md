@@ -41,13 +41,7 @@ Each register's byte is ASCII, spelling the flag. Writing coil 0 **off** again
 
 ## Takeaway
 
-This is the one that should worry a defender: a single unauthenticated coil write
-changed the process and produced new output. Modbus function 5 (write single
-coil) has no authentication, so anyone who can reach the device can alter physical
-state: a valve, a relay, a pump. The controls are network-level (segmentation,
-OT firewall, read-only data diodes where possible) plus alerting on write
-functions from anything but the authorized controller. Leaving state restored
-after testing is basic OT discipline; an attacker would not.
+This is the one that should worry a defender: a single unauthenticated function-5 coil write changed the physical process and produced new output, and in the real world that primitive moves a valve, a relay, or a pump. Modbus writes have no authentication, so the controls are network-level, segmentation and read-only data diodes where possible, plus an alert on any write function from anything but the authorized controller. Restoring the coil after testing is basic OT discipline; an attacker would not.
 
 ## Flag
 

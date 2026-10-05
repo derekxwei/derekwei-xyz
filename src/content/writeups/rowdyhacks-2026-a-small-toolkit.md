@@ -41,11 +41,7 @@ and each one hands the next its input.
 
 ## Takeaway
 
-The challenge name is the point: XOR with a short, derivable key is not
-encryption. Two of the three "locks" collapse because their keyspace is tiny, a
-4-digit PIN is searchable instantly, and a known-plaintext crib breaks a repeating
-Vigenère key. Real confidentiality needs a proper cipher with a high-entropy key,
-not an invertible transform keyed by something guessable.
+The name is the lesson: XOR with a short, derivable key is not encryption, and the two weaker locks fall because their keyspaces are tiny, a four-digit PIN is searched instantly and a repeating Vigenere key breaks to a known-plaintext crib. Real confidentiality needs a proper cipher with a high-entropy key, not an invertible transform keyed by something guessable.
 
 ## Flag
 

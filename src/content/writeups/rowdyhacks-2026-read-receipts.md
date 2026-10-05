@@ -48,9 +48,7 @@ to read the overlapping bytes of the other message.
 
 ## Takeaway
 
-A `(key, nonce)` pair must never repeat in CTR (or GCM). Nonces should be random
-or a strictly monotonic counter persisted across restarts, never reset to a
-constant. This is the same class of bug as the classic two-time pad.
+Reusing a (key, nonce) pair in CTR or GCM collapses the cipher to a two-time pad: one known plaintext XORs out the keystream and decrypts everything else under that pair. The messenger reset its counter to a constant on restart, which is exactly the mistake. Nonces must be unique for the life of a key, random or a counter persisted across restarts, and it is the kind of bug a crypto review or a linter catches before it ships.
 
 ## Flag
 

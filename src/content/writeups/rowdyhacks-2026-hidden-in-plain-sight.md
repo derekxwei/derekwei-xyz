@@ -53,10 +53,7 @@ hint was used.
 
 ## Takeaway
 
-Data after a file's logical end marker is invisible to viewers but trivially
-carved, a reliable covert channel and exfiltration trick. Upload pipelines and
-DLP should re-encode or canonicalize images and reject trailing bytes, rather
-than assume a valid header means a clean file.
+Data after a file's end marker is invisible to viewers and trivially carved, and layering stego (an EXIF hint, an appended ZIP, a Steghide payload) is how staged payloads hide in plain sight, malware second stages included. The defensive counters are concrete: re-encode or canonicalize media on ingest, strip trailing bytes, and inspect EXIF rather than trusting a valid header to mean a clean file.
 
 ## Flag
 

@@ -42,10 +42,7 @@ the capture look busy.
 
 ## Takeaway
 
-Anything transferred over cleartext HTTP is recoverable verbatim by anyone on
-the path, documents included. This is the everyday argument for TLS everywhere
-and for treating captured traffic as a disclosure surface during incident
-response. Exported objects reconstruct exactly what crossed the wire.
+Anything sent over cleartext HTTP is recoverable byte for byte by anyone on the path, documents included, and exported HTTP objects rebuild them verbatim. To an attacker on the wire that is free collection; to a responder the same capture is an evidence source. The fix is the boring one that still matters: TLS everywhere, and treat any span port or capture as a disclosure surface.
 
 ## Flag
 

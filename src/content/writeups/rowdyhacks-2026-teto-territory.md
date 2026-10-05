@@ -47,10 +47,7 @@ integrity check.
 
 ## Takeaway
 
-Covert channels stack: trailing data, a stereo-difference signal, and DTMF are
-each invisible to a casual look at the "image." The general defense is the same
-as other polyglot tricks: canonicalize/re-encode media on ingest and treat any
-bytes past the logical end of a file as suspect.
+Covert channels stack: trailing data after the PNG, a stereo-difference signal, and DTMF tones, each invisible to a glance at the image. The same reasoning that hides a flag hides exfiltration, so the defense is to canonicalize or re-encode media on ingest and treat any bytes past a file's logical end as suspect.
 
 ## Flag
 

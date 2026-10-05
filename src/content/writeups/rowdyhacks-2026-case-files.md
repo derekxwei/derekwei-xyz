@@ -42,11 +42,7 @@ never checked that the user was *allowed to see this specific object*.
 
 ## Takeaway
 
-This is Insecure Direct Object Reference / Broken Object-Level Authorization,
-consistently at the top of the OWASP API risks. Authentication is not
-authorization: every object fetch must verify the requester owns or is permitted
-that record, server-side, on every endpoint. Sequential, guessable IDs make the
-flaw trivial to enumerate; object-level checks are the fix, not unguessable IDs.
+A skipped case ID plus a predictable `/api/evidence` path is Insecure Direct Object Reference, consistently at the top of the OWASP API risks: the portal authenticated the user but never checked they were allowed to see that specific object. Object-level authorization on every endpoint is the fix, not unguessable IDs, and sequential-ID enumeration in access logs is a clean thing to detect.
 
 ## Flag
 

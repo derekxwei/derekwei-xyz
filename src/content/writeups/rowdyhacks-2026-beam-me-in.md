@@ -47,12 +47,7 @@ than publishing a weaponized chain.
 
 ## Takeaway
 
-This is a textbook reason to patch promptly: a single unauthenticated request
-yielded full command execution. Mitigations, in order: upgrade Erlang/OTP to a
-fixed release; if you cannot, disable the SSH daemon or restrict it to known
-hosts at the network layer; and never expose management SSH of an application
-runtime to untrusted networks. A state machine must refuse connection-protocol
-messages until authentication succeeds.
+Service fingerprinting pays: an Erlang/OTP SSH banner plus a known pre-authentication RCE (CVE-2025-32433) is unauthenticated command execution from a single request. The defensive weight is real because the stakes are: patch the runtime, keep application SSH off untrusted networks, and detect the primitive, a channel `exec` before authentication completes, which no legitimate client sends.
 
 ## Flag
 

@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Marisa Stole the Precious Ports!'
-description: 'A 150-point ICS/OT challenge: read-only Modbus holding-register reads over the OT tunnel whose low-byte ASCII values spelled out the flag.'
+description: 'A 150-point ICS/OT recon challenge: use nmap and Modbus port knowledge to pick the real OpenPLC out of three decoy ports, then read its holding registers for the flag.'
 event: 'RowdyHacks XII'
 category: 'network'
 points: 150
@@ -8,8 +8,9 @@ date: 2026-10-04
 tags:
   - ics-ot
   - modbus
-  - holding-registers
-  - read-only
+  - nmap
+  - recon
+  - openplc
 draft: false
 ---
 
@@ -18,32 +19,32 @@ draft: false
 
 ## Challenge
 
-ICS/OT · 150 points. The prompt asks where Modbus communicates after the network
-map was "stolen," and supplies a connection ZIP with an OT tunnel mapping local
-ports 1500-1503 to the organizers' gateway.
+ICS/OT · 150 points. The network map was "stolen," so the task is to find where
+Modbus actually lives. A connection ZIP supplies an OT tunnel mapping local ports
+1500-1503 to the organizers' gateway.
 
 ## Approach
 
-Running the supplied client against the gateway, read-only Modbus function probes
-identified **127.0.0.1:1502** as the endpoint speaking Modbus/TCP. A function-3
-holding-register read (unit 1, start 30, count 31) returned 31 values whose low
-bytes are ASCII:
+This one rewards recon and protocol knowledge rather than any exploit. An nmap
+scan across the tunnel surfaces three Modbus-looking ports, decoys planted so the
+scan looks right, and the task is to find the one the live OpenPLC actually runs
+on. Modbus's textbook port is 502, but here the real PLC answers on **1502**;
+probing each candidate shows which one speaks for the plant.
+
+Confirming it is a single read. A function-3 holding-register request to 1502
+(unit 1, start 30, count 31) returns 31 values whose low bytes are ASCII, and
+decoding them spells the flag:
 
 ```text
 request : 3636000000060103001e001f
-registers 30...: 114 111 119 100 121 ...   ->  r o w d y ...   (last: 125 = '}')
+registers 30-60 low bytes  ->  r o w d y { ... }   (first five 114 111 119 100 121, last 125 = '}')
 ```
 
-Decoding the low byte of each register spells the flag directly. The solve only
-reads holding registers. No write function was used.
+The solve only reads holding registers; no write function was used.
 
 ## Takeaway
 
-Because Modbus has no authentication, read access to the right register range
-discloses whatever the device exposes, here, an entire string sitting in holding
-registers. Finding the live endpoint was the whole challenge, which mirrors real
-OT reconnaissance: once a device answers, it answers fully. Segmentation and
-monitoring for Modbus scans from unexpected hosts are the practical defenses.
+The real work here was reconnaissance, not exploitation: an nmap scan showed several Modbus-looking ports and only one was the live OpenPLC, so the challenge rewarded reading the scan and knowing the protocol's ports. Once the right endpoint was identified it answered fully, the way OT recon works in practice. Segmentation and alerting on Modbus scans from unexpected hosts are the practical counters, because finding the device is most of the attack.
 
 ## Flag
 
