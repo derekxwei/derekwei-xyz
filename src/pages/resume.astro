@@ -167,7 +167,7 @@ const PROJECT_ENTRIES = [
     </p>
   </SectionHead>
 
-  <SectionHead width="mid" eyebrow="Education" title="Education" id="education">
+  <SectionHead width="mid" title="Education" id="education">
     <ul role="list" class="ledger mt-6 max-w-mid">
       {
         EDUCATION.map((entry) => (
@@ -199,7 +199,6 @@ const PROJECT_ENTRIES = [
   </SectionHead>
 
   <SectionHead width="mid"
-    eyebrow="Credentials"
     title="Certifications"
     id="certifications"
     note="Each credential links to its public Credly badge."
@@ -279,7 +278,6 @@ const PROJECT_ENTRIES = [
   </SectionHead>
 
   <SectionHead width="mid"
-    eyebrow="Competitions"
     title="Competition results"
     id="competitions"
     note="Placements as recorded. Team results are stated as team results."
@@ -331,7 +329,7 @@ const PROJECT_ENTRIES = [
     }
   </SectionHead>
 
-  <SectionHead width="mid" eyebrow="Projects" title="Projects" id="projects">
+  <SectionHead width="mid" title="Projects" id="projects">
     <!-- Published work gets an evidence treatment, not a card: each entry is
          readable in full at its own page, so the rail points there rather than
          summarising twice. -->
@@ -381,7 +379,7 @@ const PROJECT_ENTRIES = [
               class="mt-3 space-y-1.5 text-sm leading-relaxed text-muted sm:col-span-2"
             >
               {job.bullets.map((bullet) => (
-                <li class="relative pl-4 before:absolute before:left-0 before:top-[0.7em] before:h-px before:w-2 before:bg-accent">
+                <li class="relative pl-4 before:absolute before:left-0 before:top-[0.7em] before:h-px before:w-2 before:bg-line-2">
                   {bullet}
                 </li>
               ))}
@@ -411,7 +409,7 @@ const PROJECT_ENTRIES = [
     </dl>
   </SectionHead>
 
-  <SectionHead width="mid" eyebrow="Leadership" title="Leadership and activities" id="leadership">
+  <SectionHead width="mid" title="Leadership and activities" id="leadership">
     <ul role="list" class="ledger mt-6 max-w-mid">
       {
         LEADERSHIP.map((item) => (

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHead from '../../components/SectionHead.astro';
+import { statusClass, statusLabel } from '../../consts';
 
 const projects = (
   await getCollection('projects', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
@@ -14,20 +15,6 @@ const fmt = (d: Date) =>
     day: 'numeric',
     timeZone: 'UTC',
   });
-
-const statusLabel = (s: string) => (s === 'in-progress' ? 'in progress' : s);
-
-// Same semantic mapping the original production badges used: accent for
-// shipped, warn for in progress, muted for anything else. The label is always
-// rendered, so status never depends on colour alone.
-const statusClass = (s: string) =>
-  s === 'shipped'
-    ? 'status-shipped'
-    : s === 'in-progress'
-      ? 'status-progress'
-      : s === 'archived'
-        ? 'status-quiet'
-        : 'status-neutral';
 
 // The most recent shipped entry leads. Everything else is a record row, so the
 // list does not force eight unrelated projects into identical card heights.

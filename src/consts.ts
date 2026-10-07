@@ -597,3 +597,21 @@ export const LEADERSHIP = [
       'Led the officer team in planning class events, fundraisers, and student initiatives',
   },
 ] as const;
+
+/** Display label for a project status. "in-progress" reads badly as-is. */
+export const statusLabel = (s: string) => (s === 'in-progress' ? 'in progress' : s);
+
+/**
+ * Semantic class for a project status: accent for shipped, warn for in
+ * progress, muted otherwise. The label is always rendered alongside, so status
+ * never depends on colour alone. Shared so the home page and the project index
+ * cannot drift apart.
+ */
+export const statusClass = (s: string) =>
+  s === 'shipped'
+    ? 'status-shipped'
+    : s === 'in-progress'
+      ? 'status-progress'
+      : s === 'archived'
+        ? 'status-quiet'
+        : 'status-neutral';

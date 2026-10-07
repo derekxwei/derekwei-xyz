@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Card from '../components/Card.astro';
 import Section from '../components/Section.astro';
 import {
   SITE,
@@ -11,6 +10,8 @@ import {
   COMPETITIONS,
   CREDLY_PROFILE,
   EXPERIENCE,
+  statusClass,
+  statusLabel,
 } from '../consts';
 
 // Supporting work on the homepage is chosen here rather than by the `featured`
@@ -84,7 +85,6 @@ const personSchema = {
 <BaseLayout title="Derek Wei">
   <!-- Hero -->
   <section class="relative" aria-labelledby="hero-heading">
-    <div class="bg-grid hero-fade absolute inset-x-0 top-0 h-96" aria-hidden="true"></div>
     <div class="relative py-16 sm:py-20 lg:py-24">
       <p class="kicker normal-case">$ whoami</p>
       <h1
@@ -134,7 +134,7 @@ const personSchema = {
       rowdyHacks?.result && (
         <a
           href="/ctf/rowdyhacks-xii/"
-          class="group mt-8 block max-w-evidence rounded-lg border border-accent/40 bg-accent/5 p-5 transition-colors hover:border-accent sm:p-6"
+          class="group mt-8 block max-w-evidence rounded-lg border border-accent/40 p-5 transition-colors hover:border-accent sm:p-6"
         >
           <p class="kicker">RowdyHacks XII &middot; 1st place</p>
           <p class="mt-2 text-xl font-semibold tracking-tight text-ink transition-colors group-hover:text-accent sm:text-2xl">
@@ -230,17 +230,28 @@ const personSchema = {
       >
         Supporting work
       </h3>
-      <ul class="mt-4 grid gap-4 sm:grid-cols-2" role="list">
+      <ul role="list" class="ledger mt-4 max-w-mid">
         {
           supporting.map((project) => (
-            <Card
-              href={`/projects/${project.id}/`}
-              title={project.data.title}
-              description={project.data.description}
-              meta={fmt(project.data.date)}
-              tags={[...project.data.tags]}
-              status={project.data.status}
-            />
+            <li class="lrow lrow-link py-5 sm:grid-cols-[minmax(0,1fr)_7rem_7rem]">
+              <div>
+                <h3 class="lname text-base">
+                  <a class="link no-underline hover:underline" href={`/projects/${project.id}/`}>
+                    {project.data.title}
+                  </a>
+                </h3>
+                <p class="mt-1 text-sm leading-relaxed text-muted">
+                  {project.data.description}
+                </p>
+                <p class="lmeta mt-1.5">{project.data.tags.join(' / ')}</p>
+              </div>
+              <p class="sm:pt-1">
+                <span class:list={['status', statusClass(project.data.status)]}>
+                  {statusLabel(project.data.status)}
+                </span>
+              </p>
+              <p class="lnum sm:pt-1 sm:text-right">{fmt(project.data.date)}</p>
+            </li>
           ))
         }
       </ul>
@@ -332,7 +343,7 @@ const personSchema = {
       {
         direction.map((item) => (
           <li class="flex gap-2 leading-relaxed text-muted">
-            <span class="text-accent" aria-hidden="true">
+            <span class="text-faint" aria-hidden="true">
               -
             </span>
             <span>
@@ -367,19 +378,3 @@ const personSchema = {
   />
 </BaseLayout>
 
-<style>
-  .hero-fade {
-    mask-image: linear-gradient(
-      to bottom,
-      rgb(0 0 0 / 0.9) 0%,
-      rgb(0 0 0 / 0.35) 60%,
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      rgb(0 0 0 / 0.9) 0%,
-      rgb(0 0 0 / 0.35) 60%,
-      transparent 100%
-    );
-  }
-</style>
