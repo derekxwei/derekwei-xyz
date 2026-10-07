@@ -55,7 +55,7 @@ jobs:
           major=$(node -p "require('./package.json').dependencies.astro.replace(/[^0-9.]/g,'').split('.')[0]")
           echo "package.json declares Astro major $major"
           # Any other major version named in site copy is stale by definition.
-          if grep -rnE "Astro [0-9]+" --include='*.astro' --include='*.md' src/ \
+          if grep -rnE "Astro [0-9]+" --include='*.astro' --include='*.md' src/ docs/ README.md \
                | grep -vE "Astro $major\b" ; then
             echo "::error::site copy names an Astro major version other than $major"
             exit 1

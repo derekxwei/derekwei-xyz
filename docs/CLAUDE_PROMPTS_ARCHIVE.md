@@ -6,7 +6,7 @@ Reusable prompts for extending derekwei.xyz with an AI coding assistant (Claude 
 
 Whatever you ask for, the assistant needs to respect these - they're baked into the prompts below, but keep them in mind when writing your own:
 
-- **Stack:** Astro 5, TypeScript (strict), Tailwind CSS 4 (Vite plugin), MDX content collections. Static output, deployed on Cloudflare Pages.
+- **Stack:** Astro 7, TypeScript (strict), Tailwind CSS 4 (Vite plugin), MDX content collections. Static output, deployed on Cloudflare Pages.
 - **Facts are fixed.** No invented metrics, placements, scores, dates, or credentials. Use only what's in `src/consts.ts`. Security-clearance wording is exactly: *"U.S. citizen eligible to obtain a Secret security clearance."*
 - **No PII** beyond email and city - no phone, home address, or date of birth.
 - **Mark unfinished work `in-progress`.**

@@ -15,6 +15,9 @@
   --color-panel-2: #0c1320;
   --color-line: #1e293b;
   --color-line-2: #334862;
+  /* Field edges are graphical boundaries and need 3:1, which --color-line
+     does not reach. Measured 3.54:1 on the page, 3.43:1 on the fill. */
+  --color-field: #5a6b85;
   --color-ink: #e8eef6;
   --color-muted: #9db0c6;
   /* Was #6b7f9c, which measured 4.35:1 on --color-panel and so failed the
@@ -85,12 +88,14 @@
   --color-panel-2: #eef2f7;
   --color-line: #d8e0ea;
   --color-line-2: #b6c4d6;
+  /* 3.79:1 on the page, 3.59:1 on the fill. */
+  --color-field: #767f8f;
   --color-ink: #101a2e;
   --color-muted: #45536b;
   --color-faint: #5d6b82;
   --color-accent: #0b63c5;
   --color-accent-2: #0e7490;
-  --color-warn: #b45309;
+  --color-warn: #8a4208;
   --color-danger: #b91c1c;
   --color-prose-body: #2f3b50;
   --color-grid-line: rgb(71 85 105 / 0.08);
@@ -111,8 +116,12 @@
     outline-offset: 2px;
   }
 
-  [id] {
-    scroll-margin-top: 5rem;
+  /* scroll-padding on the scroll container covers every scroll-into-view,
+     including moving keyboard focus to an element with no id, which an
+     [id]-only scroll-margin rule left sitting behind the sticky header.
+     Only one of the two may be set: per CSSOM-View they stack. */
+  html {
+    scroll-padding-top: 5rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -362,7 +371,8 @@
 
   /* form controls for the browser tools */
   .input {
-    @apply w-full rounded-md border border-line bg-panel-2 px-3 py-2 font-mono text-sm text-ink placeholder:text-faint;
+    border-color: var(--color-field);
+    @apply w-full rounded-md border bg-panel-2 px-3 py-2 font-mono text-sm text-ink placeholder:text-faint;
   }
   .label {
     @apply mb-1.5 block font-mono text-xs uppercase tracking-wider text-faint;
@@ -568,7 +578,7 @@ li.panel.group:active {
   --code-kw: #0b5bb5;
   --code-str: #1f7a34;
   --code-fn: #8a5a00;
-  --code-num: #b2560a;
+  --code-num: #9c4b08;
   --code-var: #b4254b;
 }
 .prose-custom .token.comment,

@@ -108,7 +108,7 @@ const grouped = order
   <PageHeader
     kicker="~/tools"
     title="Tools"
-    lede="Browser-only security utilities for CTF practice, quick analysis, and learning the fundamentals. Everything runs client-side: no backend, no data leaves the machine (CSP: connect-src 'self')."
+    lede="Browser-only security utilities for CTF practice, quick analysis, and learning the fundamentals. Everything runs client-side: no backend, no data leaves the machine (CSP: connect-src 'none')."
   />
 
   <section class="section-rule mt-16 sm:mt-20">
@@ -132,7 +132,7 @@ const grouped = order
     <p class="mt-4 text-sm leading-relaxed text-muted">
       These tools are static pages: all processing happens in your browser's
       JavaScript. There is no backend, and the site's Content Security Policy
-      (<code class="font-mono text-xs text-ink">connect-src 'self'</code>)
+      (<code class="font-mono text-xs text-ink">connect-src 'none'</code>)
       prevents the page from sending data anywhere else. They support red-team
       learning and security fundamentals, and are handy for quick analysis, but
       they are not a replacement for professional security tooling.

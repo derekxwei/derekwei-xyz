@@ -24,7 +24,7 @@ calculator).
 
 - **Runs in the browser.** All processing is client-side JavaScript. There is no backend
   and no storage; nothing you type is sent anywhere. The site's Content Security Policy
-  (`connect-src 'self'`) enforces that at the browser level.
+  (`connect-src 'none'`) enforces that at the browser level.
 - **Verified end to end.** The tools were exercised in a real browser against known test
   vectors, not just type-checked.
 - **Honest scope.** These are learning and quick-analysis utilities, not a replacement for

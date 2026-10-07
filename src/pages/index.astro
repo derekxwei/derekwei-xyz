@@ -9,6 +9,7 @@ import {
   CERTIFICATIONS,
   CERT_ROADMAP,
   COMPETITIONS,
+  CREDLY_PROFILE,
   EXPERIENCE,
 } from '../consts';
 
@@ -43,7 +44,7 @@ const aws = CERTIFICATIONS.find((c) => c.short === 'AWS AI Practitioner');
 // by name is what let the Excel certification go missing from this page.
 const alsoEarned = CERTIFICATIONS.filter((c) => c.issuer !== 'CompTIA');
 
-// Same three items the About page states, including the qualifier that the
+// Same items the About page states, including the qualifier that the
 // CPTS is being prepared for and is not currently held.
 const direction = [
   {
@@ -68,7 +69,7 @@ const personSchema = {
   url: SITE.url,
   email: `mailto:${SITE.email}`,
   jobTitle: 'Cybersecurity Student',
-  sameAs: [SITE.linkedin],
+  sameAs: [SITE.linkedin, SITE.github, CREDLY_PROFILE],
   alumniOf: {
     '@type': 'HighSchool',
     name: 'MacArthur High School',
