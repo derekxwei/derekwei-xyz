@@ -6,19 +6,17 @@
 // replaces the old "## LABEL" heading, which was set smaller and lighter than
 // the body text it introduced.
 //
-// The number and category are presentational wayfinding, not content, so they
-// are aria-hidden and the section's accessible name stays the title alone.
-// Pass `num` and `cat` only where the sequence helps a reader orient, which in
-// practice means the homepage. Detail pages get the rule and the title.
+// The category is presentational wayfinding, not content, so it is aria-hidden
+// and the section's accessible name stays the title alone. There is deliberately
+// no 01/02/03 marker: these sections are a set, not a sequence, and numbering a
+// set is decoration pretending to be structure.
 
 interface Props {
   /** Section heading text. Also the section's accessible name. */
   title: string;
   /** Anchor and aria-labelledby target. */
   id: string;
-  /** Two-digit sequence marker, e.g. "01". Homepage only. */
-  num?: string;
-  /** Short category label shown beside the number, e.g. "Evidence". */
+  /** Short category label shown above the title, e.g. "Evidence". */
   cat?: string;
   /** Optional subheading sentence under the title. */
   note?: string;
@@ -31,7 +29,6 @@ interface Props {
 const {
   title,
   id,
-  num,
   cat,
   note,
   flush = false,
@@ -47,13 +44,12 @@ const headingId = `${id}-heading`;
   class:list={[!flush && 'section-rule', 'mt-16 sm:mt-20', className]}
 >
   {
-    num && (
-      <p class="section-bar" aria-hidden="true">
-        <span class="section-num">{num}</span>
-        {cat && <span class="section-cat">{cat}</span>}
-      </p>
-    )
-  }
+      cat && (
+        <p class="section-bar" aria-hidden="true">
+          <span class="section-cat">{cat}</span>
+        </p>
+      )
+    }
   <h2 id={headingId} class="section-title">{title}</h2>
   {note && <p class="section-note">{note}</p>}
   <slot />

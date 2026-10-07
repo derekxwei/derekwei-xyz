@@ -197,22 +197,19 @@ if (props.kind === 'event') {
           Writeups
           <span class="ml-2 font-mono text-sm text-faint">{props.writeups.length} total</span>
         </h2>
-        <p class="mt-1 font-mono text-xs text-faint">
-          Grouped by category. Select a category to expand.
-        </p>
-        <div class="mt-5 max-w-evidence space-y-3">
+        <div class="mt-6 max-w-evidence space-y-8">
           {categoryGroups.map((group) => (
-            <details open={startOpen} class="overflow-hidden rounded-lg border border-line bg-panel-2">
-              <summary class="cursor-pointer select-none px-4 py-3 font-mono text-sm text-accent transition-colors hover:bg-panel">
+            <details open={startOpen}>
+              <summary class="cursor-pointer select-none py-2 font-mono text-sm text-accent transition-colors hover:text-accent-2">
                 {group.label}
                 <span class="text-faint">
                   {' '}
                   &middot; {group.items.length} writeup{group.items.length === 1 ? '' : 's'}
                 </span>
               </summary>
-              <ol role="list" class="border-t border-line">
+              <ol role="list" class="ledger">
                 {group.items.map((w) => (
-                  <li class="border-b border-line px-4 py-4 last:border-b-0">
+                  <li class="border-b border-line py-4 last:border-b-0">
                     <div class="flex items-baseline justify-between gap-3">
                       <h3 class="text-base font-semibold tracking-tight">
                         <a class="link no-underline hover:underline" href={`/ctf/${w.id}/`}>

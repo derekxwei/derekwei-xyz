@@ -269,7 +269,7 @@
 
   /* placement figure: the rank leads, the field size is context */
   .rank {
-    @apply font-mono text-base font-semibold text-ink;
+    @apply font-mono text-xl font-semibold text-ink sm:text-2xl;
     font-variant-numeric: tabular-nums;
   }
   .rank-of {
@@ -312,14 +312,11 @@
   .section-bar {
     @apply flex items-baseline gap-4 font-mono text-xs uppercase tracking-[0.16em];
   }
-  .section-num {
-    @apply font-semibold text-accent;
-  }
   .section-cat {
     @apply text-faint;
   }
   .section-title {
-    @apply mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-[2rem];
+    @apply mt-3 text-xl font-semibold tracking-tight text-ink sm:text-2xl;
   }
   .section-note {
     @apply mt-2.5 max-w-measure leading-relaxed text-muted;

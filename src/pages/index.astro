@@ -93,20 +93,22 @@ const personSchema = {
       >
         Derek Wei
       </h1>
-      <p class="mt-6 text-lg leading-relaxed text-prose-body sm:text-xl">
-        B.S. Cybersecurity student in the Honors College at The
-        University of Texas at San Antonio, focused on red-team fundamentals,
-        penetration testing labs, Capture the Flag methodology, and practical
-        security tooling. Preparing for the Certified Penetration Testing
-        Specialist (CPTS).
-      </p>
-      <p class="mt-5 font-mono text-xs leading-relaxed text-faint">
-        1st of 1,692 teams, National Cyber League High School division
-        &middot; 1st of 62 teams at RowdyHacks XII, all 28 challenges solved
-        &middot; 5x CompTIA certified &middot; AWS Certified AI Practitioner
-      </p>
+      <p class="mt-6 text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-3xl">
+          1st of 1,692 teams at the National Cyber League.<br />
+          1st of 62 at RowdyHacks XII, all 28 challenges solved.
+        </p>
+        <p class="mt-6 max-w-measure leading-relaxed text-prose-body">
+          B.S. Cybersecurity student in the Honors College at The University of
+          Texas at San Antonio, focused on red-team fundamentals, penetration
+          testing labs, Capture the Flag methodology, and practical security
+          tooling. Preparing for the Certified Penetration Testing Specialist
+          (CPTS).
+        </p>
+        <p class="mt-5 font-mono text-xs leading-relaxed text-faint">
+          5x CompTIA certified &middot; AWS Certified AI Practitioner
+        </p>
       <p
-        class="mt-5 inline-flex items-center gap-2 rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted"
+        class="mt-5 inline-flex items-center gap-2 font-mono text-xs text-muted"
       >
         <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
         {SITE.clearance}
@@ -122,7 +124,6 @@ const personSchema = {
   <!-- 01 Evidence -->
   <Section
     id="selected-work"
-    num="01"
     cat="Evidence"
     title="Selected work"
     note="Real work, each with its own writeup or project page."
@@ -250,7 +251,7 @@ const personSchema = {
   </Section>
 
   <!-- 02 Experience -->
-  <Section id="experience" num="02" cat="Experience" title="Relevant experience">
+  <Section id="experience" cat="Experience" title="Relevant experience">
     <ul class="mt-8 max-w-mid" role="list">
       {
         EXPERIENCE.map((job) => (
@@ -275,7 +276,7 @@ const personSchema = {
   </Section>
 
   <!-- 03 Credentials -->
-  <Section id="credentials" num="03" cat="Credentials" title="Verified credentials">
+  <Section id="credentials" cat="Credentials" title="Verified credentials">
     <div class="mt-8 max-w-mid space-y-3 leading-relaxed">
       <p class="text-muted">
         <strong class="font-medium text-ink">5x CompTIA certified:</strong>{' '}
@@ -326,7 +327,7 @@ const personSchema = {
   </Section>
 
   <!-- 04 Direction -->
-  <Section id="direction" num="04" cat="Direction" title="Current direction">
+  <Section id="direction" cat="Direction" title="Current direction">
     <ul class="mt-8 grid max-w-measure gap-2.5" role="list">
       {
         direction.map((item) => (
@@ -348,7 +349,7 @@ const personSchema = {
   </Section>
 
   <!-- 05 Contact -->
-  <Section id="contact" num="05" cat="Contact" title="Contact and resume">
+  <Section id="contact" cat="Contact" title="Contact and resume">
     <p class="mt-8 leading-relaxed text-muted">
       Open to cybersecurity internships, CTF collaboration, and security
       projects.
