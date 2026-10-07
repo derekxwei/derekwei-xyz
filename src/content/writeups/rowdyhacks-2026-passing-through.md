@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Passing Through'
-description: 'A 300-point OSINT investigation: geolocating a lift bridge in New Orleans and pulling eight facts, down to a federal case number and bag counts, from public records.'
+description: 'A 300-point OSINT investigation: geolocating a lift bridge in New Orleans and pulling eight facts, down to a federal case number, from public records.'
 event: 'RowdyHacks XII'
 category: 'osint'
 points: 300

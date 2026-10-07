@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: read receipts'
-description: 'A 200-point crypto challenge exploiting AES-CTR keystream reuse: a messenger reset its counter on restart, so one known plaintext recovered the keystream and decrypted another message.'
+description: 'A 200-point crypto challenge exploiting AES-CTR keystream reuse: a reset counter let one known plaintext recover the keystream and decrypt another.'
 event: 'RowdyHacks XII'
 category: 'crypto'
 points: 200

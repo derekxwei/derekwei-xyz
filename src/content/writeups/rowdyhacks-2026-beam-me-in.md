@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: beam me in'
-description: 'A 250-point pwn challenge against a vulnerable Erlang/OTP SSH daemon that allowed pre-authentication command execution, reading the flag through the provided challenge tunnel.'
+description: 'A 250-point pwn challenge against a vulnerable Erlang/OTP SSH daemon allowing pre-authentication command execution, reading the flag through the tunnel.'
 event: 'RowdyHacks XII'
 category: 'pwn'
 points: 250

@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Hidden in Plain Sight'
-description: 'A 200-point layered-stego challenge: an EXIF hint led to a ZIP appended after a JPEG end marker, then a steghide payload unlocked with a passphrase from the archive.'
+description: 'A 200-point layered-stego challenge: an EXIF hint led to a ZIP appended after a JPEG end marker, then a steghide payload behind a passphrase.'
 event: 'RowdyHacks XII'
 category: 'forensics'
 points: 200

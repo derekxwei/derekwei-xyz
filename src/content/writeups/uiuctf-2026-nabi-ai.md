@@ -1,6 +1,6 @@
 ---
 title: 'UIUCTF 2026: Nabi AI'
-description: 'A Next.js chat application leaked its OpenBao token through a deprecated, client-controllable baoAddr field, turning an AI challenge into a conventional SSRF and secrets-management failure.'
+description: 'A Next.js chat app leaked its OpenBao token through a deprecated, client-controllable baoAddr field: an AI challenge that was really an SSRF.'
 event: 'UIUCTF 2026'
 category: 'web'
 difficulty: 'medium'

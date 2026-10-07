@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: world is mine'
-description: 'A 150-point web challenge: forum hints pointed at SQL injection in a login username field, and a classic comment-terminator payload authenticated as staff to expose the flag.'
+description: 'A 150-point web challenge: forum hints pointed at SQL injection in a login field, and a comment-terminator payload authenticated as staff.'
 event: 'RowdyHacks XII'
 category: 'web'
 points: 150

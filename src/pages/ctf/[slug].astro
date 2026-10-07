@@ -107,6 +107,7 @@ if (props.kind === 'event') {
       title={props.entry.data.title}
       description={props.entry.data.description}
       ogType="article"
+      publishedTime={props.entry.data.date.toISOString()}
     >
       <nav class="pt-8" aria-label="Breadcrumb">
         <a

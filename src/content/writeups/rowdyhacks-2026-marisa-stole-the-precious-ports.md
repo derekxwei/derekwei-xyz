@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Marisa Stole the Precious Ports!'
-description: 'A 150-point ICS/OT recon challenge: use nmap and Modbus port knowledge to pick the real OpenPLC out of three decoy ports, then read its holding registers for the flag.'
+description: 'A 150-point ICS/OT recon challenge: use nmap and Modbus port knowledge to pick the real OpenPLC from three decoys, then read its holding registers.'
 event: 'RowdyHacks XII'
 category: 'network'
 points: 150

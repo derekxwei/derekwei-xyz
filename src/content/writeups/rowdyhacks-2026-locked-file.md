@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Locked File'
-description: 'A 250-point crypto challenge our team solved by GPU password-cracking an AES-encrypted 7-Zip archive. This writeup documents the known approach; the exact password, command, and flag were not preserved.'
+description: 'A 250-point crypto challenge solved by GPU-cracking an AES-encrypted 7-Zip. Documents the known approach; the password and flag were not preserved.'
 event: 'RowdyHacks XII'
 category: 'crypto'
 points: 250

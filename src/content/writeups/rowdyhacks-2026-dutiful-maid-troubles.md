@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Dutiful Maid Troubles'
-description: 'A 200-point ICS/OT challenge: toggling a single Modbus coil enabled a holding-register output whose ASCII bytes spelled the flag, then restoring the coil to its original state.'
+description: 'A 200-point ICS/OT challenge: toggling one Modbus coil enabled a holding-register output whose ASCII bytes spelled the flag, then restoring the coil.'
 event: 'RowdyHacks XII'
 category: 'network'
 points: 200

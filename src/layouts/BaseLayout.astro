@@ -8,6 +8,8 @@ interface Props {
   title: string;
   description?: string;
   ogType?: 'website' | 'article';
+  /** ISO date. Emits article metadata and an Article JSON-LD block when set. */
+  publishedTime?: string;
   noindex?: boolean;
   /** Hide the site header and footer for standalone pages like /card. */
   minimal?: boolean;
@@ -17,12 +19,34 @@ const {
   title,
   description = SITE.description,
   ogType = 'website',
+  publishedTime,
   noindex = false,
   minimal = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Absolute, because og:image is fetched by crawlers with no page context.
+const ogImage = new URL('/og-default.png', Astro.site);
 const fullTitle = title === SITE.name ? SITE.title : `${title} · ${SITE.name}`;
+
+// 36 pages declared og:type=article while emitting no article metadata and no
+// structured data. A ld+json block is data, not executable script, so it is
+// unaffected by script-src 'self'.
+const articleSchema =
+  ogType === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: title,
+        description,
+        url: canonical.href,
+        image: ogImage.href,
+        inLanguage: 'en',
+        author: { '@type': 'Person', name: SITE.name, url: SITE.url },
+        publisher: { '@type': 'Person', name: SITE.name, url: SITE.url },
+        ...(publishedTime ? { datePublished: publishedTime } : {}),
+      }
+    : null;
 ---
 
 <!doctype html>
@@ -42,7 +66,19 @@ const fullTitle = title === SITE.name ? SITE.title : `${title} · ${SITE.name}`;
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name}: ${SITE.title}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {ogType === 'article' && <meta property="article:author" content={SITE.name} />}
+    {articleSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    )}
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="generator" content={Astro.generator} />

@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Case Files'
-description: 'A 250-point web challenge and textbook IDOR: a skipped case ID exposed a classified case and its restricted evidence through predictable, unauthorized API paths.'
+description: 'A 250-point web challenge and textbook BOLA: a skipped case ID exposed a classified case and its evidence through predictable, unauthorized API paths.'
 event: 'RowdyHacks XII'
 category: 'web'
 points: 250

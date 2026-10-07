@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Works on My Machine'
-description: 'A 350-point reversing challenge with a two-stage handshake: static analysis recovered the first transmission, and a connection-specific transform on the second stage returned the flag.'
+description: 'A 350-point reversing challenge with a two-stage handshake: static analysis recovered the first transmission, a connection-specific transform the second.'
 event: 'RowdyHacks XII'
 category: 'rev'
 points: 350

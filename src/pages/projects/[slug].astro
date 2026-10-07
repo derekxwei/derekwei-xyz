@@ -38,7 +38,7 @@ const statusTone: 'accent' | 'warn' | 'muted' =
       : 'muted';
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} ogType="article">
+<BaseLayout title={entry.data.title} description={entry.data.description} ogType="article" publishedTime={entry.data.date.toISOString()}>
   <nav class="pt-8" aria-label="Breadcrumb">
     <a href="/projects/" class="font-mono text-sm text-muted transition-colors hover:text-ink">
       &larr; All projects

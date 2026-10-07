@@ -1,6 +1,6 @@
 ---
 title: 'RowdyHacks XII: Back to Nothing'
-description: 'The 600-point forensics flagship: reassembling a 7-Zip from element-symbol fragments, undoing a custom byte transform to recover a BMP, reading a glyph panel for a Steghide passphrase, then reversing a payload into a spectrogram that spelled the flag.'
+description: 'The 600-point forensics flagship: a 7-Zip reassembled from element symbols, a custom byte transform undone, a glyph panel read, and a spectrogram flag.'
 event: 'RowdyHacks XII'
 category: 'forensics'
 points: 600

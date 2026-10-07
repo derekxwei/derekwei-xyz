@@ -395,7 +395,7 @@ export const CTF_EVENTS: readonly CtfEvent[] = [
     contribution:
       "A team result first and foremost. Within it, Derek was the team's top scorer, with 3,575 of the team's 5,825 points.",
     summary:
-      "RowdyHacks is UTSA's annual student hackathon. Its Capture the Flag spanned eight categories: web, cryptography, forensics, reverse engineering, binary exploitation, OSINT, ICS/OT, and miscellaneous.",
+      "RowdyHacks is UTSA's annual student hackathon. Its Capture the Flag spanned eight categories, from web and cryptography to binary exploitation and ICS/OT.",
   },
   {
     slug: 'broncoctf-2026',
@@ -417,7 +417,7 @@ export const CTF_EVENTS: readonly CtfEvent[] = [
     date: '2026-07-09',
     format: 'Online',
     summary:
-      "UIUCTF is the University of Illinois Urbana-Champaign's Capture the Flag, run by the SIGPwny security club and known for challenging web, cryptography, and reverse-engineering problems.",
+      "UIUCTF is the University of Illinois Urbana-Champaign's Capture the Flag, run by the SIGPwny security club and known for hard web and cryptography problems.",
   },
 ];
 

@@ -1,6 +1,6 @@
 ---
 title: 'CPTS study notes pipeline'
-description: 'A Claude Code, Claude Haiku, and Obsidian workflow that turns pasted CPTS study material into structured notes, checklists, and review artifacts, with human review.'
+description: 'A Claude Code, Claude Haiku, and Obsidian workflow turning pasted CPTS study material into structured notes and checklists, with human review.'
 status: in-progress
 date: 2026-07-10
 tags: [automation, obsidian, claude, workflow]
