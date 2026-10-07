@@ -101,9 +101,9 @@ const personSchema = {
         Specialist (CPTS).
       </p>
       <p class="mt-5 font-mono text-xs leading-relaxed text-faint">
-        5x CompTIA certified (CySA+, PenTest+, Security+, Network+, ITF+)
-        &middot; AWS Certified AI Practitioner &middot; graduate of the NEISD
-        iCSI Cybersecurity Program, Class of 2026
+        1st of 1,692 teams, National Cyber League High School division
+        &middot; 1st of 62 teams at RowdyHacks XII, all 28 challenges solved
+        &middot; 5x CompTIA certified &middot; AWS Certified AI Practitioner
       </p>
       <p
         class="mt-5 inline-flex items-center gap-2 rounded-md border border-line bg-panel-2 px-3 py-1.5 font-mono text-xs text-muted"
@@ -197,6 +197,26 @@ const personSchema = {
       </p>
     </div>
 
+    <!-- Web exploitation is the category internships screen for hardest, and
+         the Nabi AI solve is the strongest evidence of it. No screenshot
+         exists, so it sits as a named text entry rather than a feature. -->
+    <div class="mt-10 max-w-evidence border-l-2 border-accent pl-5">
+      <p class="kicker">UIUCTF 2026 &middot; Web exploitation</p>
+      <h3 class="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">
+        <a class="link no-underline hover:underline" href="/ctf/uiuctf-2026-nabi-ai/">
+          Nabi AI: SSRF via a client-controllable vault address
+        </a>
+      </h3>
+      <p class="mt-3 leading-relaxed text-prose-body">
+        A deprecated, client-controllable baoAddr field in a Next.js Server
+        Action turned an AI challenge into a conventional SSRF and
+        secrets-management failure.
+      </p>
+      <p class="mt-4">
+        <a href="/ctf/uiuctf-2026-nabi-ai/" class="btn btn-ghost">Read the writeup</a>
+      </p>
+    </div>
+
     <!-- Supporting work sits clearly below the feature. Both projects only
          have tall portrait diagrams, so neither gets a homepage thumbnail:
          squeezed into a wide crop they are unreadable. -->
@@ -240,6 +260,9 @@ const personSchema = {
               </p>
               <span class="shrink-0 font-mono text-xs text-faint">{job.period}</span>
             </div>
+            {job.bullets[0] && (
+              <p class="mt-1.5 text-sm leading-relaxed text-muted">{job.bullets[0]}</p>
+            )}
           </li>
         ))
       }

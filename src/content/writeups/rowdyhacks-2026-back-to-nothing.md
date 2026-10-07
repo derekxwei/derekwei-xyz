@@ -51,8 +51,7 @@ moving on.
 The recovered BMP is a photo of a neon sign: four rows of ten hand-drawn glyphs
 in red, blue, and green.
 
-![The recovered glyph panel, four rows of colored neon symbols drawn from mixed scripts.](/images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel.webp)
-
+<img src="/images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel.webp" alt="The recovered glyph panel, four rows of colored neon symbols drawn from mixed scripts." loading="lazy" decoding="async">
 *The decoded panel. The 15 distinct forms are a deliberate mix of scripts, which is what makes them hard to name.*
 
 Two features make it a cipher rather than decoration. The glyphs fall into three

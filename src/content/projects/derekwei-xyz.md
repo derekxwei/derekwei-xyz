@@ -31,8 +31,7 @@ the attack surface in version 1.
 
 ## Architecture
 
-![Delivery pipeline diagram: local development pushes to a public GitHub repository, which triggers a Cloudflare Pages build. The Cloudflare edge serves the static output over HTTPS with strict security headers to the visitor's browser, with no origin server.](/images/architecture/derekwei-site-architecture.svg)
-
+<img src="/images/architecture/derekwei-site-architecture.svg" alt="Delivery pipeline diagram: local development pushes to a public GitHub repository, which triggers a Cloudflare Pages build. The Cloudflare edge serves the static output over HTTPS with strict security headers to the visitor's browser, with no origin server." loading="lazy" decoding="async">
 The flow in order: local development, then a push to the GitHub repository, then a
 Cloudflare Pages build, then the Cloudflare edge over HTTPS, then the visitor's browser.
 There is no origin server and no backend at request time.

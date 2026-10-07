@@ -81,7 +81,9 @@ if (props.kind === 'event') {
     .map(([cat, items]) => ({ cat, label: CATEGORY_LABEL[cat] ?? cat, items }))
     .sort((a, b) => b.items.length - a.items.length || a.label.localeCompare(b.label));
   // Small events open by default; a big board (RowdyHacks) starts collapsed.
-  startOpen = props.writeups.length <= 3;
+  // Every group opens by default. A visitor arriving from the home page CTA
+  // should see the writeup titles, not 8 collapsed category headers.
+  startOpen = true;
 
   const ev = props.event;
   meta = [
@@ -141,6 +143,12 @@ if (props.kind === 'event') {
             <Badge label={tag} />
           ))}
         </div>
+        {props.entry.data.difficulty && (
+          <p class="mt-2 font-mono text-xs text-faint">
+            Difficulty is my own qualitative rating, not an official event
+            classification.
+          </p>
+        )}
       </PageHeader>
 
       <section class="py-10">

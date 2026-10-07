@@ -87,6 +87,7 @@ To add an entry:
 | `title`       | string                                                                        | yes      | Usually the challenge name.    |
 | `description` | string                                                                        | yes      |                                |
 | `event`       | string                                                                        | yes      | e.g. `BYU CTF`, `Rowdy CyberCon`.    |
+| `points`     | number                                                                        | no       | Point value as stated by the event; omit when scored by difficulty label. |
 | `category`    | `web` \| `crypto` \| `forensics` \| `pwn` \| `rev` \| `osint` \| `network` \| `misc` | yes |                          |
 | `difficulty`  | `easy` \| `medium` \| `hard` \| `insane`                                      | no       |                                |
 | `date`        | date                                                                          | yes      |                                |

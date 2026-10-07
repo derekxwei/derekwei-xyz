@@ -1,0 +1,5 @@
+# Old routes kept alive after the /ctf and /lab rename. Served as real 301s
+# by Cloudflare, which the previous build-time meta-refresh stubs were not.
+/writeups                      /ctf                          301
+/ctf/broncoctf-2025-ao-sint    /ctf/broncoctf-2026-ao-sint   301
+/now                           /about                        301

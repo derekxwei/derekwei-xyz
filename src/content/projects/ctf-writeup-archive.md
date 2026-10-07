@@ -32,5 +32,6 @@ same outline and keeps the dead ends in.
 
 ## Status
 
-In progress. Writeups from this season's events (National Cyber League, BYU CTF, and
-others) are being sanitized and published as they are finished.
+In progress. Published so far: the full RowdyHacks XII board (28 writeups,
+every challenge), BroncoCTF 2026, and UIUCTF 2026. Writeups from other events
+are sanitized and published as they are finished.

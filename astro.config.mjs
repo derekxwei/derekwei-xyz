@@ -21,15 +21,18 @@ export default defineConfig({
     // /card is publicly accessible but intentionally unlisted: it is excluded
     // from the sitemap and carries noindex (meta + X-Robots-Tag). Not a
     // security control - the page contains only deliberately public info.
-    sitemap({ filter: (page) => new URL(page).pathname !== '/card/' }),
+    sitemap({
+        filter: (page) => {
+          const p = new URL(page).pathname;
+          // /card is unlisted by choice; /lab-notes/ has no published
+          // entries yet, so submitting it offers a crawler an empty page.
+          return p !== '/card/' && p !== '/lab-notes/';
+        },
+      }),
   ],
-  // Old routes kept alive after the /ctf and /lab rename. Static builds emit
-  // a small redirect HTML page for each, so existing links do not 404.
-  redirects: {
-    '/writeups': '/ctf',
-    '/ctf/broncoctf-2025-ao-sint': '/ctf/broncoctf-2026-ao-sint',
-    '/now': '/about',
-  },
+  // Legacy routes are redirected by public/_redirects, which Cloudflare
+  // serves as real 301s. Astro's redirects option emits 200 meta-refresh
+  // stubs instead, and a matching static asset beats a redirect rule.
   build: {
     // Keep all CSS in external files so the strict Content-Security-Policy
     // (style-src 'self', no 'unsafe-inline') holds in production.

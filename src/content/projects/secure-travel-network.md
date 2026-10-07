@@ -14,8 +14,7 @@ directly, and the router carries their traffic over the tunnel.
 
 ## Architecture
 
-![Secure travel network diagram: trusted personal devices connect to a GL.iNet GL-SFT1200 Opal travel router, which routes their traffic through an encrypted VPN gateway. The untrusted public Wi-Fi uplink carries only encrypted traffic to the internet. This is a mitigation, not a guarantee.](/images/architecture/secure-travel-network.svg)
-
+<img src="/images/architecture/secure-travel-network.svg" alt="Secure travel network diagram: trusted personal devices connect to a GL.iNet GL-SFT1200 Opal travel router, which routes their traffic through an encrypted VPN gateway. The untrusted public Wi-Fi uplink carries only encrypted traffic to the internet. This is a mitigation, not a guarantee." loading="lazy" decoding="async">
 The flow in order: trusted personal devices, then the GL.iNet GL-SFT1200 Opal travel
 router, then an encrypted VPN gateway, then the public Wi-Fi uplink, then the internet.
 The router provides a trusted local network for the devices and is the only thing that
