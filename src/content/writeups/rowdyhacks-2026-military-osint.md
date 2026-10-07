@@ -22,7 +22,7 @@ draft: false
 OSINT · 150 points. A photo of a military aircraft is provided, and a local
 checker asks for the base where it is stationed, as decimal latitude/longitude.
 
-<img src="/images/ctf/rowdyhacks-2026-military-osint/aircraft.webp" alt="The military aircraft from the challenge photo, carrying Lone Star Gunfighters tail markings." loading="lazy" decoding="async">
+<img src="/images/ctf/rowdyhacks-2026-military-osint/aircraft.webp" alt="The military aircraft from the challenge photo, carrying Lone Star Gunfighters tail markings." loading="lazy" decoding="async" width="1000" height="1783" srcset="/images/ctf/rowdyhacks-2026-military-osint/aircraft-640w.webp 640w, /images/ctf/rowdyhacks-2026-military-osint/aircraft.webp 1000w" sizes="(max-width: 768px) 100vw, 928px">
 *The provided aircraft. Its markings were the thread that led to the unit and its base.*
 
 ## Identification (public sources)

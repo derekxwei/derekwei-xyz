@@ -51,7 +51,7 @@ moving on.
 The recovered BMP is a photo of a neon sign: four rows of ten hand-drawn glyphs
 in red, blue, and green.
 
-<img src="/images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel.webp" alt="The recovered glyph panel, four rows of colored neon symbols drawn from mixed scripts." loading="lazy" decoding="async">
+<img src="/images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel.webp" alt="The recovered glyph panel, four rows of colored neon symbols drawn from mixed scripts." loading="lazy" decoding="async" width="1400" height="870" srcset="/images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel-640w.webp 640w, /images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel-1024w.webp 1024w, /images/ctf/rowdyhacks-2026-back-to-nothing/glyph-panel.webp 1400w" sizes="(max-width: 768px) 100vw, 928px">
 *The decoded panel. The 15 distinct forms are a deliberate mix of scripts, which is what makes them hard to name.*
 
 Two features make it a cipher rather than decoration. The glyphs fall into three
@@ -136,5 +136,5 @@ Depth, not any single trick, is the lesson: five trivial encodings (fragmentatio
 <details>
 <summary><strong>Spoiler: show the flag</strong></summary>
 <pre><code>rowdy{Anomolous_Adventures}</code></pre>
-<img src="/images/ctf/rowdyhacks-2026-back-to-nothing/spectrogram-flag.webp" alt="Spectrogram of the reversed audio, with the flag text visible as bright bands against a dark background." />
+<img src="/images/ctf/rowdyhacks-2026-back-to-nothing/spectrogram-flag.webp" alt="Spectrogram of the reversed audio, with the flag text visible as bright bands against a dark background." / width="1400" height="197" srcset="/images/ctf/rowdyhacks-2026-back-to-nothing/spectrogram-flag-640w.webp 640w, /images/ctf/rowdyhacks-2026-back-to-nothing/spectrogram-flag-1024w.webp 1024w, /images/ctf/rowdyhacks-2026-back-to-nothing/spectrogram-flag.webp 1400w" sizes="(max-width: 768px) 100vw, 928px">
 </details>

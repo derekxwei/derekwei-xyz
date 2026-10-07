@@ -22,7 +22,7 @@ OSINT · 300 points. The challenge site supplies a full-resolution photo of a li
 bridge and a checker that validates eight separate discoveries before releasing
 the flag.
 
-<img src="/images/ctf/rowdyhacks-2026-passing-through/lift-bridge.webp" alt="The lift bridge from the challenge photo, later identified as the Danziger Bridge over the Industrial Canal in New Orleans." loading="lazy" decoding="async">
+<img src="/images/ctf/rowdyhacks-2026-passing-through/lift-bridge.webp" alt="The lift bridge from the challenge photo, later identified as the Danziger Bridge over the Industrial Canal in New Orleans." loading="lazy" decoding="async" width="1400" height="630" srcset="/images/ctf/rowdyhacks-2026-passing-through/lift-bridge-640w.webp 640w, /images/ctf/rowdyhacks-2026-passing-through/lift-bridge-1024w.webp 1024w, /images/ctf/rowdyhacks-2026-passing-through/lift-bridge.webp 1400w" sizes="(max-width: 768px) 100vw, 928px">
 *The starting photo. The tower shape, the loop ramp, and the canal fixed it to the Danziger Bridge.*
 
 ## Geolocation

@@ -84,7 +84,7 @@ The player stood at a high elevation on a narrow rocky pillar. Several islands w
 
 The most visually prominent island was not necessarily the answer. The challenge asked where the player was standing, not what the player was viewing.
 
-<img src="/images/ctf/broncoctf-2026-ao-sint/location-1-ierochos.webp" alt="Arcane Odyssey character standing on a high narrow rock pillar with several distant islands visible through severe weather." loading="lazy" decoding="async">
+<img src="/images/ctf/broncoctf-2026-ao-sint/location-1-ierochos.webp" alt="Arcane Odyssey character standing on a high narrow rock pillar with several distant islands visible through severe weather." loading="lazy" decoding="async" width="1600" height="717" srcset="/images/ctf/broncoctf-2026-ao-sint/location-1-ierochos-640w.webp 640w, /images/ctf/broncoctf-2026-ao-sint/location-1-ierochos-1024w.webp 1024w, /images/ctf/broncoctf-2026-ao-sint/location-1-ierochos.webp 1600w" sizes="(max-width: 768px) 100vw, 928px">
 *The foreground pillar and multi-island sightline supported Ierochos.*
 
 ### Initial candidates
@@ -122,7 +122,7 @@ The approximate sightline was:
 Ierochos → Cedar Arch → Elm Island → Dawn Island → Frostmill Island
 ```
 
-<img src="/images/ctf/broncoctf-2026-ao-sint/bronze-sea-map.webp" alt="Bronze Sea map used to compare Ierochos with Cedar Arch, Elm Island, Dawn Island, and Frostmill Island." loading="lazy" decoding="async">
+<img src="/images/ctf/broncoctf-2026-ao-sint/bronze-sea-map.webp" alt="Bronze Sea map used to compare Ierochos with Cedar Arch, Elm Island, Dawn Island, and Frostmill Island." loading="lazy" decoding="async" width="1000" height="1769" srcset="/images/ctf/broncoctf-2026-ao-sint/bronze-sea-map-640w.webp 640w, /images/ctf/broncoctf-2026-ao-sint/bronze-sea-map.webp 1000w" sizes="(max-width: 768px) 100vw, 928px">
 *Landmark order and relative distance helped reconstruct the Bronze Sea sightline.*
 
 ### Verification
@@ -141,7 +141,7 @@ The challenge was designed to be solvable without downloading Roblox. In-game re
 
 The second screenshot showed a developed merchant settlement: timber-framed buildings with light plaster walls and red-brown roofs on stone foundations, barrels and cargo crates, market equipment and seafood displays, waterfront infrastructure, and tall vegetated stone formations behind the town.
 
-<img src="/images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral.webp" alt="Port Mistral waterfront with timber-framed buildings, cargo, market structures, and red-brown roofs." loading="lazy" decoding="async">
+<img src="/images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral.webp" alt="Port Mistral waterfront with timber-framed buildings, cargo, market structures, and red-brown roofs." loading="lazy" decoding="async" width="1539" height="422" srcset="/images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral-640w.webp 640w, /images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral-1024w.webp 1024w, /images/ctf/broncoctf-2026-ao-sint/location-2-port-mistral.webp 1539w" sizes="(max-width: 768px) 100vw, 928px">
 *Port Mistral's merchant architecture and waterfront layout distinguished it from Redwake.*
 
 ### False lead: Redwake
@@ -158,7 +158,7 @@ The settlement's dense harbor layout, merchant structures, docks, cargo, cranes,
 
 The intact appearance was also consistent with visiting Port Mistral before the storyline events that alter the settlement.
 
-<img src="/images/ctf/broncoctf-2026-ao-sint/nimbus-sea-map.webp" alt="Nimbus Sea map with Port Mistral in the southwest and Makrinaos in the southeast." loading="lazy" decoding="async">
+<img src="/images/ctf/broncoctf-2026-ao-sint/nimbus-sea-map.webp" alt="Nimbus Sea map with Port Mistral in the southwest and Makrinaos in the southeast." loading="lazy" decoding="async" width="1000" height="598" srcset="/images/ctf/broncoctf-2026-ao-sint/nimbus-sea-map-640w.webp 640w, /images/ctf/broncoctf-2026-ao-sint/nimbus-sea-map.webp 1000w" sizes="(max-width: 768px) 100vw, 928px">
 *The Nimbus Sea map located Port Mistral and Makrinaos, confirming both screenshots belonged to the Nimbus Sea.*
 
 **Answer:** `portmistral`
@@ -181,7 +181,7 @@ Visible details included:
 - A reception-like area
 - A facility constructed inside mountainous terrain
 
-<img src="/images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos.webp" alt="Interior of the Dead Halls at Makrinaos with Assassin Syndicate signage, dark stone walls, and wooden construction." loading="lazy" decoding="async">
+<img src="/images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos.webp" alt="Interior of the Dead Halls at Makrinaos with Assassin Syndicate signage, dark stone walls, and wooden construction." loading="lazy" decoding="async" width="1565" height="791" srcset="/images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos-640w.webp 640w, /images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos-1024w.webp 1024w, /images/ctf/broncoctf-2026-ao-sint/location-3-makrinaos.webp 1565w" sizes="(max-width: 768px) 100vw, 928px">
 *The Nimbus Sea context and Assassin Syndicate interior supported Makrinaos.*
 
 ### Whitesummit versus Makrinaos
@@ -220,7 +220,7 @@ The fourth screenshot contained several unusual visual elements:
 - Distant structures and terrain
 - A whale apparently flying through the air
 
-<img src="/images/ctf/broncoctf-2026-ao-sint/location-4-ravenna.webp" alt="Ravenna terrain and distant structures under red lighting, with an airborne whale visible as an unreliable physics clue." loading="lazy" decoding="async">
+<img src="/images/ctf/broncoctf-2026-ao-sint/location-4-ravenna.webp" alt="Ravenna terrain and distant structures under red lighting, with an airborne whale visible as an unreliable physics clue." loading="lazy" decoding="async" width="1600" height="603" srcset="/images/ctf/broncoctf-2026-ao-sint/location-4-ravenna-640w.webp 640w, /images/ctf/broncoctf-2026-ao-sint/location-4-ravenna-1024w.webp 1024w, /images/ctf/broncoctf-2026-ao-sint/location-4-ravenna.webp 1600w" sizes="(max-width: 768px) 100vw, 928px">
 *The airborne whale was treated as a low-confidence physics glitch rather than geographic evidence.*
 
 ### False lead: Akursius Keep
